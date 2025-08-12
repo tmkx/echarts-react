@@ -1,0 +1,16 @@
+{
+  "name": "@fanciers/echarts-react",
+  "version": "0.0.0",
+  "description": "ECharts <3 React",
+  "author": "Tmk <i@tmk.im>",
+  "keywords": [
+    "echarts",
+    "react",
+    "component",
+    "chart",
+    "visualization"
+  ],
+  "license": "MIT",
+  "scripts": {},
+  "packageManager": "pnpm@10.14.0"
+}
