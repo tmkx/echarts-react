@@ -2,9 +2,9 @@ import React, { useLayoutEffect, useRef } from 'react';
 import { LineChart as EChartLineChart, type LineSeriesOption } from 'echarts/charts';
 import type { ComposeOption } from 'echarts/core';
 import { GridComponent, type GridComponentOption } from 'echarts/components';
-import { echarts, useRegister } from './shared.js';
+import { ChartContext, defaultSetOptionOpt, echarts, useInitialChartContext, useRegister } from './shared.js';
 
-export interface LineChartProps extends ComposeOption<LineSeriesOption | GridComponentOption> {
+interface LineChartProps extends ComposeOption<LineSeriesOption | GridComponentOption> {
   className?: string;
   style?: React.CSSProperties;
   containerProps?: React.HTMLAttributes<HTMLDivElement>;
@@ -19,6 +19,7 @@ export function LineChart({
 }: React.PropsWithChildren<LineChartProps>) {
   const ref = useRef<HTMLDivElement>(null);
   const chartRef = useRef<echarts.ECharts | null>(null);
+  const ctx = useInitialChartContext();
 
   useRegister((echarts) => {
     echarts.use([EChartLineChart, GridComponent]);
@@ -30,12 +31,17 @@ export function LineChart({
   }, []);
 
   useLayoutEffect(() => {
-    chartRef.current?.setOption(props);
+    const chart = chartRef.current;
+    if (!chart) return;
+    chart.setOption(props, defaultSetOptionOpt);
+    for (const opt of ctx.options) chart.setOption(opt, defaultSetOptionOpt);
+    ctx.options.length = 0;
   });
 
   return (
-    <div className={className} style={style} {...containerProps} ref={ref}>
+    <ChartContext.Provider value={ctx}>
+      <div className={className} style={style} {...containerProps} ref={ref} />
       {children}
-    </div>
+    </ChartContext.Provider>
   );
 }
