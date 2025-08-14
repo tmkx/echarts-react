@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "module": "preserve",
+    "target": "esnext",
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "strict": true,
+    "jsx": "react-jsx",
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "noUncheckedSideEffectImports": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "moduleDetection": "force",
+    "skipLibCheck": true,
+    "rootDir": ".",
+    "paths": {
+      "@fanciers/echarts-react": ["./src/index.ts"]
+    }
+  }
+}
