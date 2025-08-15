@@ -1,5 +1,6 @@
 import {
   DatasetComponent,
+  DataZoomComponent,
   LegendComponent,
   MarkAreaComponent,
   MarkLineComponent,
@@ -10,6 +11,7 @@ import {
   TransformComponent,
   VisualMapComponent,
   type DatasetComponentOption,
+  type DataZoomComponentOption,
   type LegendComponentOption,
   type MarkAreaComponentOption,
   type MarkLineComponentOption,
@@ -22,6 +24,8 @@ import {
 import { defineComponent } from './shared';
 
 export const Dataset = /*#__PURE__*/ defineComponent<DatasetComponentOption>([DatasetComponent, TransformComponent]);
+
+export const DataZoom = /*#__PURE__*/ defineComponent<DataZoomComponentOption>([DataZoomComponent]);
 
 export const Legend = /*#__PURE__*/ defineComponent<LegendComponentOption>(LegendComponent);
 
