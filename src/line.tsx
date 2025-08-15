@@ -37,6 +37,7 @@ export function LineChart({
     if (!chart) return;
     chart.setOption(props, defaultSetOptionOpt);
     for (const opt of ctx.options) chart.setOption(opt, defaultSetOptionOpt);
+    chart.setOption(chart.getOption(), { notMerge: true }); // used for toolbox.restore snapshot
     ctx.options.length = 0;
   });
 
