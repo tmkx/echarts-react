@@ -2,6 +2,7 @@ import type { Preview } from '@storybook/react';
 import { themes } from 'storybook/theming';
 import * as echarts from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
+import { SWRConfig } from 'swr';
 
 echarts.use(CanvasRenderer);
 
@@ -14,6 +15,20 @@ const preview: Preview = {
       themes,
     },
   },
+  decorators: [
+    (Story) => {
+      return (
+        <SWRConfig
+          value={{
+            fetcher: (url: string) =>
+              fetch(`https://corsproxy.io/?url=${encodeURIComponent(url)}`).then((res) => res.json()),
+          }}
+        >
+          <Story />
+        </SWRConfig>
+      );
+    },
+  ],
 };
 
 export default preview;

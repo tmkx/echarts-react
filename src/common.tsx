@@ -1,11 +1,14 @@
 import {
+  DatasetComponent,
   LegendComponent,
   MarkLineComponent,
   MarkPointComponent,
   TitleComponent,
   ToolboxComponent,
   TooltipComponent,
+  TransformComponent,
   VisualMapComponent,
+  type DatasetComponentOption,
   type LegendComponentOption,
   type MarkLineComponentOption,
   type MarkPointComponentOption,
@@ -15,6 +18,8 @@ import {
   type VisualMapComponentOption,
 } from 'echarts/components';
 import { defineComponent } from './shared';
+
+export const Dataset = /*#__PURE__*/ defineComponent<DatasetComponentOption>([DatasetComponent, TransformComponent]);
 
 export const Legend = /*#__PURE__*/ defineComponent<LegendComponentOption>(LegendComponent);
 
