@@ -1,6 +1,7 @@
 import {
   DatasetComponent,
   LegendComponent,
+  MarkAreaComponent,
   MarkLineComponent,
   MarkPointComponent,
   TitleComponent,
@@ -10,6 +11,7 @@ import {
   VisualMapComponent,
   type DatasetComponentOption,
   type LegendComponentOption,
+  type MarkAreaComponentOption,
   type MarkLineComponentOption,
   type MarkPointComponentOption,
   type TitleComponentOption,
@@ -22,6 +24,8 @@ import { defineComponent } from './shared';
 export const Dataset = /*#__PURE__*/ defineComponent<DatasetComponentOption>([DatasetComponent, TransformComponent]);
 
 export const Legend = /*#__PURE__*/ defineComponent<LegendComponentOption>(LegendComponent);
+
+export const MarkArea = /*#__PURE__*/ defineComponent<MarkAreaComponentOption>(MarkAreaComponent);
 
 export const MarkLine = /*#__PURE__*/ defineComponent<MarkLineComponentOption>(MarkLineComponent);
 
