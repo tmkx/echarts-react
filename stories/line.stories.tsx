@@ -14,6 +14,7 @@ import {
   VisualMap,
 } from '@fanciers/echarts-react';
 import type { LineSeriesOption } from 'echarts/charts';
+import React from 'react';
 import useSWR from 'swr';
 
 const meta: Meta = {
@@ -983,6 +984,69 @@ export function AreaTimeAxis() {
           { type: 'inside', start: 0, end: 20 },
           { start: 0, end: 20 },
         ]}
+      />
+    </LineChart>
+  );
+}
+
+export function DynamicData2() {
+  const oneDay = 24 * 3600 * 1000;
+  const nowRef = React.useRef(new Date(1997, 9, 3));
+  const valueRef = React.useRef(Math.random() * 1000);
+
+  function randomData() {
+    const now = (nowRef.current = new Date(+nowRef.current + oneDay));
+    valueRef.current = valueRef.current + Math.random() * 21 - 10;
+    return {
+      name: now.toString(),
+      value: [[now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'), Math.round(valueRef.current)],
+    };
+  }
+
+  const [data, setData] = React.useState(() => {
+    const data = [];
+    for (var i = 0; i < 1000; i++) data.push(randomData());
+    return data;
+  });
+
+  React.useEffect(() => {
+    const timer = setInterval(function () {
+      for (var i = 0; i < 5; i++) {
+        data.shift();
+        data.push(randomData());
+      }
+      setData([...data]);
+    }, 1000);
+    return () => clearInterval(timer);
+  });
+
+  return (
+    <LineChart
+      style={{ width: 480, height: 300 }}
+      xAxis={{ type: 'time', splitLine: { show: false } }}
+      yAxis={{ type: 'value', boundaryGap: [0, '100%'], splitLine: { show: false } }}
+      series={{ name: 'Fake Data', type: 'line', showSymbol: false, data: data }}
+    >
+      <Title title={{ text: 'Dynamic Data & Time Axis' }} />
+      <Tooltip
+        tooltip={{
+          trigger: 'axis',
+          formatter(params) {
+            if (!Array.isArray(params) || !params[0]) return '';
+            const param = params[0];
+            var date = new Date(param.name);
+            return (
+              date.getDate() +
+              '/' +
+              (date.getMonth() + 1) +
+              '/' +
+              date.getFullYear() +
+              ' : ' +
+              (param.value as number[])[1]
+            );
+          },
+          axisPointer: { animation: false },
+        }}
       />
     </LineChart>
   );
