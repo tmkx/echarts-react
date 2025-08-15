@@ -769,3 +769,221 @@ export function AreaSimple() {
     </LineChart>
   );
 }
+
+export function ConfidenceBand() {
+  const { data } = useSWR<{ date: string; value: number; u: number; l: number }[]>(
+    'https://echarts.apache.org/examples/data/asset/data/confidence-band.json'
+  );
+  var base = -(
+    data?.reduce(function (min, val) {
+      return Math.floor(Math.min(min, val.l));
+    }, Infinity) ?? 0
+  );
+
+  return (
+    <LineChart
+      style={{ width: 480, height: 300 }}
+      xAxis={{
+        type: 'category',
+        data: data?.map((item) => item.date) || [],
+        axisLabel: {
+          formatter(value, idx) {
+            var date = new Date(value);
+            return idx === 0 ? value : [date.getMonth() + 1, date.getDate()].join('-');
+          },
+        },
+        boundaryGap: false,
+      }}
+      yAxis={{
+        axisLabel: { formatter: (val: number) => (val - base) * 100 + '%' },
+        axisPointer: { label: { formatter: (params) => ((Number(params.value) - base) * 100).toFixed(1) + '%' } },
+        splitNumber: 3,
+      }}
+      grid={{ left: '3%', right: '4%', bottom: '3%', containLabel: true }}
+      series={[
+        {
+          name: 'L',
+          type: 'line',
+          data: data?.map((item) => item.l + base) || [],
+          lineStyle: { opacity: 0 },
+          stack: 'confidence-band',
+          symbol: 'none',
+        },
+        {
+          name: 'U',
+          type: 'line',
+          data: data?.map((item) => item.u - item.l) || [],
+          lineStyle: { opacity: 0 },
+          areaStyle: { color: '#ccc' },
+          stack: 'confidence-band',
+          symbol: 'none',
+        },
+        {
+          type: 'line',
+          data: data?.map((item) => item.value + base) || [],
+          itemStyle: { color: '#333' },
+          showSymbol: false,
+        },
+      ]}
+    >
+      <Title title={{ text: 'Confidence Band', subtext: 'Example in MetricsGraphics.js', left: 'center' }} />
+      <Tooltip
+        tooltip={{
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+            animation: false,
+            label: {
+              backgroundColor: '#ccc',
+              borderColor: '#aaa',
+              borderWidth: 1,
+              shadowBlur: 0,
+              shadowOffsetX: 0,
+              shadowOffsetY: 0,
+              color: '#222',
+            },
+          },
+          formatter(params) {
+            if (!Array.isArray(params)) return '';
+            return params[2]!.name + '<br />' + (((params[2]!.value as number) - base) * 100).toFixed(1) + '%';
+          },
+        }}
+      />
+    </LineChart>
+  );
+}
+
+export function LineAQI() {
+  const { data } = useSWR<[date: string, value: number][]>(
+    'https://echarts.apache.org/examples/data/asset/data/aqi-beijing.json'
+  );
+
+  return (
+    <LineChart
+      style={{ width: 480, height: 300 }}
+      grid={{ left: '5%', right: '15%', bottom: '10%' }}
+      xAxis={{ data: data?.map((item) => item[0]) || [] }}
+      yAxis={{}}
+      series={{
+        name: 'Beijing AQI',
+        type: 'line',
+        data: data?.map((item) => item[1]) || [],
+        markLine: {
+          silent: true,
+          lineStyle: { color: '#333' },
+          data: [{ yAxis: 50 }, { yAxis: 100 }, { yAxis: 150 }, { yAxis: 200 }, { yAxis: 300 }],
+        },
+      }}
+    >
+      <Title title={{ text: 'Beijing AQI', left: '1%' }} />
+      <Tooltip tooltip={{ trigger: 'axis' }} />
+      <Toolbox toolbox={{ right: 10, feature: { dataZoom: { yAxisIndex: 'none' }, restore: {}, saveAsImage: {} } }} />
+      <DataZoom dataZoom={[{ startValue: '2014-06-01' }, { type: 'inside' }]} />
+      <VisualMap
+        visualMap={{
+          top: 50,
+          right: 10,
+          pieces: [
+            { gt: 0, lte: 50, color: '#93CE07' },
+            { gt: 50, lte: 100, color: '#FBDB0F' },
+            { gt: 100, lte: 150, color: '#FC7D02' },
+            { gt: 150, lte: 200, color: '#FD0100' },
+            { gt: 200, lte: 300, color: '#AA069F' },
+            { gt: 300, color: '#AC3B2A' },
+          ],
+          outOfRange: { color: '#999' },
+        }}
+      />
+      <MarkLine />
+    </LineChart>
+  );
+}
+
+export function MultipleXAxis() {
+  const colors = ['#5470C6', '#EE6666'];
+  return (
+    <LineChart
+      style={{ width: 480, height: 300 }}
+      color={colors}
+      xAxis={[
+        {
+          type: 'category',
+          axisTick: { alignWithLabel: true },
+          axisLine: { onZero: false, lineStyle: { color: colors[1]! } },
+          axisPointer: {
+            label: {
+              formatter: (params) =>
+                'Precipitation  ' + params.value + (params.seriesData.length ? '：' + params.seriesData[0]!.data : ''),
+            },
+          },
+          // prettier-ignore
+          data: ['2016-1', '2016-2', '2016-3', '2016-4', '2016-5', '2016-6', '2016-7', '2016-8', '2016-9', '2016-10', '2016-11', '2016-12'],
+        },
+        {
+          type: 'category',
+          axisTick: { alignWithLabel: true },
+          axisLine: { onZero: false, lineStyle: { color: colors[0]! } },
+          axisPointer: {
+            label: {
+              formatter: (params) =>
+                'Precipitation  ' + params.value + (params.seriesData.length ? '：' + params.seriesData[0]!.data : ''),
+            },
+          },
+          // prettier-ignore
+          data: ['2015-1', '2015-2', '2015-3', '2015-4', '2015-5', '2015-6', '2015-7', '2015-8', '2015-9', '2015-10', '2015-11', '2015-12'],
+        },
+      ]}
+      yAxis={[{ type: 'value' }]}
+      grid={{ top: 70, bottom: 50 }}
+      series={[
+        {
+          name: 'Precipitation(2015)',
+          type: 'line',
+          xAxisIndex: 1,
+          smooth: true,
+          emphasis: { focus: 'series' },
+          data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+        },
+        {
+          name: 'Precipitation(2016)',
+          type: 'line',
+          smooth: true,
+          emphasis: { focus: 'series' },
+          data: [3.9, 5.9, 11.1, 18.7, 48.3, 69.2, 231.6, 46.6, 55.4, 18.4, 10.3, 0.7],
+        },
+      ]}
+    >
+      <Tooltip tooltip={{ trigger: 'none', axisPointer: { type: 'cross' } }} />
+      <Legend legend={{}} />
+    </LineChart>
+  );
+}
+
+export function AreaTimeAxis() {
+  let base = +new Date(1988, 9, 3);
+  let oneDay = 24 * 3600 * 1000;
+  let data = [[base, Math.random() * 300]];
+  for (let i = 1; i < 20000; i++) {
+    let now = new Date((base += oneDay));
+    data.push([+now, Math.round((Math.random() - 0.5) * 20 + data[i - 1]![1]!)]);
+  }
+
+  return (
+    <LineChart
+      style={{ width: 480, height: 300 }}
+      xAxis={{ type: 'time', boundaryGap: [0, 0] }}
+      yAxis={{ type: 'value', boundaryGap: [0, '100%'] }}
+      series={[{ name: 'Fake Data', type: 'line', smooth: true, symbol: 'none', areaStyle: {}, data: data }]}
+    >
+      <Tooltip tooltip={{ trigger: 'axis', position: (pt) => [pt[0], '10%'] }} />
+      <Title title={{ left: 'center', text: 'Large Ara Chart' }} />
+      <Toolbox toolbox={{ feature: { dataZoom: { yAxisIndex: 'none' }, restore: {}, saveAsImage: {} } }} />
+      <DataZoom
+        dataZoom={[
+          { type: 'inside', start: 0, end: 20 },
+          { start: 0, end: 20 },
+        ]}
+      />
+    </LineChart>
+  );
+}
