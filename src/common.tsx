@@ -1,9 +1,13 @@
 import {
   LegendComponent,
+  MarkLineComponent,
+  MarkPointComponent,
   TitleComponent,
   ToolboxComponent,
   TooltipComponent,
   type LegendComponentOption,
+  type MarkLineComponentOption,
+  type MarkPointComponentOption,
   type TitleComponentOption,
   type ToolboxComponentOption,
   type TooltipComponentOption,
@@ -11,6 +15,10 @@ import {
 import { defineComponent } from './shared';
 
 export const Legend = /*#__PURE__*/ defineComponent<LegendComponentOption>(LegendComponent);
+
+export const MarkLine = /*#__PURE__*/ defineComponent<MarkLineComponentOption>(MarkLineComponent);
+
+export const MarkPoint = /*#__PURE__*/ defineComponent<MarkPointComponentOption>(MarkPointComponent);
 
 export const Title = /*#__PURE__*/ defineComponent<TitleComponentOption>(TitleComponent);
 

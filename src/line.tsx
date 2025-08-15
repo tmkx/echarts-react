@@ -4,7 +4,9 @@ import type { ComposeOption } from 'echarts/core';
 import { GridComponent, type GridComponentOption } from 'echarts/components';
 import { ChartContext, defaultSetOptionOpt, echarts, useInitialChartContext, useRegister } from './shared.js';
 
-interface LineChartProps extends ComposeOption<LineSeriesOption | GridComponentOption> {
+type LineChartOption = echarts.EChartsCoreOption & ComposeOption<LineSeriesOption | GridComponentOption>;
+
+interface LineChartProps extends LineChartOption {
   className?: string;
   style?: React.CSSProperties;
   containerProps?: React.HTMLAttributes<HTMLDivElement>;
