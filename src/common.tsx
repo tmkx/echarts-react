@@ -5,12 +5,14 @@ import {
   TitleComponent,
   ToolboxComponent,
   TooltipComponent,
+  VisualMapComponent,
   type LegendComponentOption,
   type MarkLineComponentOption,
   type MarkPointComponentOption,
   type TitleComponentOption,
   type ToolboxComponentOption,
   type TooltipComponentOption,
+  type VisualMapComponentOption,
 } from 'echarts/components';
 import { defineComponent } from './shared';
 
@@ -25,3 +27,5 @@ export const Title = /*#__PURE__*/ defineComponent<TitleComponentOption>(TitleCo
 export const Toolbox = /*#__PURE__*/ defineComponent<ToolboxComponentOption>(ToolboxComponent);
 
 export const Tooltip = /*#__PURE__*/ defineComponent<TooltipComponentOption>(TooltipComponent);
+
+export const VisualMap = /*#__PURE__*/ defineComponent<VisualMapComponentOption>(VisualMapComponent);
