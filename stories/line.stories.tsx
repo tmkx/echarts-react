@@ -10,6 +10,7 @@ import {
   MarkArea,
   MarkLine,
   MarkPoint,
+  Polar,
   Title,
   Toolbox,
   Tooltip,
@@ -1682,6 +1683,316 @@ export function LineFisheyeLens() {
       <Legend legend={{}} />
       <AxisBreak />
       <Graphic />
+    </LineChart>
+  );
+}
+
+export function LineYCategory() {
+  return (
+    <LineChart
+      style={{ width: 480, height: 300 }}
+      xAxis={{ type: 'value', axisLabel: { formatter: '{value} °C' } }}
+      yAxis={{
+        type: 'category',
+        axisLine: { onZero: false },
+        axisLabel: { formatter: '{value} km' },
+        boundaryGap: false,
+        data: ['0', '10', '20', '30', '40', '50', '60', '70', '80'],
+      }}
+      grid={{ left: '3%', right: '4%', bottom: '3%', containLabel: true }}
+      series={[
+        {
+          name: 'Altitude (km) vs. temperature (°C)',
+          type: 'line',
+          symbolSize: 10,
+          symbol: 'circle',
+          smooth: true,
+          lineStyle: { width: 3, shadowColor: 'rgba(0,0,0,0.3)', shadowBlur: 10, shadowOffsetY: 8 },
+          data: [15, -50, -56.5, -46.5, -22.1, -2.5, -27.7, -55.7, -76.5],
+        },
+      ]}
+    >
+      <Legend legend={{ data: ['Altitude (km) vs. temperature (°C)'] }} />
+      <Tooltip tooltip={{ trigger: 'axis', formatter: 'Temperature : <br/>{b}km : {c}°C' }} />
+    </LineChart>
+  );
+}
+
+export function LineGraphic() {
+  return (
+    <LineChart
+      style={{ width: 480, height: 300 }}
+      xAxis={{ type: 'value', axisLabel: { formatter: '{value} °C' } }}
+      yAxis={{
+        type: 'category',
+        axisLine: { onZero: false },
+        axisLabel: { formatter: '{value} km' },
+        boundaryGap: true,
+        data: ['0', '10', '20', '30', '40', '50', '60', '70', '80'],
+      }}
+      grid={{ left: '3%', right: '4%', bottom: '3%', containLabel: true }}
+      series={[
+        {
+          name: 'Altitude (km) vs. temperature (°C)',
+          type: 'line',
+          smooth: true,
+          data: [15, -50, -56.5, -46.5, -22.1, -2.5, -27.7, -55.7, -76.5],
+        },
+      ]}
+    >
+      <Tooltip tooltip={{ trigger: 'axis', formatter: 'Temperature : <br/>{b}km : {c}°C' }} />
+      <Graphic
+        graphic={[
+          {
+            type: 'group',
+            rotation: Math.PI / 4,
+            bounding: 'raw',
+            right: 110,
+            bottom: 110,
+            z: 100,
+            children: [
+              {
+                type: 'rect',
+                left: 'center',
+                top: 'center',
+                z: 100,
+                shape: { width: 400, height: 50 },
+                style: { fill: 'rgba(0,0,0,0.3)' },
+              },
+              {
+                type: 'text',
+                left: 'center',
+                top: 'center',
+                z: 100,
+                style: { fill: '#fff', text: 'ECHARTS LINE CHART', font: 'bold 26px sans-serif' },
+              },
+            ],
+          },
+          {
+            type: 'group',
+            left: '10%',
+            top: 'center',
+            children: [
+              {
+                type: 'rect',
+                z: 100,
+                left: 'center',
+                top: 'middle',
+                shape: { width: 240, height: 90 },
+                style: {
+                  fill: '#fff',
+                  stroke: '#555',
+                  lineWidth: 1,
+                  shadowBlur: 8,
+                  shadowOffsetX: 3,
+                  shadowOffsetY: 3,
+                  shadowColor: 'rgba(0,0,0,0.2)',
+                },
+              },
+              {
+                type: 'text',
+                z: 100,
+                left: 'center',
+                top: 'middle',
+                style: {
+                  fill: '#333',
+                  width: 220,
+                  overflow: 'break',
+                  text: 'xAxis represents temperature in °C, yAxis represents altitude in km, An image watermark in the upper right, This text block can be placed in any place',
+                  font: '14px Microsoft YaHei',
+                },
+              },
+            ],
+          },
+        ]}
+      />
+    </LineChart>
+  );
+}
+
+export function LinePen() {
+  const symbolSize = 20;
+  const [data, setData] = React.useState(() => [
+    [15, 0],
+    [-50, 10],
+    [-56.5, 20],
+    [-46.5, 30],
+    [-22.1, 40],
+  ]);
+  const chartRef = React.useRef<echarts.ECharts>(null);
+
+  React.useEffect(() => {
+    const myChart = chartRef.current;
+    if (!myChart) return;
+    var zr = myChart.getZr();
+    zr.on('click', function (params) {
+      var pointInPixel = [params.offsetX, params.offsetY];
+      var pointInGrid = myChart.convertFromPixel('grid', pointInPixel);
+      if (myChart.containPixel('grid', pointInPixel)) {
+        setData((prev) => [...prev, pointInGrid]);
+      }
+    });
+    zr.on('mousemove', function (params) {
+      var pointInPixel = [params.offsetX, params.offsetY];
+      zr.setCursorStyle(myChart.containPixel('grid', pointInPixel) ? 'copy' : 'default');
+    });
+    return () => zr.dispose();
+  }, []);
+
+  return (
+    <LineChart
+      ref={chartRef}
+      style={{ width: 480, height: 300 }}
+      xAxis={{ min: -60, max: 20, type: 'value', axisLine: { onZero: false } }}
+      yAxis={{ min: 0, max: 40, type: 'value', axisLine: { onZero: false } }}
+      grid={{ left: '3%', right: '4%', bottom: '3%', containLabel: true }}
+      series={[{ id: 'a', type: 'line', smooth: true, symbolSize: symbolSize, data: data }]}
+    >
+      <Title title={{ text: 'Click to Add Points' }} />
+      <Tooltip
+        tooltip={{
+          formatter: function (params) {
+            if (Array.isArray(params)) return '';
+            var data = (params.data as [number, number] | undefined) || [0, 0];
+            return data[0].toFixed(2) + ', ' + data[1].toFixed(2);
+          },
+        }}
+      />
+    </LineChart>
+  );
+}
+
+export function LinePolar() {
+  const data = [];
+  for (let i = 0; i <= 100; i++) {
+    let theta = (i / 100) * 360;
+    let r = 5 * (1 + Math.sin((theta / 180) * Math.PI));
+    data.push([r, theta]);
+  }
+
+  return (
+    <LineChart
+      style={{ width: 480, height: 300 }}
+      series={[{ coordinateSystem: 'polar', name: 'line', type: 'line', data }]}
+    >
+      <Title title={{ text: 'Two Value-Axes in Polar' }} />
+      <Legend legend={{ data: ['line'] }} />
+      <Polar polar={{}} angleAxis={{ type: 'value', startAngle: 0 }} radiusAxis={{}} />
+      <Tooltip tooltip={{ trigger: 'axis', axisPointer: { type: 'cross' } }} />
+    </LineChart>
+  );
+}
+
+export function LinePolar2() {
+  const data = [];
+  for (let i = 0; i <= 360; i++) {
+    let t = (i / 180) * Math.PI;
+    let r = Math.sin(2 * t) * Math.cos(2 * t);
+    data.push([r, i]);
+  }
+
+  return (
+    <LineChart
+      style={{ width: 480, height: 300 }}
+      animationDuration={2000}
+      series={[{ coordinateSystem: 'polar', name: 'line', type: 'line', showSymbol: false, data }]}
+    >
+      <Title title={{ text: 'Two Value-Axes in Polar' }} />
+      <Legend legend={{ data: ['line'] }} />
+      <Polar polar={{ center: ['50%', '54%'] }} angleAxis={{ type: 'value', startAngle: 0 }} radiusAxis={{ min: 0 }} />
+      <Tooltip tooltip={{ trigger: 'axis', axisPointer: { type: 'cross' } }} />
+    </LineChart>
+  );
+}
+
+export function LineTooltipTouch() {
+  let base = +new Date(2016, 9, 3);
+  let oneDay = 24 * 3600 * 1000;
+  let valueBase = Math.random() * 300;
+  let valueBase2 = Math.random() * 50;
+  let data = [];
+  let data2 = [];
+  for (var i = 1; i < 10; i++) {
+    var now = new Date((base += oneDay));
+    var dayStr = [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('-');
+    valueBase = Math.round((Math.random() - 0.5) * 20 + valueBase);
+    valueBase <= 0 && (valueBase = Math.random() * 300);
+    data.push([dayStr, valueBase]);
+    valueBase2 = Math.round((Math.random() - 0.5) * 20 + valueBase2);
+    valueBase2 <= 0 && (valueBase2 = Math.random() * 50);
+    data2.push([dayStr, valueBase2]);
+  }
+
+  return (
+    <LineChart
+      style={{ width: 480, height: 360 }}
+      xAxis={{
+        type: 'time',
+        axisPointer: {
+          value: '2016-10-7',
+          snap: true,
+          lineStyle: { color: '#7581BD', width: 2 },
+          label: {
+            show: true,
+            formatter: (params) => echarts.time.format(params.value, '{yyyy}-{MM}-{dd}', true),
+            backgroundColor: '#7581BD',
+          },
+          handle: { show: true, color: '#7581BD' },
+        },
+        splitLine: { show: false },
+      }}
+      yAxis={{
+        type: 'value',
+        axisTick: { inside: true },
+        splitLine: { show: false },
+        axisLabel: { inside: true, formatter: '{value}\n' },
+        z: 10,
+      }}
+      grid={{ top: 110, left: 15, right: 15, height: 160 }}
+      series={[
+        {
+          name: 'Fake Data',
+          type: 'line',
+          smooth: true,
+          symbol: 'circle',
+          symbolSize: 5,
+          sampling: 'average',
+          itemStyle: { color: '#0770FF' },
+          stack: 'a',
+          areaStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: 'rgba(58,77,233,0.8)' },
+              { offset: 1, color: 'rgba(58,77,233,0.3)' },
+            ]),
+          },
+          data: data,
+        },
+        {
+          name: 'Fake Data',
+          type: 'line',
+          smooth: true,
+          stack: 'a',
+          symbol: 'circle',
+          symbolSize: 5,
+          sampling: 'average',
+          itemStyle: { color: '#F2597F' },
+          areaStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: 'rgba(213,72,120,0.8)' },
+              { offset: 1, color: 'rgba(213,72,120,0.3)' },
+            ]),
+          },
+          data: data2,
+        },
+      ]}
+    >
+      <Title title={{ left: 'center', text: 'Tootip and dataZoom on Mobile Device' }} />
+      <Legend legend={{ top: 'bottom', data: ['Intention'] }} />
+      <Tooltip tooltip={{ triggerOn: 'none', position: (pt) => [pt[0], 130] }} />
+      <Toolbox
+        toolbox={{ left: 'center', itemSize: 25, top: 55, feature: { dataZoom: { yAxisIndex: 'none' }, restore: {} } }}
+      />
+      <DataZoom dataZoom={{ type: 'inside', throttle: 50 }} />
     </LineChart>
   );
 }

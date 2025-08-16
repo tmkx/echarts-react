@@ -6,6 +6,7 @@ export {
   MarkArea,
   MarkLine,
   MarkPoint,
+  Polar,
   Title,
   Toolbox,
   Tooltip,

@@ -7,6 +7,7 @@ import type {
   MarkAreaComponentOption,
   MarkLineComponentOption,
   MarkPointComponentOption,
+  PolarComponentOption,
   TitleComponentOption,
   ToolboxComponentOption,
   TooltipComponentOption,
@@ -20,6 +21,7 @@ import {
   MarkAreaComponent,
   MarkLineComponent,
   MarkPointComponent,
+  PolarComponent,
   TitleComponent,
   ToolboxComponent,
   TooltipComponent,
@@ -59,6 +61,8 @@ export const MarkArea = /*#__PURE__*/ defineComponent<MarkAreaComponentOption>(M
 export const MarkLine = /*#__PURE__*/ defineComponent<MarkLineComponentOption>(MarkLineComponent);
 
 export const MarkPoint = /*#__PURE__*/ defineComponent<MarkPointComponentOption>(MarkPointComponent);
+
+export const Polar = /*#__PURE__*/ defineComponent<PolarComponentOption>(PolarComponent);
 
 export const Title = /*#__PURE__*/ defineComponent<TitleComponentOption>(TitleComponent);
 
