@@ -1,3 +1,4 @@
+export { LineChart } from './charts.js';
 export {
   Dataset,
   DataZoom,
@@ -13,5 +14,4 @@ export {
   VisualMap,
 } from './components.js';
 export { AxisBreak } from './features.js';
-export { LineChart } from './line.js';
 export { echarts } from './shared.js';

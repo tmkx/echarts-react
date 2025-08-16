@@ -1,5 +1,10 @@
 import React, { forwardRef, useLayoutEffect, useRef } from 'react';
-import { LineChart as EChartLineChart, type LineSeriesOption } from 'echarts/charts';
+import {
+  LineChart as EChartLineChart,
+  PieChart as EChartPieChart,
+  type LineSeriesOption,
+  type PieSeriesOption,
+} from 'echarts/charts';
 import type { ComposeOption } from 'echarts/core';
 import { GridComponent, type GridComponentOption } from 'echarts/components';
 import { ChartContext, defaultSetOptionOpt, echarts, useInitialChartContext, useRegister } from './shared.js';
@@ -10,7 +15,8 @@ function assignForwardedRef<T>(ref: React.ForwardedRef<T>, value: T | null) {
   else ref.current = value;
 }
 
-type LineChartOption = echarts.EChartsCoreOption & ComposeOption<LineSeriesOption | GridComponentOption>;
+type LineChartOption = echarts.EChartsCoreOption &
+  ComposeOption<LineSeriesOption | GridComponentOption | PieSeriesOption>;
 
 interface LineChartProps extends LineChartOption {
   className?: string;
@@ -28,7 +34,8 @@ export const LineChart = forwardRef(
     const ctx = useInitialChartContext();
 
     useRegister((echarts) => {
-      echarts.use([EChartLineChart, GridComponent]);
+      // TODO: Make different charts composable.
+      echarts.use([EChartLineChart, GridComponent, EChartPieChart]);
     });
 
     useLayoutEffect(() => {
