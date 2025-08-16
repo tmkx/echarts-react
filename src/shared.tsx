@@ -1,7 +1,6 @@
 import React from 'react';
 import * as echarts from 'echarts/core';
-import type { ComposeOption, SetOptionOpts } from 'echarts/core';
-import type { ComponentOption } from 'echarts/types/src/util/types.js';
+import type { SetOptionOpts } from 'echarts/core';
 
 export { echarts };
 
@@ -39,19 +38,4 @@ export function useRegister(fn: (echarts: EChartsCore) => void) {
   fn(echarts);
 }
 
-type EChartExt = Parameters<(typeof echarts)['use']>[0];
-export function defineComponent<T extends ComponentOption>(ext: EChartExt) {
-  return function ChartComponent(props: ComposeOption<T>) {
-    const ctx = useChartContext();
-
-    useRegister((echarts) => {
-      echarts.use(ext);
-    });
-
-    React.useLayoutEffect(() => {
-      ctx.options.push(props);
-    });
-
-    return null;
-  };
-}
+export type EChartExt = Parameters<(typeof echarts)['use']>[0];

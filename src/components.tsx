@@ -1,6 +1,21 @@
+import type {
+  ComposeOption,
+  DatasetComponentOption,
+  DataZoomComponentOption,
+  GraphicComponentOption,
+  LegendComponentOption,
+  MarkAreaComponentOption,
+  MarkLineComponentOption,
+  MarkPointComponentOption,
+  TitleComponentOption,
+  ToolboxComponentOption,
+  TooltipComponentOption,
+  VisualMapComponentOption,
+} from 'echarts';
 import {
   DatasetComponent,
   DataZoomComponent,
+  GraphicComponent,
   LegendComponent,
   MarkAreaComponent,
   MarkLineComponent,
@@ -10,22 +25,32 @@ import {
   TooltipComponent,
   TransformComponent,
   VisualMapComponent,
-  type DatasetComponentOption,
-  type DataZoomComponentOption,
-  type LegendComponentOption,
-  type MarkAreaComponentOption,
-  type MarkLineComponentOption,
-  type MarkPointComponentOption,
-  type TitleComponentOption,
-  type ToolboxComponentOption,
-  type TooltipComponentOption,
-  type VisualMapComponentOption,
 } from 'echarts/components';
-import { defineComponent } from './shared';
+import type { ComponentOption } from 'echarts/types/src/util/types.js';
+import React from 'react';
+import { useChartContext, useRegister, type EChartExt } from './shared.js';
+
+function defineComponent<T extends ComponentOption>(ext: EChartExt) {
+  return function ChartComponent(props: ComposeOption<T>) {
+    const ctx = useChartContext();
+
+    useRegister((echarts) => {
+      echarts.use(ext);
+    });
+
+    React.useLayoutEffect(() => {
+      ctx.options.push(props);
+    });
+
+    return null;
+  };
+}
 
 export const Dataset = /*#__PURE__*/ defineComponent<DatasetComponentOption>([DatasetComponent, TransformComponent]);
 
 export const DataZoom = /*#__PURE__*/ defineComponent<DataZoomComponentOption>([DataZoomComponent]);
+
+export const Graphic = /*#__PURE__*/ defineComponent<GraphicComponentOption>([GraphicComponent]);
 
 export const Legend = /*#__PURE__*/ defineComponent<LegendComponentOption>(LegendComponent);
 

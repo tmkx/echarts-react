@@ -1,6 +1,7 @@
 export {
   Dataset,
   DataZoom,
+  Graphic,
   Legend,
   MarkArea,
   MarkLine,
@@ -9,6 +10,7 @@ export {
   Toolbox,
   Tooltip,
   VisualMap,
-} from './common.js';
+} from './components.js';
+export { AxisBreak } from './features.js';
 export { LineChart } from './line.js';
 export { echarts } from './shared.js';

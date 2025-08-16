@@ -1,8 +1,10 @@
 import type { Meta } from '@storybook/react';
 import {
+  AxisBreak,
   Dataset,
   DataZoom,
   echarts,
+  Graphic,
   Legend,
   LineChart,
   MarkArea,
@@ -1487,6 +1489,199 @@ export function LineEasing() {
   return (
     <LineChart style={{ width: 480, height: 300 }} xAxis={xAxes} yAxis={yAxes} grid={grids} series={series}>
       <Title title={[...titles, { text: 'Different Easing Functions', top: 'bottom', left: 'center' }]} />
+    </LineChart>
+  );
+}
+
+export function LineFisheyeLens() {
+  var GRID_TOP = 120;
+  var GRID_BOTTOM = 80;
+  var GRID_LEFT = 60;
+  var GRID_RIGHT = 60;
+  var Y_DATA_ROUND_PRECISION = 0;
+  var _breakAreaStyle = {
+    expandOnClick: false,
+    zigzagZ: 200,
+    zigzagAmplitude: 0,
+    itemStyle: { borderColor: '#777', opacity: 0 },
+  };
+
+  const chartRef = React.useRef<echarts.ECharts>(null);
+
+  /**
+   * This is some interaction logic with axis break:
+   *  - Brush to fisheye-magnify an area.
+   *
+   * You can ignore this part if you do not need it.
+   */
+  function initAxisBreakInteraction() {
+    const myChart = chartRef.current;
+    if (!myChart) return;
+    var _brushingEl: any = null;
+    myChart.on('click', function (params) {
+      if (params.name === 'clearAxisBreakBtn') {
+        var option: echarts.EChartsCoreOption = { xAxis: { breaks: [] }, yAxis: { breaks: [] } };
+        addClearButtonUpdateOption(option, false);
+        myChart.setOption(option);
+      }
+    });
+    function addClearButtonUpdateOption(option: echarts.EChartsCoreOption, show: boolean) {
+      option.graphic = [
+        {
+          elements: [
+            {
+              type: 'rect',
+              ignore: !show,
+              name: 'clearAxisBreakBtn',
+              top: 5,
+              left: 5,
+              shape: { r: 3, width: 70, height: 30 },
+              style: { fill: '#eee', stroke: '#999', lineWidth: 1 },
+              textContent: { type: 'text', style: { text: 'Reset', fontSize: 15, fontWeight: 'bold' } },
+              textConfig: { position: 'inside' },
+            },
+          ],
+        },
+      ];
+    }
+    myChart.getZr().on('mousedown', function (params) {
+      _brushingEl = new echarts.graphic.Rect({
+        shape: { x: params.offsetX, y: params.offsetY },
+        style: { stroke: 'none', fill: '#ccc' },
+        ignore: true,
+      });
+      myChart.getZr().add(_brushingEl);
+    });
+    myChart.getZr().on('mousemove', function (params) {
+      if (!_brushingEl) return;
+      var initX = _brushingEl.shape.x;
+      var initY = _brushingEl.shape.y;
+      var currPoint: [number, number] = [params.offsetX, params.offsetY];
+      _brushingEl.setShape('width', currPoint[0] - initX);
+      _brushingEl.setShape('height', currPoint[1] - initY);
+      _brushingEl.ignore = false;
+    });
+    document.addEventListener('mouseup', function (params) {
+      if (!_brushingEl) return;
+      var initX = _brushingEl.shape.x;
+      var initY = _brushingEl.shape.y;
+      var currPoint: [number, number] = [params.offsetX, params.offsetY];
+      var xPixelSpan = Math.abs(currPoint[0] - initX);
+      var yPixelSpan = Math.abs(currPoint[1] - initY);
+      if (xPixelSpan > 2 && yPixelSpan > 2) {
+        updateAxisBreak(myChart, [initX, initY], currPoint, xPixelSpan, yPixelSpan);
+      }
+      myChart.getZr().remove(_brushingEl);
+      _brushingEl = null;
+    });
+    function updateAxisBreak(
+      myChart: echarts.ECharts,
+      initXY: number[],
+      currPoint: number[],
+      xPixelSpan: number,
+      yPixelSpan: number
+    ) {
+      var dataXY0 = myChart.convertFromPixel({ gridIndex: 0 }, initXY);
+      var dataXY1 = myChart.convertFromPixel({ gridIndex: 0 }, currPoint);
+      function makeDataRange(v0: number, v1: number) {
+        var dataRange: [number, number] = [roundXYValue(v0), roundXYValue(v1)];
+        if (dataRange[0] > dataRange[1]) dataRange.reverse();
+        return dataRange;
+      }
+      var xDataRange = makeDataRange(dataXY0[0]!, dataXY1[0]!);
+      var yDataRange = makeDataRange(dataXY0[1]!, dataXY1[1]!);
+      var xySpan = getXYAxisPixelSpan(myChart);
+      var xGapPercentStr = (xPixelSpan / xySpan[0]) * 100 + '%';
+      var yGapPercentStr = (yPixelSpan / xySpan[1]) * 100 + '%';
+      function makeOption(xGapPercentStr: string, yGapPercentStr: string) {
+        return {
+          xAxis: { breaks: [{ start: xDataRange[0], end: xDataRange[1], gap: xGapPercentStr }] },
+          yAxis: { breaks: [{ start: yDataRange[0], end: yDataRange[1], gap: yGapPercentStr }] },
+        };
+      }
+      // This is to make a transition animation effect - firstly create axis break
+      // on the brushed area, then collapse it to a small gap.
+      myChart.setOption(makeOption(xGapPercentStr, yGapPercentStr));
+      setTimeout(() => {
+        var option = makeOption('80%', '80%');
+        addClearButtonUpdateOption(option, true);
+        myChart.setOption(option);
+      }, 0);
+    }
+    function getXYAxisPixelSpan(myChart: echarts.ECharts): [number, number] {
+      return [myChart.getWidth() - GRID_LEFT - GRID_RIGHT, myChart.getHeight() - GRID_BOTTOM - GRID_TOP];
+    }
+  } // End of initAxisBreakInteraction
+  function roundXYValue(val: number) {
+    return +(+val).toFixed(Y_DATA_ROUND_PRECISION);
+  }
+  function generateSeriesData() {
+    function makeRandom(lastYVal: number, range: [number, number], factor: number) {
+      lastYVal = lastYVal - range[0];
+      var delta = (Math.random() - 0.5 * Math.sin(lastYVal / factor)) * (range[1] - range[0]) * 0.8;
+      return roundXYValue(lastYVal + delta + range[0]);
+    }
+    var seriesData = [];
+    var DATA_COUNT = 1000;
+    var reset1 = true;
+    var reset2 = true;
+    let yVal = 0;
+    for (var idx = 0; idx < DATA_COUNT; idx++) {
+      if (idx < DATA_COUNT / 4) {
+        yVal = makeRandom(yVal, [100, 10000], 50000);
+      } else if (idx < (2 * DATA_COUNT) / 3) {
+        if (reset1) {
+          yVal = 110010;
+          reset1 = false;
+        }
+        yVal = makeRandom(yVal, [100000, 105000], 50000);
+      } else {
+        if (reset2) {
+          yVal = 300100;
+          reset2 = false;
+        }
+        yVal = makeRandom(yVal, [300000, 305000], 20000);
+      }
+      seriesData.push([idx, yVal]);
+    }
+    return seriesData;
+  }
+
+  React.useEffect(() => {
+    initAxisBreakInteraction();
+  }, []);
+
+  return (
+    <LineChart
+      ref={chartRef}
+      style={{ width: 480, height: 300 }}
+      xAxis={[{ splitLine: { show: false }, breakArea: _breakAreaStyle }]}
+      yAxis={[{ axisTick: { show: true }, breakArea: _breakAreaStyle }]}
+      grid={{ top: GRID_TOP, bottom: GRID_BOTTOM, left: GRID_LEFT, right: GRID_RIGHT }}
+      series={[
+        {
+          type: 'line',
+          name: 'Data A',
+          symbol: 'circle',
+          showSymbol: false,
+          symbolSize: 5,
+          data: generateSeriesData(),
+        },
+      ]}
+    >
+      <Title
+        title={{
+          text: 'Fisheye Lens on Line Chart',
+          subtext: 'Brush to magnify the details',
+          left: 'center',
+          textStyle: { fontSize: 20 },
+          subtextStyle: { color: '#175ce5', fontSize: 15, fontWeight: 'bold' },
+        }}
+      />
+      <Tooltip tooltip={{ trigger: 'axis' }} />
+      <Legend legend={{}} />
+      <AxisBreak />
+      <Graphic />
     </LineChart>
   );
 }
