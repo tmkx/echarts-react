@@ -15,6 +15,9 @@ const config: StorybookConfig = {
   rsbuildFinal: (config) => {
     return mergeRsbuildConfig(config, {
       plugins: [pluginReact()],
+      output: {
+        assetPrefix: process.env.ASSET_PREFIX,
+      },
       tools: {
         rspack: {
           resolve: {
