@@ -14,7 +14,7 @@ import {
   VisualMap,
 } from '@fanciers/echarts-react';
 import type { LineSeriesOption } from 'echarts/charts';
-import type { DatasetOption } from 'echarts/types/dist/shared';
+import type { DatasetOption, GridOption, TitleOption, XAXisOption, YAXisOption } from 'echarts/types/dist/shared';
 import React from 'react';
 import useSWR from 'swr';
 import type {
@@ -1195,6 +1195,298 @@ export function LineMarkline() {
       ]}
     >
       <MarkLine />
+    </LineChart>
+  );
+}
+
+export function LineStyle() {
+  return (
+    <LineChart
+      style={{ width: 480, height: 300 }}
+      xAxis={{ type: 'category', data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] }}
+      yAxis={{ type: 'value' }}
+      series={[
+        {
+          data: [120, 200, 150, 80, 70, 110, 130],
+          type: 'line',
+          symbol: 'triangle',
+          symbolSize: 20,
+          lineStyle: { color: '#5470C6', width: 4, type: 'dashed' },
+          itemStyle: { borderWidth: 3, borderColor: '#EE6666', color: 'yellow' },
+        },
+      ]}
+    />
+  );
+}
+
+export function LineInCartesianCoordinateSystem() {
+  return (
+    <LineChart
+      style={{ width: 480, height: 300 }}
+      xAxis={{}}
+      yAxis={{}}
+      series={[
+        {
+          data: [
+            [10, 40],
+            [50, 100],
+            [40, 20],
+          ],
+          type: 'line',
+        },
+      ]}
+    />
+  );
+}
+
+export function LineLog() {
+  return (
+    <LineChart
+      style={{ width: 480, height: 300 }}
+      xAxis={{
+        type: 'category',
+        name: 'x',
+        splitLine: { show: false },
+        data: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'],
+      }}
+      yAxis={{ type: 'log', name: 'y', minorSplitLine: { show: true } }}
+      grid={{ left: '3%', right: '4%', bottom: '3%', containLabel: true }}
+      series={[
+        { name: 'Log2', type: 'line', data: [1, 3, 9, 27, 81, 247, 741, 2223, 6669] },
+        { name: 'Log3', type: 'line', data: [1, 2, 4, 8, 16, 32, 64, 128, 256] },
+        {
+          name: 'Log1/2',
+          type: 'line',
+          data: [1 / 2, 1 / 4, 1 / 8, 1 / 16, 1 / 32, 1 / 64, 1 / 128, 1 / 256, 1 / 512],
+        },
+      ]}
+    >
+      <Title title={{ text: 'Log Axis', left: 'center' }} />
+      <Tooltip tooltip={{ trigger: 'item', formatter: '{a} <br/>{b} : {c}' }} />
+      <Legend legend={{ left: 'left' }} />
+    </LineChart>
+  );
+}
+
+export function LineStep() {
+  return (
+    <LineChart
+      style={{ width: 480, height: 300 }}
+      xAxis={{ type: 'category', data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] }}
+      yAxis={{ type: 'value' }}
+      grid={{ left: '3%', right: '4%', bottom: '3%', containLabel: true }}
+      series={[
+        { name: 'Step Start', type: 'line', step: 'start', data: [120, 132, 101, 134, 90, 230, 210] },
+        { name: 'Step Middle', type: 'line', step: 'middle', data: [220, 282, 201, 234, 290, 430, 410] },
+        { name: 'Step End', type: 'line', step: 'end', data: [450, 432, 401, 454, 590, 530, 510] },
+      ]}
+    >
+      <Title title={{ text: 'Step Line' }} />
+      <Tooltip tooltip={{ trigger: 'axis' }} />
+      <Legend legend={{ data: ['Step Start', 'Step Middle', 'Step End'] }} />
+      <Toolbox toolbox={{ feature: { saveAsImage: {} } }} />
+    </LineChart>
+  );
+}
+
+export function LineEasing() {
+  const easingFuncs = {
+    linear: function (k: number) {
+      return k;
+    },
+    quadraticIn: function (k: number) {
+      return k * k;
+    },
+    quadraticOut: function (k: number) {
+      return k * (2 - k);
+    },
+    quadraticInOut: function (k: number) {
+      if ((k *= 2) < 1) return 0.5 * k * k;
+      return -0.5 * (--k * (k - 2) - 1);
+    },
+    cubicIn: function (k: number) {
+      return k * k * k;
+    },
+    cubicOut: function (k: number) {
+      return --k * k * k + 1;
+    },
+    cubicInOut: function (k: number) {
+      if ((k *= 2) < 1) return 0.5 * k * k * k;
+      return 0.5 * ((k -= 2) * k * k + 2);
+    },
+    quarticIn: function (k: number) {
+      return k * k * k * k;
+    },
+    quarticOut: function (k: number) {
+      return 1 - --k * k * k * k;
+    },
+    quarticInOut: function (k: number) {
+      if ((k *= 2) < 1) return 0.5 * k * k * k * k;
+      return -0.5 * ((k -= 2) * k * k * k - 2);
+    },
+    quinticIn: function (k: number) {
+      return k * k * k * k * k;
+    },
+    quinticOut: function (k: number) {
+      return --k * k * k * k * k + 1;
+    },
+    quinticInOut: function (k: number) {
+      if ((k *= 2) < 1) {
+        return 0.5 * k * k * k * k * k;
+      }
+      return 0.5 * ((k -= 2) * k * k * k * k + 2);
+    },
+    sinusoidalIn: function (k: number) {
+      return 1 - Math.cos((k * Math.PI) / 2);
+    },
+    sinusoidalOut: function (k: number) {
+      return Math.sin((k * Math.PI) / 2);
+    },
+    sinusoidalInOut: function (k: number) {
+      return 0.5 * (1 - Math.cos(Math.PI * k));
+    },
+    exponentialIn: function (k: number) {
+      return k === 0 ? 0 : Math.pow(1024, k - 1);
+    },
+    exponentialOut: function (k: number) {
+      return k === 1 ? 1 : 1 - Math.pow(2, -10 * k);
+    },
+    exponentialInOut: function (k: number) {
+      if (k === 0) return 0;
+      if (k === 1) return 1;
+      if ((k *= 2) < 1) {
+        return 0.5 * Math.pow(1024, k - 1);
+      }
+      return 0.5 * (-Math.pow(2, -10 * (k - 1)) + 2);
+    },
+    circularIn: function (k: number) {
+      return 1 - Math.sqrt(1 - k * k);
+    },
+    circularOut: function (k: number) {
+      return Math.sqrt(1 - --k * k);
+    },
+    circularInOut: function (k: number) {
+      if ((k *= 2) < 1) return -0.5 * (Math.sqrt(1 - k * k) - 1);
+      return 0.5 * (Math.sqrt(1 - (k -= 2) * k) + 1);
+    },
+    elasticIn: function (k: number) {
+      var s;
+      var a = 0.1;
+      var p = 0.4;
+      if (k === 0) return 0;
+      if (k === 1) return 1;
+      if (!a || a < 1) {
+        a = 1;
+        s = p / 4;
+      } else {
+        s = (p * Math.asin(1 / a)) / (2 * Math.PI);
+      }
+      return -(a * Math.pow(2, 10 * (k -= 1)) * Math.sin(((k - s) * (2 * Math.PI)) / p));
+    },
+    elasticOut: function (k: number) {
+      var s;
+      var a = 0.1;
+      var p = 0.4;
+      if (k === 0) return 0;
+      if (k === 1) return 1;
+      if (!a || a < 1) {
+        a = 1;
+        s = p / 4;
+      } else {
+        s = (p * Math.asin(1 / a)) / (2 * Math.PI);
+      }
+      return a * Math.pow(2, -10 * k) * Math.sin(((k - s) * (2 * Math.PI)) / p) + 1;
+    },
+    elasticInOut: function (k: number) {
+      var s;
+      var a = 0.1;
+      var p = 0.4;
+      if (k === 0) return 0;
+      if (k === 1) return 1;
+      if (!a || a < 1) {
+        a = 1;
+        s = p / 4;
+      } else {
+        s = (p * Math.asin(1 / a)) / (2 * Math.PI);
+      }
+      if ((k *= 2) < 1) return -0.5 * (a * Math.pow(2, 10 * (k -= 1)) * Math.sin(((k - s) * (2 * Math.PI)) / p));
+      return a * Math.pow(2, -10 * (k -= 1)) * Math.sin(((k - s) * (2 * Math.PI)) / p) * 0.5 + 1;
+    },
+    backIn: function (k: number) {
+      var s = 1.70158;
+      return k * k * ((s + 1) * k - s);
+    },
+    backOut: function (k: number) {
+      var s = 1.70158;
+      return --k * k * ((s + 1) * k + s) + 1;
+    },
+    backInOut: function (k: number) {
+      var s = 1.70158 * 1.525;
+      if ((k *= 2) < 1) {
+        return 0.5 * (k * k * ((s + 1) * k - s));
+      }
+      return 0.5 * ((k -= 2) * k * ((s + 1) * k + s) + 2);
+    },
+    // 创建弹跳效果
+    bounceIn: function (k: number) {
+      return 1 - easingFuncs.bounceOut(1 - k);
+    },
+    bounceOut: function (k: number) {
+      if (k < 1 / 2.75) return 7.5625 * k * k;
+      else if (k < 2 / 2.75) return 7.5625 * (k -= 1.5 / 2.75) * k + 0.75;
+      else if (k < 2.5 / 2.75) return 7.5625 * (k -= 2.25 / 2.75) * k + 0.9375;
+      else return 7.5625 * (k -= 2.625 / 2.75) * k + 0.984375;
+    },
+    bounceInOut: function (k: number) {
+      if (k < 0.5) return easingFuncs.bounceIn(k * 2) * 0.5;
+      return easingFuncs.bounceOut(k * 2 - 1) * 0.5 + 0.5;
+    },
+  };
+
+  const N_POINT = 30;
+  const grids: GridOption[] = [];
+  const xAxes: XAXisOption[] = [];
+  const yAxes: YAXisOption[] = [];
+  const series: LineSeriesOption[] = [];
+  const titles: TitleOption[] = [];
+  let count = 0;
+  Object.keys(easingFuncs).forEach(function (easingName) {
+    var easingFunc = easingFuncs[easingName as keyof typeof easingFuncs];
+    var data = [];
+    for (var i = 0; i <= N_POINT; i++) {
+      var x = i / N_POINT;
+      var y = easingFunc(x);
+      data.push([x, y]);
+    }
+    grids.push({ show: true, borderWidth: 0, shadowColor: 'rgba(0, 0, 0, 0.3)', shadowBlur: 2 });
+    xAxes.push({ type: 'value', show: false, min: 0, max: 1, gridIndex: count });
+    yAxes.push({ type: 'value', show: false, min: -0.4, max: 1.4, gridIndex: count });
+    series.push({
+      name: easingName,
+      type: 'line',
+      xAxisIndex: count,
+      yAxisIndex: count,
+      data: data,
+      showSymbol: false,
+      animationEasing: easingName as keyof typeof easingFuncs,
+      animationDuration: 1000,
+    });
+    titles.push({ textAlign: 'center', text: easingName, textStyle: { fontSize: 12, fontWeight: 'normal' } });
+    count++;
+  });
+  var rowNumber = Math.ceil(Math.sqrt(count));
+  grids.forEach(function (grid, idx) {
+    grid.left = ((idx % rowNumber) / rowNumber) * 100 + 0.5 + '%';
+    grid.top = (Math.floor(idx / rowNumber) / rowNumber) * 100 + 0.5 + '%';
+    grid.width = (1 / rowNumber) * 100 - 1 + '%';
+    grid.height = (1 / rowNumber) * 100 - 1 + '%';
+    titles[idx]!.left = parseFloat(grid.left) + parseFloat(grid.width) / 2 + '%';
+    titles[idx]!.top = parseFloat(grid.top) + '%';
+  });
+
+  return (
+    <LineChart style={{ width: 480, height: 300 }} xAxis={xAxes} yAxis={yAxes} grid={grids} series={series}>
+      <Title title={[...titles, { text: 'Different Easing Functions', top: 'bottom', left: 'center' }]} />
     </LineChart>
   );
 }
