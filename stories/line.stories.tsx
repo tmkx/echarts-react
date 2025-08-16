@@ -14,6 +14,7 @@ import {
   VisualMap,
 } from '@fanciers/echarts-react';
 import type { LineSeriesOption } from 'echarts/charts';
+import type { DatasetOption } from 'echarts/types/dist/shared';
 import React from 'react';
 import useSWR from 'swr';
 
@@ -1078,6 +1079,62 @@ export function LineFunction() {
           { show: true, type: 'inside', filterMode: 'none', yAxisIndex: [0], startValue: -20, endValue: 20 },
         ]}
       />
+    </LineChart>
+  );
+}
+
+export function LineRace() {
+  const { data } = useSWR('https://echarts.apache.org/examples/data/asset/data/life-expectancy-table.json');
+
+  const countries = ['Finland', 'France', 'Germany', 'Iceland', 'Norway', 'Poland', 'Russia', 'United Kingdom'];
+  const datasetWithFilters: DatasetOption[] = [];
+  const seriesList: LineSeriesOption[] = [];
+  echarts.util.each(countries, function (country) {
+    var datasetId = 'dataset_' + country;
+    datasetWithFilters.push({
+      id: datasetId,
+      fromDatasetId: 'dataset_raw',
+      transform: {
+        type: 'filter',
+        config: {
+          and: [
+            { dimension: 'Year', gte: 1950 },
+            { dimension: 'Country', '=': country },
+          ],
+        },
+      },
+    });
+    seriesList.push({
+      type: 'line',
+      datasetId: datasetId,
+      showSymbol: false,
+      name: country,
+      endLabel: {
+        show: true,
+        formatter(params) {
+          const value = params.value;
+          if (!Array.isArray(value)) return '';
+          return value[3] + ': ' + value[0];
+        },
+      },
+      labelLayout: { moveOverlap: 'shiftY' },
+      emphasis: { focus: 'series' },
+      encode: { x: 'Year', y: 'Income', label: ['Country', 'Income'], itemName: 'Year', tooltip: ['Income'] },
+    });
+  });
+
+  return (
+    <LineChart
+      style={{ width: 480, height: 300 }}
+      animationDuration={10000}
+      xAxis={{ type: 'category', nameLocation: 'middle' }}
+      yAxis={{ name: 'Income' }}
+      grid={{ right: 140 }}
+      series={seriesList}
+    >
+      <Title title={{ text: 'Income of Germany and France since 1950' }} />
+      <Tooltip tooltip={{ order: 'valueDesc', trigger: 'axis' }} />
+      <Dataset dataset={data ? [{ id: 'dataset_raw', source: data }, ...datasetWithFilters] : []} />
     </LineChart>
   );
 }
