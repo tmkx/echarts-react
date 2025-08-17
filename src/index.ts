@@ -1,4 +1,4 @@
-export { LineChart } from './charts.js';
+export { LineChart, PieChart } from './charts.js';
 export {
   Dataset,
   DataZoom,
