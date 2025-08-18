@@ -1,6 +1,6 @@
 {
   "name": "@fanciers/echarts-react",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "ECharts <3 React",
   "author": "Tmk <i@tmk.im>",
   "keywords": [
@@ -23,6 +23,9 @@
     }
   },
   "typings": "./dist/index.d.ts",
+  "repository": {
+    "url": "https://github.com/tmkx/echarts-react.git"
+  },
   "scripts": {
     "dev": "storybook dev",
     "prepack": "tsdown",

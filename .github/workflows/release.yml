@@ -1,0 +1,33 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v3
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: pnpm
+
+      - name: Install deps
+        run: |
+          pnpm i --frozen-lockfile
+
+      - name: Release
+        run: |
+          npm install -g npm@latest # Ensure npm 11.5.1 or later is installed
+          pnpm publish
