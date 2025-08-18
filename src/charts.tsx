@@ -1,12 +1,12 @@
-import React, { forwardRef, useLayoutEffect, useRef } from 'react';
+import React from 'react';
+import type { ComposeOption, GridComponentOption } from 'echarts';
 import {
   LineChart as EChartLineChart,
   PieChart as EChartPieChart,
   type LineSeriesOption,
   type PieSeriesOption,
 } from 'echarts/charts';
-import type { ComposeOption } from 'echarts/core';
-import { GridComponent, type GridComponentOption } from 'echarts/components';
+import { GridComponent } from 'echarts/components';
 import type { ComponentOption } from 'echarts/types/src/util/types.js';
 import {
   ChartContext,
@@ -48,20 +48,20 @@ interface ChartComponentType<T extends ComponentOption> {
 }
 
 function defineChart<T extends ComponentOption>(ext: EChartExt) {
-  const ChartComponent = forwardRef(
+  const ChartComponent = React.forwardRef(
     (
       { className, style, containerProps, compose, children, ...props }: ChartBaseProps<any>,
       ref: React.ForwardedRef<echarts.ECharts>
     ) => {
-      const containerRef = useRef<HTMLDivElement>(null);
-      const chartRef = useRef<echarts.ECharts | null>(null);
+      const containerRef = React.useRef<HTMLDivElement>(null);
+      const chartRef = React.useRef<echarts.ECharts | null>(null);
       const ctx = useInitialChartContext();
 
       useRegister((echarts) => {
         echarts.use([ext, compose?.map((comp) => comp.ext).flat() || []].flat());
       });
 
-      useLayoutEffect(() => {
+      React.useLayoutEffect(() => {
         const chart = (chartRef.current = echarts.init(containerRef.current, null));
         assignForwardedRef(ref, chart);
         return () => {
@@ -70,7 +70,7 @@ function defineChart<T extends ComponentOption>(ext: EChartExt) {
         };
       }, []);
 
-      useLayoutEffect(() => {
+      React.useLayoutEffect(() => {
         const chart = chartRef.current;
         if (!chart) return;
         for (const opt of ctx.options) chart.setOption(opt, defaultSetOptionOpt);
