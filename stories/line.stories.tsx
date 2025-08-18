@@ -10,6 +10,7 @@ import {
   MarkArea,
   MarkLine,
   MarkPoint,
+  PieChart,
   Polar,
   Title,
   Toolbox,
@@ -2205,6 +2206,7 @@ export function DatasetLink() {
   return (
     <LineChart
       ref={chartRef}
+      compose={[PieChart]}
       style={{ width: 480, height: 360 }}
       useUTC
       xAxis={{ type: 'category' }}

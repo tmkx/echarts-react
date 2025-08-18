@@ -39,3 +39,5 @@ export function useRegister(fn: (echarts: EChartsCore) => void) {
 }
 
 export type EChartExt = Parameters<(typeof echarts)['use']>[0];
+
+export type Simplify<T> = { [K in keyof T]: T[K] } & {};
