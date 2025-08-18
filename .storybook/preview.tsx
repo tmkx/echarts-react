@@ -1,4 +1,6 @@
 import type { Preview } from '@storybook/react';
+import type { DocsTypes } from '@storybook/addon-docs';
+import type { CoreTypes } from 'storybook/internal/csf';
 import { themes } from 'storybook/theming';
 import * as echarts from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
@@ -8,13 +10,11 @@ echarts.use(CanvasRenderer);
 
 const preview: Preview = {
   parameters: {
-    parameters: {
-      docs: {
-        theme: themes.dark,
-      },
-      themes,
+    docs: {
+      codePanel: true,
+      theme: themes.dark,
     },
-  },
+  } satisfies (CoreTypes & DocsTypes)['parameters'],
   decorators: [
     (Story) => {
       return (
