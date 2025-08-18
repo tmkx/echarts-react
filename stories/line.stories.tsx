@@ -10,6 +10,7 @@ import {
   MarkArea,
   MarkLine,
   MarkPoint,
+  Matrix,
   PieChart,
   Polar,
   Title,
@@ -2238,6 +2239,156 @@ export function DatasetLink() {
             ['Cheese Cocoa', 40.1, 62.2, 69.5, 36.4, 45.2, 32.5],
             ['Walnut Brownie', 25.2, 37.1, 41.2, 18, 33.9, 49.1],
           ],
+        }}
+      />
+    </LineChart>
+  );
+}
+
+export function MatrixSparkline() {
+  const _matrixDimensionData = {
+    x: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+    y: [
+      { value: '8:00\n~\n10:00' },
+      { value: '10:00\n~\n12:00' },
+      { value: '12:00\n~\n14:00', size: 55 },
+      { value: '14:00\n~\n16:00' },
+      { value: '16:00\n~\n18:00' },
+      { value: '18:00\n~\n20:00' },
+    ],
+  };
+  const _yBreakTimeIndex = 2; // '12:00 - 14:00',
+  const _seriesFakeDataLength = 365;
+
+  function makeId(xidx: number, yidx: number) {
+    return `${xidx}|${yidx}`;
+  }
+  function eachMatrixCell(cb: (xval: string, yval: string, xidx: number, yidx: number) => void) {
+    _matrixDimensionData.y.forEach((yvalItem, yidx) => {
+      const yval = yvalItem.value;
+      if (yidx === _yBreakTimeIndex) {
+        return;
+      }
+      _matrixDimensionData.x.forEach((xval, xidx) => {
+        cb(xval, yval, xidx, yidx);
+      });
+    });
+  }
+  function generateFakeSeriesData(dayCount: number, xidx: number, _yidx: number) {
+    const dayStart = new Date('2025-05-05T00:00:00.000Z'); // Monday
+    dayStart.setDate(xidx + 5);
+    const timeStart = dayStart.getTime();
+    const sevenDay = 7 * 1000 * 3600 * 24;
+    const cellData = [];
+    let lastVal = +(Math.random() * 300).toFixed(0);
+    let turnCount = null;
+    let sign = -1;
+    for (let idx = 0; idx < dayCount; idx++) {
+      if (turnCount == null || idx >= turnCount) {
+        turnCount = idx + Math.round((dayCount / 4) * ((Math.random() - 0.5) * 0.1));
+        sign = -sign;
+      }
+      const deltaMag = 50;
+      const delta = +(Math.random() * deltaMag - deltaMag / 2 + (sign * deltaMag) / 3).toFixed(0);
+      const val = Math.max(0, (lastVal += delta));
+      const xTime = timeStart + idx * sevenDay;
+      const dataXVal = echarts.time.format(xTime, '{yyyy}-{MM}-{dd}', true);
+      cellData.push([dataXVal, val]);
+    }
+    return cellData;
+  }
+
+  const grid: GridOption[] = [];
+  const xAxis: XAXisOption[] = [];
+  const yAxis: YAXisOption[] = [];
+  const series: LineSeriesOption[] = [];
+
+  eachMatrixCell((xval, yval, xidx, yidx) => {
+    const id = makeId(xidx, yidx);
+    grid.push({
+      id: id,
+      coordinateSystem: 'matrix',
+      coord: [xval, yval],
+      top: 10,
+      bottom: 10,
+      left: 'center',
+      width: '90%',
+      containLabel: true,
+    });
+    xAxis.push({
+      type: 'category',
+      id: id,
+      gridId: id,
+      axisTick: { show: false },
+      axisLabel: { show: false },
+      axisLine: { show: false },
+      splitLine: { show: false },
+    });
+    yAxis.push({
+      id: id,
+      gridId: id,
+      interval: Number.MAX_SAFE_INTEGER,
+      scale: true,
+      axisLabel: {
+        showMaxLabel: true,
+        fontSize: 9,
+      },
+      axisLine: { show: false },
+      axisTick: { show: false },
+    });
+    series.push({
+      xAxisId: id,
+      yAxisId: id,
+      type: 'line',
+      symbol: 'none',
+      lineStyle: { width: 1 },
+      data: generateFakeSeriesData(_seriesFakeDataLength, xidx, yidx),
+    });
+  });
+
+  return (
+    <LineChart style={{ width: 480, height: 512 }} grid={grid} xAxis={xAxis} yAxis={yAxis} series={series}>
+      <Legend legend={{}} />
+      <Tooltip tooltip={{ trigger: 'axis' }} />
+      <DataZoom
+        dataZoom={[
+          // @ts-expect-error xAxisIndex: 'all'
+          { type: 'slider', xAxisIndex: 'all', left: '10%', right: '10%', bottom: 30, height: 30, throttle: 120 },
+          // @ts-expect-error xAxisIndex: 'all'
+          { type: 'inside', xAxisIndex: 'all', throttle: 120 },
+        ]}
+      />
+      <Matrix
+        matrix={{
+          x: {
+            data: _matrixDimensionData.x,
+            levelSize: 40,
+            label: { fontSize: 16, color: '#555' },
+          },
+          y: {
+            data: _matrixDimensionData.y,
+            levelSize: 70,
+            label: { fontSize: 14, color: '#777' },
+          },
+          corner: {
+            data: [{ coord: [-1, -1], value: 'Time' }],
+            label: { fontSize: 16, color: '#777' },
+          },
+          body: {
+            data: [
+              {
+                coord: [null, _yBreakTimeIndex],
+                coordClamp: true,
+                mergeCells: true,
+                value: 'Break',
+                label: { color: '#999', fontSize: 16 },
+              },
+            ],
+          },
+          top: 30,
+          bottom: 80,
+          width: '90%',
+          left: 'center',
         }}
       />
     </LineChart>
