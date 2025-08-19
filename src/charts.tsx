@@ -29,6 +29,7 @@ interface ChartBaseProps<T extends readonly ChartComponentType<any>[]> {
   style?: React.CSSProperties;
   containerProps?: React.HTMLAttributes<HTMLDivElement>;
   compose?: [...T];
+  use?: EChartExt;
   children?: React.ReactNode;
 }
 
@@ -50,7 +51,7 @@ interface ChartComponentType<T extends ComponentOption> {
 function defineChart<T extends ComponentOption>(ext: EChartExt) {
   const ChartComponent = React.forwardRef(
     (
-      { className, style, containerProps, compose, children, ...props }: ChartBaseProps<any>,
+      { className, style, containerProps, compose, use, children, ...props }: ChartBaseProps<any>,
       ref: React.ForwardedRef<echarts.ECharts>
     ) => {
       const containerRef = React.useRef<HTMLDivElement>(null);
@@ -58,7 +59,7 @@ function defineChart<T extends ComponentOption>(ext: EChartExt) {
       const ctx = useInitialChartContext();
 
       useRegister((echarts) => {
-        echarts.use([ext, compose?.map((comp) => comp.ext).flat() || []].flat());
+        echarts.use([ext, use, compose?.map((comp) => comp.ext).flat() || []].flat().filter(Boolean));
       });
 
       React.useLayoutEffect(() => {
