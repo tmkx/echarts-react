@@ -1,6 +1,7 @@
 import React from 'react';
-import type { ComposeOption, GridComponentOption } from 'echarts';
+import type { BarSeriesOption, ComposeOption, GridComponentOption } from 'echarts';
 import {
+  BarChart as EChartBarChart,
   LineChart as EChartLineChart,
   PieChart as EChartPieChart,
   type LineSeriesOption,
@@ -91,6 +92,11 @@ function defineChart<T extends ComponentOption>(ext: EChartExt) {
   ChartComponent.ext = ext;
   return ChartComponent;
 }
+
+export const BarChart = /*#__PURE__*/ defineChart<BarSeriesOption | GridComponentOption>([
+  EChartBarChart,
+  GridComponent,
+]);
 
 export const LineChart = /*#__PURE__*/ defineChart<LineSeriesOption | GridComponentOption>([
   EChartLineChart,
