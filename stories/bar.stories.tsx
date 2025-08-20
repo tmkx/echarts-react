@@ -9,6 +9,7 @@ import {
   LineChart,
   MarkLine,
   MarkPoint,
+  PieChart,
   Polar,
   Title,
   Toolbox,
@@ -2000,6 +2001,348 @@ export const DynamicData: Story = {
         <Legend legend={{}} />
         <Toolbox toolbox={{ show: true, feature: { dataView: { readOnly: false }, restore: {}, saveAsImage: {} } }} />
         <DataZoom dataZoom={{ show: false, start: 0, end: 100 }} />
+      </BarChart>
+    );
+  },
+};
+
+export const Watermark: Story = {
+  name: 'Watermark - ECharts Download',
+  render() {
+    const builderJson = {
+      all: 10887,
+      // prettier-ignore
+      charts: { map: 3237, lines: 2164, bar: 7561, line: 7778, pie: 7355, scatter: 2405, candlestick: 1842, radar: 2090, heatmap: 1762, treemap: 1593, graph: 2060, boxplot: 1537, parallel: 1908, gauge: 2107, funnel: 1692, sankey: 1568 },
+      // prettier-ignore
+      components: { geo: 2788, title: 9575, legend: 9400, tooltip: 9466, grid: 9266, markPoint: 3419, markLine: 2984, timeline: 2739, dataZoom: 2744, visualMap: 2466, toolbox: 3034, polar: 1945 },
+      ie: 9743,
+    };
+    // prettier-ignore
+    const downloadJson = { 'echarts.min.js': 17365, 'echarts.simple.min.js': 4079, 'echarts.common.min.js': 6929, 'echarts.js': 14890 };
+    // prettier-ignore
+    const themeJson = { 'dark.js': 1594, 'infographic.js': 925, 'shine.js': 1608, 'roma.js': 721, 'macarons.js': 2179, 'vintage.js': 1982 };
+    const waterMarkText = 'ECHARTS';
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d')!;
+    canvas.width = canvas.height = 100;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.globalAlpha = 0.08;
+    ctx.font = '20px Microsoft Yahei';
+    ctx.translate(50, 50);
+    ctx.rotate(-Math.PI / 4);
+    ctx.fillText(waterMarkText, 0, 0);
+
+    return (
+      <BarChart
+        style={{ width: 480, height: 300 }}
+        compose={[PieChart]}
+        backgroundColor={{ type: 'pattern', image: canvas, repeat: 'repeat' }}
+        grid={[
+          { top: 50, width: '50%', bottom: '45%', left: 10, containLabel: true },
+          { top: '55%', width: '50%', bottom: 0, left: 10, containLabel: true },
+        ]}
+        xAxis={[
+          { type: 'value', max: builderJson.all, splitLine: { show: false } },
+          { type: 'value', max: builderJson.all, gridIndex: 1, splitLine: { show: false } },
+        ]}
+        yAxis={[
+          {
+            type: 'category',
+            data: Object.keys(builderJson.charts),
+            axisLabel: { interval: 0, rotate: 30 },
+            splitLine: { show: false },
+          },
+          {
+            gridIndex: 1,
+            type: 'category',
+            data: Object.keys(builderJson.components),
+            axisLabel: { interval: 0, rotate: 30 },
+            splitLine: { show: false },
+          },
+        ]}
+        series={[
+          {
+            type: 'bar',
+            stack: 'chart',
+            z: 3,
+            label: { position: 'right', show: true },
+            data: Object.keys(builderJson.charts).map(
+              (key) => builderJson.charts[key as keyof (typeof builderJson)['charts']]
+            ),
+          },
+          {
+            type: 'bar',
+            stack: 'chart',
+            silent: true,
+            itemStyle: { color: '#eee' },
+            data: Object.keys(builderJson.charts).map(
+              (key) => builderJson.all - builderJson.charts[key as keyof (typeof builderJson)['charts']]
+            ),
+          },
+          {
+            type: 'bar',
+            stack: 'component',
+            xAxisIndex: 1,
+            yAxisIndex: 1,
+            z: 3,
+            label: { position: 'right', show: true },
+            data: Object.keys(builderJson.components).map(
+              (key) => builderJson.components[key as keyof (typeof builderJson)['components']]
+            ),
+          },
+          {
+            type: 'bar',
+            stack: 'component',
+            silent: true,
+            xAxisIndex: 1,
+            yAxisIndex: 1,
+            itemStyle: { color: '#eee' },
+            data: Object.keys(builderJson.components).map(
+              (key) => builderJson.all - builderJson.components[key as keyof (typeof builderJson)['components']]
+            ),
+          },
+          {
+            type: 'pie',
+            radius: [0, '30%'],
+            center: ['75%', '25%'],
+            data: Object.keys(downloadJson).map((key) => ({
+              name: key.replace('.js', ''),
+              value: downloadJson[key as keyof typeof downloadJson],
+            })),
+          },
+          {
+            type: 'pie',
+            radius: [0, '30%'],
+            center: ['75%', '75%'],
+            data: Object.keys(themeJson).map((key) => ({
+              name: key.replace('.js', ''),
+              value: themeJson[key as keyof typeof themeJson],
+            })),
+          },
+        ]}
+      >
+        <Title
+          title={[
+            { text: '在线构建', subtext: '总计 ' + builderJson.all, left: '25%', textAlign: 'center' },
+            {
+              text: '各版本下载',
+              subtext:
+                '总计 ' +
+                Object.keys(downloadJson).reduce((all, key) => all + downloadJson[key as keyof typeof downloadJson], 0),
+              left: '75%',
+              textAlign: 'center',
+            },
+            {
+              text: '主题下载',
+              subtext:
+                '总计 ' +
+                Object.keys(themeJson).reduce((all, key) => all + themeJson[key as keyof typeof themeJson], 0),
+              left: '75%',
+              top: '50%',
+              textAlign: 'center',
+            },
+          ]}
+        />
+        <Tooltip tooltip={{}} />
+      </BarChart>
+    );
+  },
+};
+
+export const BarPolarRealEstate: Story = {
+  name: 'Bar Chart on Polar',
+  render() {
+    // prettier-ignore
+    const data = [[5000, 10000, 6785.71], [4000, 10000, 6825], [3000, 6500, 4463.33], [2500, 5600, 3793.83], [2000, 4000, 3060], [2000, 4000, 3222.33], [2500, 4000, 3133.33], [1800, 4000, 3100], [2000, 3500, 2750], [2000, 3000, 2500], [1800, 3000, 2433.33], [2000, 2700, 2375], [1500, 2800, 2150], [1500, 2300, 2100], [1600, 3500, 2057.14], [1500, 2600, 2037.5], [1500, 2417.54, 1905.85], [1500, 2000, 1775], [1500, 1800, 1650]];
+    // prettier-ignore
+    const cities = ['北京', '上海', '深圳', '广州', '苏州', '杭州', '南京', '福州', '青岛', '济南', '长春', '大连', '温州', '郑州', '武汉', '成都', '东莞', '沈阳', '烟台'];
+    const barHeight = 50;
+    return (
+      <BarChart
+        style={{ width: 480, height: 300 }}
+        grid={{ top: 100 }}
+        series={[
+          {
+            type: 'bar',
+            itemStyle: { color: 'transparent' },
+            data: data.map((d) => d[0]),
+            coordinateSystem: 'polar',
+            stack: 'Min Max',
+            silent: true,
+          },
+          {
+            type: 'bar',
+            data: data.map((d) => d[1]! - d[0]!),
+            coordinateSystem: 'polar',
+            name: 'Range',
+            stack: 'Min Max',
+          },
+          {
+            type: 'bar',
+            itemStyle: { color: 'transparent' },
+            data: data.map((d) => d[2]! - barHeight),
+            coordinateSystem: 'polar',
+            stack: 'Average',
+            silent: true,
+            z: 10,
+          },
+          {
+            type: 'bar',
+            data: data.map((_d) => barHeight * 2),
+            coordinateSystem: 'polar',
+            name: 'Average',
+            stack: 'Average',
+            barGap: '-100%',
+            z: 10,
+          },
+        ]}
+      >
+        <Title
+          title={{
+            text: 'How expensive is it to rent an apartment in China?',
+            subtext: 'Data from https://www.numbeo.com',
+          }}
+        />
+        <Polar polar={{}} angleAxis={{ type: 'category', data: cities }} radiusAxis={{}} />
+        <Legend legend={{ show: true, top: 'bottom', data: ['Range', 'Average'] }} />
+        <Tooltip
+          tooltip={{
+            show: true,
+            formatter: function (params) {
+              if (Array.isArray(params)) return '';
+              const id = params.dataIndex;
+              return (
+                cities[id] +
+                '<br>Lowest：' +
+                data[id]![0] +
+                '<br>Highest：' +
+                data[id]![1] +
+                '<br>Average：' +
+                data[id]![2]
+              );
+            },
+          }}
+        />
+      </BarChart>
+    );
+  },
+};
+
+export const BarPolarStack: Story = {
+  name: 'Stacked Bar Chart on Polar',
+  render() {
+    return (
+      <BarChart
+        style={{ width: 480, height: 300 }}
+        series={[
+          {
+            type: 'bar',
+            data: [1, 2, 3, 4],
+            coordinateSystem: 'polar',
+            name: 'A',
+            stack: 'a',
+            emphasis: { focus: 'series' },
+          },
+          {
+            type: 'bar',
+            data: [2, 4, 6, 8],
+            coordinateSystem: 'polar',
+            name: 'B',
+            stack: 'a',
+            emphasis: { focus: 'series' },
+          },
+          {
+            type: 'bar',
+            data: [1, 2, 3, 4],
+            coordinateSystem: 'polar',
+            name: 'C',
+            stack: 'a',
+            emphasis: { focus: 'series' },
+          },
+        ]}
+      >
+        <Polar polar={{}} angleAxis={{}} radiusAxis={{ type: 'category', data: ['Mon', 'Tue', 'Wed', 'Thu'], z: 10 }} />
+        <Legend legend={{ show: true, data: ['A', 'B', 'C'] }} />
+      </BarChart>
+    );
+  },
+};
+
+export const BarPolarStackRadial: Story = {
+  name: 'Stacked Bar Chart on Polar(Radial)',
+  render() {
+    return (
+      <BarChart
+        style={{ width: 480, height: 300 }}
+        series={[
+          {
+            type: 'bar',
+            data: [1, 2, 3, 4, 3, 5, 1],
+            coordinateSystem: 'polar',
+            name: 'A',
+            stack: 'a',
+            emphasis: { focus: 'series' },
+          },
+          {
+            type: 'bar',
+            data: [2, 4, 6, 1, 3, 2, 1],
+            coordinateSystem: 'polar',
+            name: 'B',
+            stack: 'a',
+            emphasis: { focus: 'series' },
+          },
+          {
+            type: 'bar',
+            data: [1, 2, 3, 4, 1, 2, 5],
+            coordinateSystem: 'polar',
+            name: 'C',
+            stack: 'a',
+            emphasis: { focus: 'series' },
+          },
+        ]}
+      >
+        <Polar
+          polar={{}}
+          angleAxis={{ type: 'category', data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] }}
+          radiusAxis={{}}
+        />
+        <Legend legend={{ show: true, data: ['A', 'B', 'C'] }} />
+      </BarChart>
+    );
+  },
+};
+
+export const PolarRoundCap: Story = {
+  name: 'Rounded Bar on Polar',
+  render() {
+    return (
+      <BarChart
+        style={{ width: 480, height: 300 }}
+        series={[
+          {
+            type: 'bar',
+            data: [4, 3, 2, 1, 0],
+            coordinateSystem: 'polar',
+            name: 'Without Round Cap',
+            itemStyle: { borderColor: 'red', opacity: 0.8, borderWidth: 1 },
+          },
+          {
+            type: 'bar',
+            data: [4, 3, 2, 1, 0],
+            coordinateSystem: 'polar',
+            name: 'With Round Cap',
+            roundCap: true,
+            itemStyle: { borderColor: 'green', opacity: 0.8, borderWidth: 1 },
+          },
+        ]}
+      >
+        <Polar
+          polar={{}}
+          angleAxis={{ max: 2, startAngle: 30, splitLine: { show: false } }}
+          radiusAxis={{ type: 'category', data: ['v', 'w', 'x', 'y', 'z'], z: 10 }}
+        />
+        <Legend legend={{ show: true, data: ['Without Round Cap', 'With Round Cap'] }} />
       </BarChart>
     );
   },
