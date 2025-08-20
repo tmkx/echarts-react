@@ -1,4 +1,5 @@
 import type {
+  BrushComponentOption,
   ComposeOption,
   DatasetComponentOption,
   DataZoomComponentOption,
@@ -15,6 +16,7 @@ import type {
   VisualMapComponentOption,
 } from 'echarts';
 import {
+  BrushComponent,
   DatasetComponent,
   DataZoomComponent,
   GraphicComponent,
@@ -49,6 +51,8 @@ function defineComponent<T extends ComponentOption>(ext: EChartExt) {
     return null;
   };
 }
+
+export const Brush = /*#__PURE__*/ defineComponent<BrushComponentOption>([BrushComponent]);
 
 export const Dataset = /*#__PURE__*/ defineComponent<DatasetComponentOption>([DatasetComponent, TransformComponent]);
 

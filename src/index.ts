@@ -1,6 +1,7 @@
 export { CanvasRenderer, SVGRenderer } from 'echarts/renderers';
 export { BarChart, LineChart, PieChart } from './charts.js';
 export {
+  Brush,
   Dataset,
   DataZoom,
   Graphic,

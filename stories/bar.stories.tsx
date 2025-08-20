@@ -1,10 +1,12 @@
 import {
   AxisBreak,
   BarChart,
+  Brush,
   DataZoom,
   Graphic,
   Legend,
   LineChart,
+  MarkLine,
   Polar,
   Title,
   Toolbox,
@@ -12,9 +14,10 @@ import {
   echarts,
 } from '@fanciers/echarts-react';
 import type { Meta, StoryObj } from '@storybook/react';
-import type { AxisBreakChangedEvent } from 'echarts';
+import type { AxisBreakChangedEvent, BarSeriesOption } from 'echarts';
+import type { TitleOption } from 'echarts/types/dist/shared';
 import type { BarSeriesLabelOption } from 'echarts/types/src/chart/bar/BarSeries.js';
-import type { AxisBreakOption } from 'echarts/types/src/util/types.js';
+import type { AxisBreakOption, ECActionEvent, OptionDataValue } from 'echarts/types/src/util/types.js';
 import React from 'react';
 
 const meta = {
@@ -596,6 +599,456 @@ export const BarLabelRotation: StoryObj<typeof barLabelRotationMeta> = {
             },
           }}
         />
+      </BarChart>
+    );
+  },
+};
+
+export const BarStack: Story = {
+  name: 'Stacked Column Chart',
+  render() {
+    return (
+      <BarChart
+        style={{ width: 480, height: 300 }}
+        xAxis={[{ type: 'category', data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] }]}
+        yAxis={[{ type: 'value' }]}
+        series={[
+          {
+            name: 'Direct',
+            type: 'bar',
+            emphasis: { focus: 'series' },
+            data: [320, 332, 301, 334, 390, 330, 320],
+          },
+          {
+            name: 'Email',
+            type: 'bar',
+            stack: 'Ad',
+            emphasis: { focus: 'series' },
+            data: [120, 132, 101, 134, 90, 230, 210],
+          },
+          {
+            name: 'Union Ads',
+            type: 'bar',
+            stack: 'Ad',
+            emphasis: { focus: 'series' },
+            data: [220, 182, 191, 234, 290, 330, 310],
+          },
+          {
+            name: 'Video Ads',
+            type: 'bar',
+            stack: 'Ad',
+            emphasis: { focus: 'series' },
+            data: [150, 232, 201, 154, 190, 330, 410],
+          },
+          {
+            name: 'Search Engine',
+            type: 'bar',
+            data: [862, 1018, 964, 1026, 1679, 1600, 1570],
+            emphasis: { focus: 'series' },
+            markLine: { lineStyle: { type: 'dashed' }, data: [[{ type: 'min' }, { type: 'max' }]] },
+          },
+          {
+            name: 'Baidu',
+            type: 'bar',
+            barWidth: 5,
+            stack: 'Search Engine',
+            emphasis: { focus: 'series' },
+            data: [620, 732, 701, 734, 1090, 1130, 1120],
+          },
+          {
+            name: 'Google',
+            type: 'bar',
+            stack: 'Search Engine',
+            emphasis: { focus: 'series' },
+            data: [120, 132, 101, 134, 290, 230, 220],
+          },
+          {
+            name: 'Bing',
+            type: 'bar',
+            stack: 'Search Engine',
+            emphasis: { focus: 'series' },
+            data: [60, 72, 71, 74, 190, 130, 110],
+          },
+          {
+            name: 'Others',
+            type: 'bar',
+            stack: 'Search Engine',
+            emphasis: { focus: 'series' },
+            data: [62, 82, 91, 84, 109, 110, 120],
+          },
+        ]}
+      >
+        <Tooltip tooltip={{ trigger: 'axis', axisPointer: { type: 'shadow' } }} />
+        <Legend legend={{}} />
+        <MarkLine />
+      </BarChart>
+    );
+  },
+};
+
+export const BarStackBorderRadius: Story = {
+  name: 'Stacked Bar with BorderRadius',
+  render() {
+    var series: BarSeriesOption[] = [
+      { data: [120, 200, 150, 80, 70, 110, 130], type: 'bar', stack: 'a', name: 'a' },
+      { data: [10, 46, 64, '-', 0, '-', 0], type: 'bar', stack: 'a', name: 'b' },
+      { data: [30, '-', 0, 20, 10, '-', 0], type: 'bar', stack: 'a', name: 'c' },
+      { data: [30, '-', 0, 20, 10, '-', 0], type: 'bar', stack: 'b', name: 'd' },
+      { data: [10, 20, 150, 0, '-', 50, 10], type: 'bar', stack: 'b', name: 'e' },
+    ];
+    const stackInfo: Record<string, any> = {};
+    for (let i = 0; i < series[0]!.data!.length; ++i) {
+      for (let j = 0; j < series.length; ++j) {
+        const stackName = series[j]!.stack;
+        if (!stackName) continue;
+        if (!stackInfo[stackName]) stackInfo[stackName] = { stackStart: [], stackEnd: [] };
+        const info = stackInfo[stackName];
+        const data = series[j]!.data![i];
+        if (data && data !== '-') {
+          if (info.stackStart[i] == null) info.stackStart[i] = j;
+          info.stackEnd[i] = j;
+        }
+      }
+    }
+    for (let i = 0; i < series.length; ++i) {
+      const data = series[i]!.data!;
+      const info = stackInfo[series[i]!.stack!];
+      for (let j = 0; j < series[i]!.data!.length; ++j) {
+        const isEnd = info.stackEnd[j] === i;
+        const topBorder = isEnd ? 20 : 0;
+        const bottomBorder = 0;
+        data[j] = {
+          value: data[j] as OptionDataValue,
+          itemStyle: { borderRadius: [topBorder, topBorder, bottomBorder, bottomBorder] },
+        };
+      }
+    }
+
+    return (
+      <BarChart
+        style={{ width: 480, height: 300 }}
+        xAxis={{ type: 'category', data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] }}
+        yAxis={{ type: 'value' }}
+        series={series}
+      />
+    );
+  },
+};
+
+export const BarStackNormalization: Story = {
+  name: 'Stacked Bar Normalization',
+  render() {
+    const rawData = [
+      [100, 302, 301, 334, 390, 330, 320],
+      [320, 132, 101, 134, 90, 230, 210],
+      [220, 182, 191, 234, 290, 330, 310],
+      [150, 212, 201, 154, 190, 330, 410],
+      [820, 832, 901, 934, 1290, 1330, 1320],
+    ];
+    const totalData: number[] = [];
+    for (let i = 0; i < rawData[0]!.length; ++i) {
+      let sum = 0;
+      for (let j = 0; j < rawData.length; ++j) sum += rawData[j]![i]!;
+      totalData.push(sum);
+    }
+    const series = ['Direct', 'Mail Ad', 'Affiliate Ad', 'Video Ad', 'Search Engine'].map(
+      (name, sid): BarSeriesOption => {
+        return {
+          name,
+          type: 'bar',
+          stack: 'total',
+          barWidth: '60%',
+          label: { show: true, formatter: (params) => Math.round((params.value as number) * 100) + '%' },
+          data: rawData[sid]!.map((d, did) => (totalData[did]! <= 0 ? 0 : d / totalData[did]!)),
+        };
+      }
+    );
+
+    return (
+      <BarChart
+        style={{ width: 480, height: 300 }}
+        yAxis={{ type: 'value' }}
+        xAxis={{ type: 'category', data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] }}
+        series={series}
+      >
+        <Legend legend={{ selectedMode: false }} />
+      </BarChart>
+    );
+  },
+};
+
+export const BarStackNormalizationAndVariation: Story = {
+  name: 'Stacked Bar Normalization and Variation',
+  render() {
+    const WIDTH = 480;
+    const HEIGHT = 300;
+    const rawData = [
+      [100, 302, 301, 334, 390, 330, 320],
+      [320, 132, 101, 134, 90, 230, 210],
+      [220, 182, 191, 234, 290, 330, 310],
+      [150, 212, 201, 154, 190, 330, 410],
+      [820, 832, 901, 934, 1290, 1330, 1320],
+    ];
+    const totalData: number[] = [];
+    for (let i = 0; i < rawData[0]!.length; ++i) {
+      let sum = 0;
+      for (let j = 0; j < rawData.length; ++j) sum += rawData[j]![i]!;
+      totalData.push(sum);
+    }
+    const grid = { left: 100, right: 100, top: 50, bottom: 50 };
+    const gridWidth = WIDTH - grid.left - grid.right;
+    const gridHeight = HEIGHT - grid.top - grid.bottom;
+    const categoryWidth = gridWidth / rawData[0]!.length;
+    const barWidth = categoryWidth * 0.6;
+    const barPadding = (categoryWidth - barWidth) / 2;
+    const series = ['Direct', 'Mail Ad', 'Affiliate Ad', 'Video Ad', 'Search Engine'].map(
+      (name, sid): BarSeriesOption => {
+        return {
+          name,
+          type: 'bar',
+          stack: 'total',
+          barWidth: '60%',
+          label: { show: true, formatter: (params) => Math.round((params.value as number) * 100) + '%' },
+          data: rawData[sid]!.map((d, did) => (totalData[did]! <= 0 ? 0 : d / totalData[did]!)),
+        };
+      }
+    );
+    const color = ['#5070dd', '#b6d634', '#505372', '#ff994d', '#0ca8df'];
+    const elements: any[] = [];
+    for (let j = 1, jlen = rawData[0]!.length; j < jlen; ++j) {
+      const leftX = grid.left + categoryWidth * j - barPadding;
+      const rightX = leftX + barPadding * 2;
+      let leftY = grid.top + gridHeight;
+      let rightY = leftY;
+      for (let i = 0, len = series.length; i < len; ++i) {
+        const points = [];
+        const leftBarHeight = (rawData[i]![j - 1]! / totalData[j - 1]!) * gridHeight;
+        points.push([leftX, leftY]);
+        points.push([leftX, leftY - leftBarHeight]);
+        const rightBarHeight = (rawData[i]![j]! / totalData[j]!) * gridHeight;
+        points.push([rightX, rightY - rightBarHeight]);
+        points.push([rightX, rightY]);
+        points.push([leftX, leftY]);
+        leftY -= leftBarHeight;
+        rightY -= rightBarHeight;
+        elements.push({ type: 'polygon', shape: { points }, style: { fill: color[i], opacity: 0.25 } });
+      }
+    }
+
+    return (
+      <BarChart
+        style={{ width: WIDTH, height: HEIGHT }}
+        grid={grid}
+        yAxis={{ type: 'value' }}
+        xAxis={{ type: 'category', data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] }}
+        series={series}
+      >
+        <Legend legend={{ selectedMode: false }} />
+        <Graphic graphic={{ elements }} />
+      </BarChart>
+    );
+  },
+};
+
+export const BarWaterfall2: Story = {
+  name: 'Waterfall Chart',
+  render() {
+    return (
+      <BarChart
+        style={{ width: 480, height: 300 }}
+        grid={{ left: '3%', right: '4%', bottom: '3%', containLabel: true }}
+        xAxis={{ type: 'category', data: Array.from({ length: 12 }, (_, i) => `Nov ${i + 1}`) }}
+        yAxis={{ type: 'value' }}
+        series={[
+          {
+            name: 'Placeholder',
+            type: 'bar',
+            stack: 'Total',
+            silent: true,
+            itemStyle: { borderColor: 'transparent', color: 'transparent' },
+            emphasis: { itemStyle: { borderColor: 'transparent', color: 'transparent' } },
+            data: [0, 900, 1245, 1530, 1376, 1376, 1511, 1689, 1856, 1495, 1292],
+          },
+          {
+            name: 'Income',
+            type: 'bar',
+            stack: 'Total',
+            label: { show: true, position: 'top' },
+            data: [900, 345, 393, '-', '-', 135, 178, 286, '-', '-', '-'],
+          },
+          {
+            name: 'Expenses',
+            type: 'bar',
+            stack: 'Total',
+            label: { show: true, position: 'bottom' },
+            data: ['-', '-', '-', 108, 154, '-', '-', '-', 119, 361, 203],
+          },
+        ]}
+      >
+        <Title title={{ text: 'Accumulated Waterfall Chart' }} />
+        <Tooltip
+          tooltip={{
+            trigger: 'axis',
+            axisPointer: { type: 'shadow' },
+            formatter(params) {
+              if (!Array.isArray(params)) return '';
+              let tar;
+              if (params[1] && params[1].value !== '-') tar = params[1];
+              else tar = params[2];
+              return tar ? tar.name + '<br/>' + tar.seriesName + ' : ' + tar.value : '';
+            },
+          }}
+        />
+        <Legend legend={{ data: ['Expenses', 'Income'] }} />
+      </BarChart>
+    );
+  },
+};
+
+export const BarYCategoryStack: Story = {
+  name: 'Stacked Horizontal Bar',
+  render() {
+    return (
+      <BarChart
+        style={{ width: 480, height: 300 }}
+        xAxis={{ type: 'value' }}
+        yAxis={{ type: 'category', data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] }}
+        series={[
+          {
+            name: 'Direct',
+            type: 'bar',
+            stack: 'total',
+            label: { show: true },
+            emphasis: { focus: 'series' },
+            data: [320, 302, 301, 334, 390, 330, 320],
+          },
+          {
+            name: 'Mail Ad',
+            type: 'bar',
+            stack: 'total',
+            label: { show: true },
+            emphasis: { focus: 'series' },
+            data: [120, 132, 101, 134, 90, 230, 210],
+          },
+          {
+            name: 'Affiliate Ad',
+            type: 'bar',
+            stack: 'total',
+            label: { show: true },
+            emphasis: { focus: 'series' },
+            data: [220, 182, 191, 234, 290, 330, 310],
+          },
+          {
+            name: 'Video Ad',
+            type: 'bar',
+            stack: 'total',
+            label: { show: true },
+            emphasis: { focus: 'series' },
+            data: [150, 212, 201, 154, 190, 330, 410],
+          },
+          {
+            name: 'Search Engine',
+            type: 'bar',
+            stack: 'total',
+            label: { show: true },
+            emphasis: { focus: 'series' },
+            data: [820, 832, 901, 934, 1290, 1330, 1320],
+          },
+        ]}
+      >
+        <Tooltip tooltip={{ trigger: 'axis', axisPointer: { type: 'shadow' } }} />
+        <Legend legend={{}} />
+      </BarChart>
+    );
+  },
+};
+
+// FIXME: not working
+export const BarBrush: Story = {
+  name: 'Brush Select on Column Chart',
+  render() {
+    const [[xAxisData, data1, data2, data3, data4]] = React.useState(() => {
+      let xAxisData = [];
+      let data1 = [];
+      let data2 = [];
+      let data3 = [];
+      let data4 = [];
+      for (let i = 0; i < 10; i++) {
+        xAxisData.push('Class' + i);
+        data1.push(+(Math.random() * 2).toFixed(2));
+        data2.push(+(Math.random() * 5).toFixed(2));
+        data3.push(+(Math.random() + 0.3).toFixed(2));
+        data4.push(+Math.random().toFixed(2));
+      }
+      return [xAxisData, data1, data2, data3, data4] as const;
+    });
+
+    var emphasisStyle: BarSeriesOption['emphasis'] = {
+      itemStyle: {
+        shadowBlur: 10,
+        shadowColor: 'rgba(0,0,0,0.3)',
+      },
+    };
+
+    const [title, setTitle] = React.useState<TitleOption>({});
+    const chartRef = React.useRef<echarts.ECharts>(null);
+
+    React.useEffect(() => {
+      const myChart = chartRef.current;
+      if (!myChart) return;
+      const brushSelectedHandler = function (this: any, params: ECActionEvent) {
+        var brushed: string[] = [];
+        var brushComponent = params.batch![0]!;
+        for (var sIdx = 0; sIdx < brushComponent.selected.length; sIdx++) {
+          var rawIndices = brushComponent.selected[sIdx].dataIndex;
+          brushed.push('[Series ' + sIdx + '] ' + rawIndices.join(', '));
+        }
+        setTitle({
+          backgroundColor: '#333',
+          text: 'SELECTED DATA INDICES: \n' + brushed.join('\n'),
+          bottom: 0,
+          right: '10%',
+          width: 100,
+          textStyle: { fontSize: 12, color: '#fff' },
+        });
+      };
+      myChart.on('brushSelected', brushSelectedHandler as any);
+      return () => {
+        myChart.off('brushSelected', brushSelectedHandler);
+      };
+    }, []);
+
+    return (
+      <BarChart
+        ref={chartRef}
+        style={{ width: 480, height: 300 }}
+        xAxis={{
+          data: xAxisData,
+          name: 'X Axis',
+          axisLine: { onZero: true },
+          splitLine: { show: false },
+          splitArea: { show: false },
+        }}
+        yAxis={{}}
+        grid={{ bottom: 100 }}
+        series={[
+          { name: 'bar', type: 'bar', stack: 'one', emphasis: emphasisStyle, data: data1 },
+          { name: 'bar2', type: 'bar', stack: 'one', emphasis: emphasisStyle, data: data2 },
+          { name: 'bar3', type: 'bar', stack: 'two', emphasis: emphasisStyle, data: data3 },
+          { name: 'bar4', type: 'bar', stack: 'two', emphasis: emphasisStyle, data: data4 },
+        ]}
+      >
+        <Title title={title} />
+        <Legend legend={{ data: ['bar', 'bar2', 'bar3', 'bar4'], left: '10%' }} />
+        <Brush
+          brush={{
+            xAxisIndex: 0,
+            toolbox: ['rect', 'polygon', 'lineX', 'lineY', 'keep', 'clear'],
+            brushType: 'rect',
+          }}
+        />
+        <Toolbox toolbox={{ feature: { magicType: { type: ['stack'] }, dataView: {} } }} />
+        <Tooltip tooltip={{}} />
       </BarChart>
     );
   },
