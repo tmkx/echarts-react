@@ -17,5 +17,6 @@
     "paths": {
       "@fanciers/echarts-react": ["./src/index.ts"]
     }
-  }
+  },
+  "exclude": ["dist"]
 }

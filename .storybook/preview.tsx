@@ -14,6 +14,11 @@ const preview: Preview = {
       codePanel: true,
       theme: themes.dark,
     },
+    options: {
+      storySort: {
+        order: ['Line', 'Bar'],
+      },
+    },
   } satisfies (CoreTypes & DocsTypes)['parameters'],
   decorators: [
     (Story) => {
