@@ -11,6 +11,7 @@ export {
   MarkPoint,
   Matrix,
   Polar,
+  Timeline,
   Title,
   Toolbox,
   Tooltip,

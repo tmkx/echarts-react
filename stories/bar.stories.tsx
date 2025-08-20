@@ -3,10 +3,12 @@ import {
   BarChart,
   Brush,
   DataZoom,
+  Dataset,
   Graphic,
   Legend,
   LineChart,
   MarkLine,
+  MarkPoint,
   Polar,
   Title,
   Toolbox,
@@ -15,10 +17,11 @@ import {
 } from '@fanciers/echarts-react';
 import type { Meta, StoryObj } from '@storybook/react';
 import type { AxisBreakChangedEvent, BarSeriesOption } from 'echarts';
-import type { TitleOption } from 'echarts/types/dist/shared';
+import type { TitleOption, XAXisOption } from 'echarts/types/dist/shared';
 import type { BarSeriesLabelOption } from 'echarts/types/src/chart/bar/BarSeries.js';
 import type { AxisBreakOption, ECActionEvent, OptionDataValue } from 'echarts/types/src/util/types.js';
 import React from 'react';
+import useSWR from 'swr';
 
 const meta = {
   title: 'Bar',
@@ -1049,6 +1052,954 @@ export const BarBrush: Story = {
         />
         <Toolbox toolbox={{ feature: { magicType: { type: ['stack'] }, dataView: {} } }} />
         <Tooltip tooltip={{}} />
+      </BarChart>
+    );
+  },
+};
+
+export const BarNegative: Story = {
+  name: 'Bar Chart with Negative Value',
+  render() {
+    return (
+      <BarChart
+        style={{ width: 480, height: 300 }}
+        xAxis={[{ type: 'value' }]}
+        yAxis={[
+          { type: 'category', axisTick: { show: false }, data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] },
+        ]}
+        series={[
+          {
+            name: 'Profit',
+            type: 'bar',
+            label: { show: true, position: 'inside' },
+            emphasis: { focus: 'series' },
+            data: [200, 170, 240, 244, 200, 220, 210],
+          },
+          {
+            name: 'Income',
+            type: 'bar',
+            stack: 'Total',
+            label: { show: true },
+            emphasis: { focus: 'series' },
+            data: [320, 302, 341, 374, 390, 450, 420],
+          },
+          {
+            name: 'Expenses',
+            type: 'bar',
+            stack: 'Total',
+            label: { show: true, position: 'left' },
+            emphasis: { focus: 'series' },
+            data: [-120, -132, -101, -134, -190, -230, -210],
+          },
+        ]}
+      >
+        <Legend legend={{ data: ['Profit', 'Expenses', 'Income'] }} />
+        <Tooltip tooltip={{ trigger: 'axis', axisPointer: { type: 'shadow' } }} />
+      </BarChart>
+    );
+  },
+};
+
+export const Bar1: Story = {
+  name: 'Rainfall and Evaporation',
+  render() {
+    return (
+      <BarChart
+        style={{ width: 480, height: 300 }}
+        xAxis={[
+          {
+            type: 'category',
+            // prettier-ignore
+            data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+          },
+        ]}
+        yAxis={[{ type: 'value' }]}
+        series={[
+          {
+            name: 'Rainfall',
+            type: 'bar',
+            data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
+            markPoint: {
+              data: [
+                { type: 'max', name: 'Max' },
+                { type: 'min', name: 'Min' },
+              ],
+            },
+            markLine: { data: [{ type: 'average', name: 'Avg' }] },
+          },
+          {
+            name: 'Evaporation',
+            type: 'bar',
+            data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+            markPoint: {
+              data: [
+                { name: 'Max', value: 182.2, xAxis: 7, yAxis: 183 },
+                { name: 'Min', value: 2.3, xAxis: 11, yAxis: 3 },
+              ],
+            },
+            markLine: { data: [{ type: 'average', name: 'Avg' }] },
+          },
+        ]}
+      >
+        <Toolbox
+          toolbox={{
+            show: true,
+            feature: {
+              dataView: { show: true, readOnly: false },
+              magicType: { show: true, type: ['line', 'bar'] },
+              restore: { show: true },
+              saveAsImage: { show: true },
+            },
+          }}
+        />
+        <Title title={{ text: 'Rainfall vs Evaporation', subtext: 'Fake Data' }} />
+        <Legend legend={{ data: ['Rainfall', 'Evaporation'] }} />
+        <Tooltip tooltip={{ trigger: 'axis' }} />
+        <MarkPoint />
+        <MarkLine />
+      </BarChart>
+    );
+  },
+};
+
+export const MixLineBar: Story = {
+  name: 'Mixed Line and Bar',
+  render() {
+    return (
+      <BarChart
+        style={{ width: 480, height: 300 }}
+        compose={[LineChart]}
+        xAxis={[
+          {
+            type: 'category',
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            axisPointer: { type: 'shadow' },
+          },
+        ]}
+        yAxis={[
+          {
+            type: 'value',
+            name: 'Precipitation',
+            min: 0,
+            max: 250,
+            interval: 50,
+            axisLabel: { formatter: '{value} ml' },
+          },
+          {
+            type: 'value',
+            name: 'Temperature',
+            min: 0,
+            max: 25,
+            interval: 5,
+            axisLabel: { formatter: '{value} °C' },
+          },
+        ]}
+        series={[
+          {
+            name: 'Evaporation',
+            type: 'bar',
+            tooltip: { valueFormatter: (value) => value + ' ml' },
+            data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
+          },
+          {
+            name: 'Precipitation',
+            type: 'bar',
+            tooltip: { valueFormatter: (value) => value + ' ml' },
+            data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+          },
+          {
+            name: 'Temperature',
+            type: 'line',
+            yAxisIndex: 1,
+            tooltip: {
+              valueFormatter: (value) => value + ' °C',
+            },
+            data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2],
+          },
+        ]}
+      >
+        <Legend legend={{ data: ['Evaporation', 'Precipitation', 'Temperature'] }} />
+        <Toolbox
+          toolbox={{
+            feature: {
+              dataView: { show: true, readOnly: false },
+              magicType: { show: true, type: ['line', 'bar'] },
+              restore: { show: true },
+              saveAsImage: { show: true },
+            },
+          }}
+        />
+        <Tooltip tooltip={{ trigger: 'axis', axisPointer: { type: 'cross', crossStyle: { color: '#999' } } }} />
+      </BarChart>
+    );
+  },
+};
+
+export const MixZoomOnValue: Story = {
+  name: 'Mix Zoom On Value',
+  render() {
+    const { data } = useSWR('https://echarts.apache.org/examples/data/asset/data/obama_budget_proposal_2012.list.json');
+
+    return (
+      <BarChart
+        style={{ width: 480, height: 300 }}
+        grid={{ top: '12%', left: '1%', right: '10%', containLabel: true }}
+        xAxis={[{ type: 'category', data: data?.names || [] }]}
+        yAxis={[
+          {
+            type: 'value',
+            name: 'Budget (million USD)',
+            axisLabel: { formatter: (a) => (isFinite(a) ? echarts.format.addCommas(+a / 1000) : '') },
+          },
+        ]}
+        series={[
+          { name: 'Budget 2011', type: 'bar', data: data?.budget2011List || [] },
+          { name: 'Budget 2012', type: 'bar', data: data?.budget2012List || [] },
+        ]}
+      >
+        <Tooltip tooltip={{ trigger: 'axis', axisPointer: { type: 'shadow', label: { show: true } } }} />
+        <Toolbox
+          toolbox={{
+            show: true,
+            feature: {
+              mark: { show: true },
+              dataView: { show: true, readOnly: false },
+              magicType: { show: true, type: ['line', 'bar'] },
+              restore: { show: true },
+              saveAsImage: { show: true },
+            },
+          }}
+        />
+        <Legend legend={{ data: ['Growth', 'Budget 2011', 'Budget 2012'], itemGap: 5 }} />
+        <DataZoom
+          dataZoom={[
+            { show: true, start: 94, end: 100 },
+            { type: 'inside', start: 94, end: 100 },
+            {
+              show: true,
+              yAxisIndex: 0,
+              filterMode: 'empty',
+              width: 30,
+              height: '80%',
+              showDataShadow: false,
+              left: '93%',
+            },
+          ]}
+        />
+      </BarChart>
+    );
+  },
+};
+
+export const MultipleYAxis: Story = {
+  name: 'Multiple Y Axes',
+  render() {
+    const colors = ['#5070dd', '#b6d634', '#505372'];
+    return (
+      <BarChart
+        style={{ width: 480, height: 300 }}
+        compose={[LineChart]}
+        color={colors}
+        grid={{ right: '20%' }}
+        xAxis={[
+          {
+            type: 'category',
+            axisTick: { alignWithLabel: true },
+            // prettier-ignore
+            data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+          },
+        ]}
+        yAxis={[
+          {
+            type: 'value',
+            name: 'Evaporation',
+            position: 'right',
+            alignTicks: true,
+            axisLine: { show: true, lineStyle: { color: colors[0]! } },
+            axisLabel: { formatter: '{value} ml' },
+          },
+          {
+            type: 'value',
+            name: 'Precipitation',
+            position: 'right',
+            alignTicks: true,
+            offset: 80,
+            axisLine: { show: true, lineStyle: { color: colors[1]! } },
+            axisLabel: { formatter: '{value} ml' },
+          },
+          {
+            type: 'value',
+            name: '温度',
+            position: 'left',
+            alignTicks: true,
+            axisLine: { show: true, lineStyle: { color: colors[2]! } },
+            axisLabel: { formatter: '{value} °C' },
+          },
+        ]}
+        series={[
+          {
+            name: 'Evaporation',
+            type: 'bar',
+            data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
+          },
+          {
+            name: 'Precipitation',
+            type: 'bar',
+            yAxisIndex: 1,
+            data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+          },
+          {
+            name: 'Temperature',
+            type: 'line',
+            yAxisIndex: 2,
+            data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2],
+          },
+        ]}
+      >
+        <Tooltip tooltip={{ trigger: 'axis', axisPointer: { type: 'cross' } }} />
+        <Toolbox
+          toolbox={{
+            feature: {
+              dataView: { show: true, readOnly: false },
+              restore: { show: true },
+              saveAsImage: { show: true },
+            },
+          }}
+        />
+        <Legend legend={{ data: ['Evaporation', 'Precipitation', 'Temperature'] }} />
+      </BarChart>
+    );
+  },
+};
+
+export const BarAnimationDelay: Story = {
+  name: 'Animation Delay',
+  render() {
+    var xAxisData: string[] = [];
+    var data1: number[] = [];
+    var data2: number[] = [];
+    for (var i = 0; i < 100; i++) {
+      xAxisData.push('A' + i);
+      data1.push((Math.sin(i / 5) * (i / 5 - 10) + i / 6) * 5);
+      data2.push((Math.cos(i / 5) * (i / 5 - 10) + i / 6) * 5);
+    }
+
+    return (
+      <BarChart
+        style={{ width: 480, height: 300 }}
+        xAxis={{ data: xAxisData, splitLine: { show: false } }}
+        yAxis={{}}
+        series={[
+          { name: 'bar', type: 'bar', data: data1, emphasis: { focus: 'series' }, animationDelay: (idx) => idx * 10 },
+          {
+            name: 'bar2',
+            type: 'bar',
+            data: data2,
+            emphasis: { focus: 'series' },
+            animationDelay: (idx) => idx * 10 + 100,
+          },
+        ]}
+        animationEasing="elasticOut"
+        animationDelayUpdate={(idx) => idx * 5}
+      >
+        <Title title={{ text: 'Bar Animation Delay' }} />
+        <Legend legend={{ data: ['bar', 'bar2'] }} />
+        <Toolbox
+          toolbox={{
+            feature: {
+              magicType: { type: ['stack'] },
+              dataView: {},
+              saveAsImage: { pixelRatio: 2 },
+            },
+          }}
+        />
+        <Tooltip tooltip={{}} />
+      </BarChart>
+    );
+  },
+};
+
+// FIXME: animation
+export const BarDrilldown: Story = {
+  name: 'Bar Chart Drilldown Animation',
+  render() {
+    type GraphicComponentLooseOption = Exclude<React.ComponentProps<typeof Graphic>['graphic'], any[] | undefined>;
+    const chartRef = React.useRef<echarts.ECharts>(null);
+
+    const drilldownData = [
+      {
+        dataGroupId: 'animals',
+        data: [
+          ['Cats', 4],
+          ['Dogs', 2],
+          ['Cows', 1],
+          ['Sheep', 2],
+          ['Pigs', 1],
+        ],
+      },
+      {
+        dataGroupId: 'fruits',
+        data: [
+          ['Apples', 4],
+          ['Oranges', 2],
+        ],
+      },
+      {
+        dataGroupId: 'cars',
+        data: [
+          ['Toyota', 4],
+          ['Opel', 2],
+          ['Volkswagen', 2],
+        ],
+      },
+    ];
+
+    const defaultXAxis: XAXisOption = { data: ['Animals', 'Fruits', 'Cars'] };
+    const defaultSeries: BarSeriesOption = {
+      type: 'bar',
+      id: 'sales',
+      data: [
+        { value: 5, groupId: 'animals' },
+        { value: 2, groupId: 'fruits' },
+        { value: 4, groupId: 'cars' },
+      ],
+      universalTransition: { enabled: true, divideShape: 'clone' },
+    };
+    const [xAxis, setXAxis] = React.useState<XAXisOption>(defaultXAxis);
+    const [series, setSeries] = React.useState<BarSeriesOption>(defaultSeries);
+    const [graphic, setGraphic] = React.useState<GraphicComponentLooseOption[]>([]);
+
+    React.useEffect(() => {
+      const myChart = chartRef.current;
+      if (!myChart) return;
+      const clickHandler = (event: echarts.ECElementEvent) => {
+        if (!event.data) return;
+        var subData = drilldownData.find((data) => data.dataGroupId === (event.data as any).groupId);
+        if (!subData) return;
+        setXAxis({ data: subData.data.map((item) => item[0]!) });
+        setSeries({
+          type: 'bar',
+          id: 'sales',
+          dataGroupId: subData.dataGroupId,
+          data: subData.data.map((item) => item[1]),
+          universalTransition: { enabled: true, divideShape: 'clone' },
+        });
+        setGraphic([
+          {
+            type: 'text',
+            left: 50,
+            top: 20,
+            style: { text: 'Back', fontSize: 18 },
+            onclick() {
+              setXAxis(defaultXAxis);
+              setSeries(defaultSeries);
+              setGraphic([]);
+            },
+          },
+        ]);
+      };
+      myChart.on('click', clickHandler);
+      return () => {
+        myChart.off('click', clickHandler);
+      };
+    }, []);
+
+    return (
+      <BarChart
+        ref={chartRef}
+        style={{ width: 480, height: 300 }}
+        xAxis={xAxis}
+        yAxis={{}}
+        animationDurationUpdate={500}
+        series={series}
+      >
+        <Graphic graphic={graphic} />
+      </BarChart>
+    );
+  },
+};
+
+export const BarLarge: Story = {
+  name: 'Large Scale Bar Chart',
+  render() {
+    function generateData(count: number) {
+      let baseValue = Math.random() * 1000;
+      let time = +new Date(2011, 0, 1);
+      let smallBaseValue: number;
+      function next(idx: number) {
+        smallBaseValue = idx % 30 === 0 ? Math.random() * 700 : smallBaseValue + Math.random() * 500 - 250;
+        baseValue += Math.random() * 20 - 10;
+        return Math.max(0, Math.round(baseValue + smallBaseValue) + 3000);
+      }
+      const categoryData: string[] = [];
+      const valueData: string[] = [];
+      for (let i = 0; i < count; i++) {
+        categoryData.push(echarts.time.format(time, '{yyyy}-{MM}-{dd}\n{hh}:{mm}:{ss}', false));
+        valueData.push(next(i).toFixed(2));
+        time += 1000;
+      }
+      return { categoryData, valueData };
+    }
+    const dataCount = 5e5;
+    const data = React.useMemo(() => generateData(dataCount), []);
+
+    return (
+      <BarChart
+        style={{ width: 480, height: 300 }}
+        grid={{ bottom: 90 }}
+        xAxis={{
+          data: data.categoryData,
+          silent: false,
+          splitLine: { show: false },
+          splitArea: { show: false },
+        }}
+        yAxis={{ splitArea: { show: false } }}
+        series={[{ type: 'bar', data: data.valueData, large: true }]}
+      >
+        <Title title={{ text: echarts.format.addCommas(dataCount) + ' Data', left: 10 }} />
+        <DataZoom dataZoom={[{ type: 'inside' }, { type: 'slider' }]} />
+        <Tooltip tooltip={{ trigger: 'axis', axisPointer: { type: 'shadow' } }} />
+        <Toolbox toolbox={{ feature: { dataZoom: { yAxisIndex: false }, saveAsImage: { pixelRatio: 2 } } }} />
+      </BarChart>
+    );
+  },
+};
+
+export const BarRace: Story = {
+  name: 'Bar Race',
+  render() {
+    const [data, setData] = React.useState(() => Array.from({ length: 5 }, () => Math.round(Math.random() * 200)));
+
+    React.useEffect(() => {
+      function run() {
+        setData((data) =>
+          data.map((v) => {
+            if (Math.random() > 0.9) return v + Math.round(Math.random() * 2000);
+            else return v + Math.round(Math.random() * 200);
+          })
+        );
+      }
+      run();
+      const timer = setInterval(run, 3000);
+      return () => clearInterval(timer);
+    }, []);
+
+    return (
+      <BarChart
+        style={{ width: 480, height: 300 }}
+        xAxis={{ max: 'dataMax' }}
+        yAxis={{
+          type: 'category',
+          data: ['A', 'B', 'C', 'D', 'E'],
+          inverse: true,
+          animationDuration: 300,
+          animationDurationUpdate: 300,
+          max: 2, // only the largest 3 bars will be displayed
+        }}
+        series={[
+          {
+            realtimeSort: true,
+            name: 'X',
+            type: 'bar',
+            data,
+            label: { show: true, position: 'right', valueAnimation: true },
+          },
+        ]}
+        animationDuration={0}
+        animationDurationUpdate={3000}
+        animationEasing="linear"
+        animationEasingUpdate="linear"
+      >
+        <Legend legend={{ show: true }} />
+      </BarChart>
+    );
+  },
+};
+
+// FIXME: animation
+export const BarMultiDrilldown: Story = {
+  name: 'Bar Chart Multi-level Drilldown Animation',
+  render() {
+    // prettier-ignore
+    const data_things = [['Animals', 3, 'things', 'animals'], ['Fruits', 3, 'things', 'fruits'], ['Cars', 2, 'things', 'cars']];
+    // level 2
+    // prettier-ignore
+    const data_animals = [['Dogs', 3, 'animals', 'dogs'], ['Cats', 4, 'animals', 'cats'], ['Birds', 3, 'animals', 'birds']];
+    // prettier-ignore
+    const data_fruits = [['Pomes', 3, 'fruits', 'pomes'], ['Berries', 4, 'fruits', 'berries'], ['Citrus', 9, 'fruits', 'citrus']];
+    // prettier-ignore
+    const data_cars = [['SUV', 5, 'cars', 'suv'], ['Sports', 3, 'cars', 'sports']];
+    // level 3
+    // prettier-ignore
+    const data_dogs = [['Corgi', 5, 'dogs'], ['Bulldog', 6, 'dogs'], ['Shiba Inu', 7, 'dogs']];
+    // prettier-ignore
+    const data_cats = [['American Shorthair', 2, 'cats'], ['British Shorthair', 9, 'cats'], ['Bengal', 2, 'cats'], ['Birman', 2, 'cats']];
+    // prettier-ignore
+    const data_birds = [['Goose', 1, 'birds'], ['Owl', 2, 'birds'], ['Eagle', 8, 'birds']];
+    // prettier-ignore
+    const data_pomes = [['Apple', 9, 'pomes'], ['Pear', 2, 'pomes'], ['Kiwi', 1, 'pomes']];
+    // prettier-ignore
+    const data_berries = [['Blackberries', 7, 'berries'], ['Cranberries', 2, 'berries'], ['Strawberries', 9, 'berries'], ['Grapes', 4, 'berries']];
+    // prettier-ignore
+    const data_citrus = [['Oranges', 3, 'citrus'], ['Grapefruits', 7, 'citrus'], ['Tangerines', 8, 'citrus'], ['Lemons', 7, 'citrus'], ['Limes', 3, 'citrus'], ['Kumquats', 2, 'citrus'], ['Citrons', 3, 'citrus'], ['Tengelows', 3, 'citrus'], ['Uglifruit', 1, 'citrus']];
+    // prettier-ignore
+    const data_suv = [['Mazda CX-30', 7, 'suv'], ['BMW X2', 7, 'suv'], ['Ford Bronco Sport', 2, 'suv'], ['Toyota RAV4', 9, 'suv'], ['Porsche Macan', 4, 'suv']];
+    // prettier-ignore
+    const data_sports = [['Porsche 718 Cayman', 2, 'sports'], ['Porsche 911 Turbo', 2, 'sports'], ['Ferrari F8', 4, 'sports']];
+    // prettier-ignore
+    const allLevelData = [data_things, data_animals, data_fruits, data_cars, data_dogs, data_cats, data_birds, data_pomes, data_berries, data_citrus, data_suv, data_sports];
+
+    const allOptions: Record<string, { id: string | number; data: (string | number)[][] }> = {};
+    allLevelData.forEach((data) => {
+      // since dataItems of each data have same groupId in this
+      // example, we can use groupId as optionId for optionStack.
+      const optionId = data[0]![2]!;
+      const option = { id: optionId, data };
+      allOptions[optionId] = option;
+    });
+    const chartRef = React.useRef<echarts.ECharts>(null);
+    const [data, setData] = React.useState(allOptions['things']!.data);
+    // A stack to remember previous option id
+    const optionStack = React.useRef<(string | number)[]>([]);
+    const currentOptionId = React.useRef<string | number>('things');
+    const goForward = (optionId: string) => {
+      optionStack.current.push(currentOptionId.current); // push current option id into stack.
+      currentOptionId.current = optionId;
+      setData(allOptions[optionId]!.data);
+    };
+    const goBack = () => {
+      if (optionStack.current.length === 0) {
+        console.log('Already in root level!');
+      } else {
+        console.log('Go back to previous level.');
+        setData(allOptions[(currentOptionId.current = optionStack.current.pop()!)]!.data);
+      }
+    };
+    React.useEffect(() => {
+      const myChart = chartRef.current;
+      if (!myChart) return;
+      const clickHandler = (params: echarts.ECElementEvent) => {
+        const dataItem = params.data as any[];
+        if (dataItem[3]) {
+          // If current params is not belong to the "childest" data, it has data[3]
+          const childGroupId = dataItem[3];
+          // since we use groupId as optionId in this example,
+          // we use childGroupId as the next level optionId.
+          const nextOptionId = childGroupId;
+          goForward(nextOptionId);
+        }
+      };
+      myChart.on('click', 'series', clickHandler);
+      return () => {
+        myChart.off('click', clickHandler);
+      };
+    }, []);
+
+    return (
+      <BarChart
+        ref={chartRef}
+        style={{ width: 480, height: 300 }}
+        xAxis={{ type: 'category' }}
+        yAxis={{ minInterval: 1 }}
+        series={{
+          type: 'bar',
+          dimensions: ['x', 'y', 'groupId', 'childGroupId'],
+          encode: { x: 'x', y: 'y', itemGroupId: 'groupId', itemChildGroupId: 'childGroupId' },
+          data,
+          universalTransition: { enabled: true, divideShape: 'clone' },
+        }}
+        animationDurationUpdate={500}
+      >
+        <Graphic
+          graphic={[
+            {
+              type: 'text',
+              left: 50,
+              top: 20,
+              style: { text: 'Back', fontSize: 18, fill: 'grey' },
+              onclick: () => goBack(),
+            },
+          ]}
+        />
+      </BarChart>
+    );
+  },
+};
+
+export const BarRaceCountry: Story = {
+  name: 'Bar Race',
+  render() {
+    const updateFrequency = 2000;
+    const dimension = 0;
+    const countryColors = {
+      Australia: '#00008b',
+      Canada: '#f00',
+      China: '#ffde00',
+      Cuba: '#002a8f',
+      Finland: '#003580',
+      France: '#ed2939',
+      Germany: '#000',
+      Iceland: '#003897',
+      India: '#f93',
+      Japan: '#bc002d',
+      'North Korea': '#024fa2',
+      'South Korea': '#000',
+      'New Zealand': '#00247d',
+      Norway: '#ef2b2d',
+      Poland: '#dc143c',
+      Russia: '#d52b1e',
+      Turkey: '#e30a17',
+      'United Kingdom': '#00247d',
+      'United States': '#b22234',
+    };
+
+    const { data } = useSWR<
+      [income: number, lifeExpectancy: number, population: number, country: string, year: number][]
+    >('https://echarts.apache.org/examples/data/asset/data/life-expectancy-table.json');
+    const years = React.useMemo(() => {
+      if (!data) return [];
+      const result: number[] = [];
+      for (let i = 1; i < data.length; ++i) {
+        if (result[result.length - 1] !== data[i]![4]) result.push(data[i]![4]);
+      }
+      return result;
+    }, [data]);
+
+    const [startIndex, setStartIndex] = React.useState(0);
+    const startYear = years[startIndex] || 0;
+
+    React.useEffect(() => {
+      if (!years.length) return;
+      const timer = { current: 0 };
+      let startIndex = 0;
+      function tick() {
+        if (startIndex < years.length - 1) {
+          setStartIndex(++startIndex);
+          timer.current = window.setTimeout(tick, updateFrequency);
+        }
+      }
+      tick();
+      return () => clearTimeout(timer.current);
+    }, [years]);
+
+    return (
+      <BarChart
+        style={{ width: 480, height: 300 }}
+        grid={{ top: 10, bottom: 30, left: 150, right: 80 }}
+        xAxis={{ max: 'dataMax', axisLabel: { formatter: (n: number) => Math.round(n).toString() } }}
+        yAxis={{
+          type: 'category',
+          inverse: true,
+          max: 10,
+          axisLabel: { show: true, fontSize: 14 },
+          animationDuration: 300,
+          animationDurationUpdate: 300,
+        }}
+        series={[
+          {
+            realtimeSort: true,
+            seriesLayoutBy: 'column',
+            type: 'bar',
+            itemStyle: {
+              color: (param) => countryColors[(param.value as any[])[3] as keyof typeof countryColors] || '#5470c6',
+            },
+            encode: { x: dimension, y: 3 },
+            label: { show: true, precision: 1, position: 'right', valueAnimation: true, fontFamily: 'monospace' },
+          },
+        ]}
+        animationDuration={0}
+        animationDurationUpdate={updateFrequency}
+        animationEasing="linear"
+        animationEasingUpdate="linear"
+      >
+        <Dataset dataset={{ source: data?.slice(1).filter((d) => d[4] === startYear) || [] }} />
+        <Graphic
+          graphic={{
+            elements: [
+              {
+                type: 'text',
+                right: 160,
+                bottom: 60,
+                style: { text: String(startYear), font: 'bolder 80px monospace', fill: 'rgba(100, 100, 100, 0.25)' },
+                z: 100,
+              },
+            ],
+          }}
+        />
+      </BarChart>
+    );
+  },
+};
+
+export const BarRichText: Story = {
+  name: 'Wheater Statistics',
+  render() {
+    const seriesLabel: BarSeriesLabelOption = { show: true };
+    return (
+      <BarChart
+        style={{ width: 480, height: 300 }}
+        grid={{ left: 100 }}
+        xAxis={{ type: 'value', name: 'Days', axisLabel: { formatter: '{value}' } }}
+        yAxis={{ type: 'category', inverse: true, data: ['Sunny', 'Cloudy', 'Showers'], axisLabel: { margin: 20 } }}
+        series={[
+          {
+            name: 'City Alpha',
+            type: 'bar',
+            data: [165, 170, 30],
+            label: seriesLabel,
+            markPoint: {
+              symbolSize: 1,
+              symbolOffset: [0, '50%'],
+              label: {
+                formatter: '{a|{a}\n}{b|{b} }{c|{c}}',
+                backgroundColor: 'rgb(242,242,242)',
+                borderColor: '#aaa',
+                borderWidth: 1,
+                borderRadius: 4,
+                padding: [4, 10],
+                lineHeight: 26,
+                position: 'right',
+                distance: 20,
+                rich: {
+                  a: {
+                    align: 'center',
+                    color: '#fff',
+                    fontSize: 18,
+                    textShadowBlur: 2,
+                    textShadowColor: '#000',
+                    textShadowOffsetX: 0,
+                    textShadowOffsetY: 1,
+                    textBorderColor: '#333',
+                    textBorderWidth: 2,
+                  },
+                  b: { color: '#333' },
+                  c: { color: '#ff8811', textBorderColor: '#000', textBorderWidth: 1, fontSize: 22 },
+                },
+              },
+              data: [
+                { type: 'max', name: 'max days: ' },
+                { type: 'min', name: 'min days: ' },
+              ],
+            },
+          },
+          { name: 'City Beta', type: 'bar', label: seriesLabel, data: [150, 105, 110] },
+          { name: 'City Gamma', type: 'bar', label: seriesLabel, data: [220, 82, 63] },
+        ]}
+      >
+        <Title title={{ text: 'Weather Statistics' }} />
+        <Tooltip tooltip={{ trigger: 'axis', axisPointer: { type: 'shadow' } }} />
+        <Legend legend={{ data: ['City Alpha', 'City Beta', 'City Gamma'] }} />
+        <Toolbox toolbox={{ show: true, feature: { saveAsImage: {} } }} />
+        <MarkPoint />
+      </BarChart>
+    );
+  },
+};
+
+export const DynamicData: Story = {
+  name: 'Dynamic Data',
+  render() {
+    const [categories, setCategories] = React.useState(() => {
+      let now = new Date();
+      let res = [];
+      let len = 10;
+      while (len--) {
+        res.unshift(now.toLocaleTimeString().replace(/^\D*/, ''));
+        now = new Date(+now - 2000);
+      }
+      return res;
+    });
+    const [categories2, setCategories2] = React.useState(() => {
+      let res = [];
+      let len = 10;
+      while (len--) res.push(10 - len - 1);
+      return res;
+    });
+    const [data, setData] = React.useState(() => {
+      let res = [];
+      let len = 10;
+      while (len--) res.push(Math.round(Math.random() * 1000));
+      return res;
+    });
+    const [data2, setData2] = React.useState(() => {
+      let res = [];
+      let len = 0;
+      while (len < 10) {
+        res.push(+(Math.random() * 10 + 5).toFixed(1));
+        len++;
+      }
+      return res;
+    });
+
+    const appCountRef = React.useRef(11);
+    React.useEffect(() => {
+      const timer = setInterval(function () {
+        setCategories((categories) => {
+          const copy = [...categories];
+          const axisData = new Date().toLocaleTimeString().replace(/^\D*/, '');
+          copy.shift();
+          copy.push(axisData);
+          return copy;
+        });
+        setCategories2((categories2) => {
+          const copy = [...categories2];
+          copy.shift();
+          copy.push(appCountRef.current++);
+          return copy;
+        });
+        setData((data) => {
+          const copy = [...data];
+          copy.shift();
+          copy.push(Math.round(Math.random() * 1000));
+          return copy;
+        });
+        setData2((data2) => {
+          const copy = [...data2];
+          data2.shift();
+          data2.push(+(Math.random() * 10 + 5).toFixed(1));
+          return copy;
+        });
+      }, 2100);
+      return () => clearInterval(timer);
+    });
+
+    return (
+      <BarChart
+        style={{ width: 480, height: 300 }}
+        compose={[LineChart]}
+        xAxis={[
+          { type: 'category', boundaryGap: true, data: categories },
+          { type: 'category', boundaryGap: true, data: categories2 },
+        ]}
+        yAxis={[
+          { type: 'value', scale: true, name: 'Price', max: 30, min: 0, boundaryGap: [0.2, 0.2] },
+          { type: 'value', scale: true, name: 'Order', max: 1200, min: 0, boundaryGap: [0.2, 0.2] },
+        ]}
+        series={[
+          {
+            name: 'Dynamic Bar',
+            type: 'bar',
+            xAxisIndex: 1,
+            yAxisIndex: 1,
+            data: data,
+          },
+          {
+            name: 'Dynamic Line',
+            type: 'line',
+            data: data2,
+          },
+        ]}
+      >
+        <Title title={{ text: 'Dynamic Data' }} />
+        <Tooltip
+          tooltip={{
+            trigger: 'axis',
+            axisPointer: { type: 'cross', label: { backgroundColor: '#283b56' } },
+          }}
+        />
+        <Legend legend={{}} />
+        <Toolbox toolbox={{ show: true, feature: { dataView: { readOnly: false }, restore: {}, saveAsImage: {} } }} />
+        <DataZoom dataZoom={{ show: false, start: 0, end: 100 }} />
       </BarChart>
     );
   },

@@ -10,6 +10,7 @@ import type {
   MarkPointComponentOption,
   MatrixComponentOption,
   PolarComponentOption,
+  TimelineComponentOption,
   TitleComponentOption,
   ToolboxComponentOption,
   TooltipComponentOption,
@@ -26,6 +27,7 @@ import {
   MarkPointComponent,
   MatrixComponent,
   PolarComponent,
+  TimelineComponent,
   TitleComponent,
   ToolboxComponent,
   TooltipComponent,
@@ -71,6 +73,8 @@ export const MarkPoint = /*#__PURE__*/ defineComponent<MarkPointComponentOption>
 export const Matrix = /*#__PURE__*/ defineComponent<MatrixComponentOption>(MatrixComponent);
 
 export const Polar = /*#__PURE__*/ defineComponent<PolarComponentOption>(PolarComponent);
+
+export const Timeline = /*#__PURE__*/ defineComponent<TimelineComponentOption>(TimelineComponent);
 
 export const Title = /*#__PURE__*/ defineComponent<TitleComponentOption>(TitleComponent);
 
