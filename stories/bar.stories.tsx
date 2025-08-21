@@ -14,6 +14,7 @@ import {
   Title,
   Toolbox,
   Tooltip,
+  VisualMap,
   echarts,
 } from '@fanciers/echarts-react';
 import type { Meta, StoryObj } from '@storybook/react';
@@ -2343,6 +2344,180 @@ export const PolarRoundCap: Story = {
           radiusAxis={{ type: 'category', data: ['v', 'w', 'x', 'y', 'z'], z: 10 }}
         />
         <Legend legend={{ show: true, data: ['Without Round Cap', 'With Round Cap'] }} />
+      </BarChart>
+    );
+  },
+};
+
+export const DataTransformSortBar: Story = {
+  name: 'Sort Data in Bar Chart',
+  render() {
+    return (
+      <BarChart
+        style={{ width: 480, height: 300 }}
+        xAxis={{ type: 'category', axisLabel: { interval: 0, rotate: 30 } }}
+        yAxis={{}}
+        series={{ type: 'bar', encode: { x: 'name', y: 'score' }, datasetIndex: 1 }}
+      >
+        <Dataset
+          dataset={[
+            {
+              dimensions: ['name', 'age', 'profession', 'score', 'date'],
+              source: [
+                ['Hannah Krause', 41, 'Engineer', 314, '2011-02-12'],
+                ['Zhao Qian', 20, 'Teacher', 351, '2011-03-01'],
+                ['Jasmin Krause ', 52, 'Musician', 287, '2011-02-14'],
+                ['Li Lei', 37, 'Teacher', 219, '2011-02-18'],
+                ['Karle Neumann', 25, 'Engineer', 253, '2011-04-02'],
+                ['Adrian Groß', 19, 'Teacher', '-', '2011-01-16'],
+                ['Mia Neumann', 71, 'Engineer', 165, '2011-03-19'],
+                ['Böhm Fuchs', 36, 'Musician', 318, '2011-02-24'],
+                ['Han Meimei', 67, 'Engineer', 366, '2011-03-12'],
+              ],
+            },
+            { transform: { type: 'sort', config: { dimension: 'score', order: 'desc' } } },
+          ]}
+        />
+      </BarChart>
+    );
+  },
+};
+
+export const DatasetEncode0: Story = {
+  name: 'Simple Encode',
+  render() {
+    return (
+      <BarChart
+        style={{ width: 480, height: 300 }}
+        grid={{ containLabel: true }}
+        xAxis={{ name: 'amout' }}
+        yAxis={{ type: 'category' }}
+        series={[{ type: 'bar', encode: { x: 'amount', y: 'product' } }]}
+      >
+        <Dataset
+          dataset={{
+            source: [
+              ['score', 'amount', 'product'],
+              [89.3, 58212, 'Matcha Latte'],
+              [57.1, 78254, 'Milk Tea'],
+              [74.4, 41032, 'Cheese Cocoa'],
+              [50.1, 12755, 'Cheese Brownie'],
+              [89.7, 20145, 'Matcha Cocoa'],
+              [68.1, 79146, 'Tea'],
+              [19.6, 91852, 'Orange Juice'],
+              [10.6, 101852, 'Lemon Juice'],
+              [32.7, 20112, 'Walnut Brownie'],
+            ],
+          }}
+        />
+        <VisualMap
+          visualMap={{
+            orient: 'horizontal',
+            left: 'center',
+            min: 10,
+            max: 100,
+            text: ['High Score', 'Low Score'],
+            dimension: 0,
+            inRange: { color: ['#65B581', '#FFCE34', '#FD665F'] },
+          }}
+        />
+      </BarChart>
+    );
+  },
+};
+
+export const DatasetSeriesLayoutBy: Story = {
+  name: 'Series Layout By Column or Row',
+  render() {
+    return (
+      <BarChart
+        style={{ width: 480, height: 300 }}
+        grid={[{ bottom: '55%' }, { top: '55%' }]}
+        xAxis={[
+          { type: 'category', gridIndex: 0 },
+          { type: 'category', gridIndex: 1 },
+        ]}
+        yAxis={[{ gridIndex: 0 }, { gridIndex: 1 }]}
+        series={[
+          // These series are in the first grid.
+          { type: 'bar', seriesLayoutBy: 'row' },
+          { type: 'bar', seriesLayoutBy: 'row' },
+          { type: 'bar', seriesLayoutBy: 'row' },
+          // These series are in the second grid.
+          { type: 'bar', xAxisIndex: 1, yAxisIndex: 1 },
+          { type: 'bar', xAxisIndex: 1, yAxisIndex: 1 },
+          { type: 'bar', xAxisIndex: 1, yAxisIndex: 1 },
+          { type: 'bar', xAxisIndex: 1, yAxisIndex: 1 },
+        ]}
+      >
+        <Legend legend={{}} />
+        <Tooltip tooltip={{}} />
+        <Dataset
+          dataset={{
+            source: [
+              ['product', '2012', '2013', '2014', '2015'],
+              ['Matcha Latte', 41.1, 30.4, 65.1, 53.3],
+              ['Milk Tea', 86.5, 92.1, 85.7, 83.1],
+              ['Cheese Cocoa', 24.1, 67.2, 79.5, 86.4],
+            ],
+          }}
+        />
+      </BarChart>
+    );
+  },
+};
+
+export const DatasetSimple0: Story = {
+  name: 'Simple Example of Dataset',
+  render() {
+    return (
+      <BarChart
+        style={{ width: 480, height: 300 }}
+        xAxis={{ type: 'category' }}
+        yAxis={{}}
+        series={[{ type: 'bar' }, { type: 'bar' }, { type: 'bar' }]}
+      >
+        <Legend legend={{}} />
+        <Tooltip tooltip={{}} />
+        <Dataset
+          dataset={{
+            source: [
+              ['product', '2015', '2016', '2017'],
+              ['Matcha Latte', 43.3, 85.8, 93.7],
+              ['Milk Tea', 83.1, 73.4, 55.1],
+              ['Cheese Cocoa', 86.4, 65.2, 82.5],
+              ['Walnut Brownie', 72.4, 53.9, 39.1],
+            ],
+          }}
+        />
+      </BarChart>
+    );
+  },
+};
+
+export const DatasetSimple1: Story = {
+  name: 'Dataset in Object Array',
+  render() {
+    return (
+      <BarChart
+        style={{ width: 480, height: 300 }}
+        xAxis={{ type: 'category' }}
+        yAxis={{}}
+        series={[{ type: 'bar' }, { type: 'bar' }, { type: 'bar' }]}
+      >
+        <Legend legend={{}} />
+        <Tooltip tooltip={{}} />
+        <Dataset
+          dataset={{
+            dimensions: ['product', '2015', '2016', '2017'],
+            source: [
+              { product: 'Matcha Latte', 2015: 43.3, 2016: 85.8, 2017: 93.7 },
+              { product: 'Milk Tea', 2015: 83.1, 2016: 73.4, 2017: 55.1 },
+              { product: 'Cheese Cocoa', 2015: 86.4, 2016: 65.2, 2017: 82.5 },
+              { product: 'Walnut Brownie', 2015: 72.4, 2016: 53.9, 2017: 39.1 },
+            ],
+          }}
+        />
       </BarChart>
     );
   },
