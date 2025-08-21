@@ -3,6 +3,7 @@ import type {
   ComposeOption,
   DatasetComponentOption,
   DataZoomComponentOption,
+  GeoComponentOption,
   GraphicComponentOption,
   LegendComponentOption,
   MarkAreaComponentOption,
@@ -20,6 +21,7 @@ import {
   BrushComponent,
   DatasetComponent,
   DataZoomComponent,
+  GeoComponent,
   GraphicComponent,
   LegendComponent,
   MarkAreaComponent,
@@ -59,6 +61,8 @@ export const Brush = /*#__PURE__*/ defineComponent<BrushComponentOption>([BrushC
 export const Dataset = /*#__PURE__*/ defineComponent<DatasetComponentOption>([DatasetComponent, TransformComponent]);
 
 export const DataZoom = /*#__PURE__*/ defineComponent<DataZoomComponentOption>([DataZoomComponent]);
+
+export const Geo = /*#__PURE__*/ defineComponent<GeoComponentOption>([GeoComponent]);
 
 export const Graphic = /*#__PURE__*/ defineComponent<GraphicComponentOption>([GraphicComponent]);
 
