@@ -4,6 +4,7 @@ export {
   Brush,
   Dataset,
   DataZoom,
+  Geo,
   Graphic,
   Legend,
   MarkArea,

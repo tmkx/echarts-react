@@ -4,11 +4,13 @@ import {
   Brush,
   DataZoom,
   Dataset,
+  Geo,
   Graphic,
   Legend,
   LineChart,
   MarkLine,
   MarkPoint,
+  Matrix,
   PieChart,
   Polar,
   Title,
@@ -18,11 +20,19 @@ import {
   echarts,
 } from '@fanciers/echarts-react';
 import type { Meta, StoryObj } from '@storybook/react';
-import type { AxisBreakChangedEvent, BarSeriesOption } from 'echarts';
-import type { TitleOption, XAXisOption } from 'echarts/types/dist/shared';
+import type { AxisBreakChangedEvent, BarSeriesOption, GeoComponentOption, MatrixComponentOption } from 'echarts';
+import type {
+  GeoOption,
+  GridOption,
+  MatrixOption,
+  TitleOption,
+  XAXisOption,
+  YAXisOption,
+} from 'echarts/types/dist/shared';
 import type { BarSeriesLabelOption } from 'echarts/types/src/chart/bar/BarSeries.js';
+import type { MatrixDimensionCellLooseOption } from 'echarts/types/src/coord/matrix/MatrixModel.js';
 import type { AxisBreakOption, ECActionEvent, OptionDataValue } from 'echarts/types/src/util/types.js';
-import React from 'react';
+import React, { useState } from 'react';
 import useSWR from 'swr';
 
 const meta = {
@@ -2349,6 +2359,166 @@ export const PolarRoundCap: Story = {
   },
 };
 
+// FIXME: scale animation
+export const BarBreaksBrush: Story = {
+  name: 'Bar Chart with Axis Breaks (Brush-enabled)',
+  render() {
+    var GRID_TOP = 120;
+    var GRID_BOTTOM = 80;
+    var Y_DATA_ROUND_PRECISION = 0;
+    const [currentAxisBreaks, setCurrentAxisBreaks] = React.useState<AxisBreakOption[]>([
+      {
+        start: 5000,
+        end: 100000,
+        gap: '2%',
+      },
+    ]);
+
+    const chartRef = React.useRef<echarts.ECharts>(null);
+
+    React.useEffect(() => {
+      const myChart = chartRef.current;
+      if (!myChart) return;
+      let _brushingEl: echarts.graphic.Rect | null = null;
+      const roundYValue = (val: number) => val.toFixed(Y_DATA_ROUND_PRECISION);
+      const insertAndMergeNewBreakWithExistingBreaks = (newBreak: AxisBreakOption) => {
+        setCurrentAxisBreaks((_currentAxisBreaks) => {
+          const currentAxisBreaks = [..._currentAxisBreaks];
+          for (var i = currentAxisBreaks.length - 1; i >= 0; i--) {
+            var existingBreak = currentAxisBreaks[i]!;
+            if (existingBreak.start <= newBreak.end && existingBreak.end >= newBreak.start) {
+              newBreak.start = Math.min(existingBreak.start as number, newBreak.start as number);
+              newBreak.end = Math.max(existingBreak.end as number, newBreak.end as number);
+              currentAxisBreaks.splice(i, 1); // Remove the existing break.
+            }
+          }
+          currentAxisBreaks.push(newBreak);
+          return currentAxisBreaks;
+        });
+      };
+      const updateAxisBreak = (myChart: echarts.ECharts, initXY: number[], currPoint: number[]) => {
+        var dataXY0 = myChart.convertFromPixel({ gridIndex: 0 }, initXY);
+        var dataXY1 = myChart.convertFromPixel({ gridIndex: 0 }, currPoint);
+        var dataRange: [string, string] = [roundYValue(dataXY0[1]!), roundYValue(dataXY1[1]!)];
+        if (dataRange[0] > dataRange[1]) dataRange.reverse();
+        var newBreak: AxisBreakOption = { start: dataRange[0]!, end: dataRange[1]!, gap: '2%' };
+        insertAndMergeNewBreakWithExistingBreaks(newBreak);
+      };
+      const zrMousedownHandler = (params: echarts.ElementEvent) => {
+        _brushingEl = new echarts.graphic.Rect({
+          shape: { x: 0, y: params.offsetY },
+          style: { stroke: 'none', fill: '#ccc' },
+          ignore: true,
+        });
+        myChart.getZr().add(_brushingEl);
+      };
+      const zrMousemoveHandler = (params: echarts.ElementEvent) => {
+        if (!_brushingEl) return;
+        var initY = _brushingEl.shape.y;
+        var currPoint = [params.offsetX, params.offsetY];
+        _brushingEl.setShape({ width: myChart.getWidth(), height: currPoint[1]! - initY });
+        _brushingEl.ignore = false;
+      };
+      const documentMouseupHandler = (params: MouseEvent) => {
+        if (!_brushingEl) return;
+        var initX = _brushingEl.shape.x;
+        var initY = _brushingEl.shape.y;
+        var currPoint = [params.offsetX, params.offsetY];
+        var pixelSpan = Math.abs(currPoint[1]! - initY);
+        if (pixelSpan > 2) updateAxisBreak(myChart, [initX, initY], currPoint);
+        myChart.getZr().remove(_brushingEl);
+        _brushingEl = null;
+      };
+      myChart.getZr().on('mousedown', zrMousedownHandler);
+      myChart.getZr().on('mousemove', zrMousemoveHandler);
+      document.addEventListener('mouseup', documentMouseupHandler);
+      const axisBreakChangedHandler = (params: AxisBreakChangedEvent) => {
+        // Remove expanded axis breaks from _currentAxisBreaks.
+        var changedBreaks = params.breaks || [];
+        if (!changedBreaks.length) return;
+        setCurrentAxisBreaks((_currentAxisBreaks) => {
+          const currentAxisBreaks = [..._currentAxisBreaks];
+          for (const changedBreakItem of changedBreaks) {
+            if (changedBreakItem.isExpanded) {
+              for (var j = currentAxisBreaks.length - 1; j >= 0; j--) {
+                if (
+                  currentAxisBreaks[j]!.start === changedBreakItem.start &&
+                  currentAxisBreaks[j]!.end === changedBreakItem.end
+                ) {
+                  currentAxisBreaks.splice(j, 1);
+                }
+              }
+            }
+          }
+          return currentAxisBreaks;
+        });
+      };
+      myChart.on('axisbreakchanged', axisBreakChangedHandler as any);
+      return () => {
+        myChart.getZr().off('mousedown', zrMousedownHandler);
+        myChart.getZr().off('mousemove', zrMousemoveHandler);
+        document.removeEventListener('mouseup', documentMouseupHandler);
+        myChart.off('axisbreakchanged', axisBreakChangedHandler);
+      };
+    }, []);
+
+    return (
+      <BarChart
+        ref={chartRef}
+        style={{ width: 480, height: 300 }}
+        grid={{ top: GRID_TOP, bottom: GRID_BOTTOM }}
+        xAxis={[{ type: 'category', data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] }]}
+        yAxis={[
+          {
+            type: 'value',
+            breaks: currentAxisBreaks,
+            breakArea: { itemStyle: { opacity: 1 }, zigzagMaxSpan: 15, zigzagAmplitude: 2, zigzagZ: 200 },
+          },
+        ]}
+        series={[
+          {
+            name: 'Data A',
+            type: 'bar',
+            emphasis: { focus: 'series' },
+            data: [1500, 2032, 2001, 3154, 2190, 4330, 2410],
+          },
+          {
+            name: 'Data B',
+            type: 'bar',
+            emphasis: { focus: 'series' },
+            data: [1200, 1320, 1010, 1340, 900, 2300, 2100],
+          },
+          {
+            name: 'Data C',
+            type: 'bar',
+            emphasis: { focus: 'series' },
+            data: [103200, 100320, 103010, 102340, 103900, 103300, 103200],
+          },
+          {
+            name: 'Data D',
+            type: 'bar',
+            data: [106212, 102118, 102643, 104631, 106679, 100130, 107022],
+            emphasis: { focus: 'series' },
+          },
+        ]}
+      >
+        <Title
+          title={{
+            text: 'Bar Chart with Axis Break (Brush-enabled)',
+            subtext: 'Brush to create a new axis break\n(Click on the break area to reset)',
+            left: 'center',
+            textStyle: { fontSize: 20 },
+            subtextStyle: { color: '#175ce5', fontSize: 15, fontWeight: 'bold' },
+          }}
+        />
+        <Tooltip tooltip={{ trigger: 'axis', axisPointer: { type: 'shadow' } }} />
+        <Legend legend={{}} />
+        <AxisBreak />
+      </BarChart>
+    );
+  },
+};
+
 export const DataTransformSortBar: Story = {
   name: 'Sort Data in Bar Chart',
   render() {
@@ -2518,6 +2688,183 @@ export const DatasetSimple1: Story = {
             ],
           }}
         />
+      </BarChart>
+    );
+  },
+};
+
+export const MatrixMiniBarGeo: Story = {
+  name: 'Mini Bars and Geo in Matrix',
+  render() {
+    const { data: geoJSON } = useSWR('https://echarts.apache.org/examples/data/asset/geo/ch.geo.json');
+    const [isGeoLoaded, setIsGeoLoaded] = useState(false);
+    React.useEffect(() => {
+      if (!geoJSON) return;
+      echarts.registerMap('target_map', geoJSON);
+      setIsGeoLoaded(true);
+    }, [geoJSON]);
+    var _colHeaders = ['Region and Time', 'Data A', 'Data B', 'Location'];
+    var _regionColIdx = 0;
+    var _geoColIdx = 3;
+    var _dataSourceList = [
+      {
+        name: '2021',
+        // prettier-ignore
+        data: [
+          // 'Region', 'Data A', 'Data B'
+          ['Valais', 1212, 2321], ['Ticino', 7181, 2114], ['Graubünden', 2763, 4212], ['Uri', 6122, 2942], ['Lucerne', 4221, 3411], ['Neuchâtel', 7221, 5121], ['Jura', 5121, 4121], ['Vaud', 6121, 3121], ['Thurgau', 7121, 2121], ['Schwyz', 8121, 1121]
+        ],
+      },
+      {
+        name: '2020',
+        // prettier-ignore
+        data: [
+          // 'Region', 'Data A', 'Data B'
+          ['Valais', 1010, 2221], ['Ticino', 7040, 1810], ['Graubünden', 2313, 4011], ['Uri', 6011, 2749], ['Lucerne', 3329, 3015], ['Neuchâtel', 7116, 4822], ['Jura', 4968, 3820], ['Vaud', 6027, 2928], ['Thurgau', 7011, 1725], ['Schwyz', 7311, 825]
+        ],
+      },
+    ];
+    // prettier-ignore
+    var _colorList = ['#ffd10a', '#0ca8df', '#b6d634', '#3fbe95', '#5070dd', '#ff994d', '#505372', '#fb628b', '#785db0'];
+    const grid: GridOption[] = [];
+    const xAxis: XAXisOption[] = [];
+    const yAxis: YAXisOption[] = [];
+    const series: BarSeriesOption[] = [];
+    const matrix: MatrixComponentOption = {
+      x: {
+        levelSize: 40,
+        data: _colHeaders.map(function (item, colIdx): MatrixDimensionCellLooseOption {
+          return {
+            value: item,
+            size: colIdx === _geoColIdx ? '15%' : colIdx === _regionColIdx ? 120 : undefined,
+          } as MatrixDimensionCellLooseOption;
+        }),
+        itemStyle: { color: '#f0f8ff' },
+        label: { fontWeight: 'bold' },
+      },
+      y: {
+        data: _dataSourceList[0]!.data.map(function () {
+          return '_'; // Any value is fine here, as we will not use it.
+        }),
+        show: false,
+      },
+      body: { data: [] },
+      top: 25,
+    };
+    const geo: GeoComponentOption[] = [];
+    // Assume every dataSourceList[i] has the same length; just for simplicity in this demo.
+    var rowCount = _dataSourceList[0]!.data.length;
+    for (var dataColIdx = 0; dataColIdx < _colHeaders.length; ++dataColIdx) {
+      var dataExtentOnCol =
+        dataColIdx === _regionColIdx || dataColIdx === _geoColIdx
+          ? undefined
+          : calculateDataExtentOnCol(_dataSourceList, dataColIdx);
+      for (var dataRowIdx = 0; dataRowIdx < rowCount; ++dataRowIdx) {
+        if (dataColIdx === _regionColIdx) addCellPlainText(_dataSourceList, dataColIdx, dataRowIdx);
+        else if (dataColIdx === _geoColIdx) addCellMiniGeo(_dataSourceList, dataColIdx, dataRowIdx);
+        else addCellMiniBar(_dataSourceList, dataColIdx, dataRowIdx, dataExtentOnCol);
+      }
+    }
+    function calculateDataExtentOnCol(dataSourceList: { name: string; data: (string | number)[][] }[], colIdx: number) {
+      var min = Infinity;
+      var max = -Infinity;
+      dataSourceList.forEach((dataSource) => {
+        dataSource.data.forEach((dataRow) => {
+          var val = dataRow[colIdx] as number;
+          if (val < min) min = val;
+          if (val > max) max = val;
+        });
+      });
+      return [min, max];
+    }
+    function addCellPlainText(
+      dataSourceList: { name: string; data: (string | number)[][] }[],
+      dataColIdx: number,
+      dataRowIdx: number
+    ) {
+      // Assume every dataSourceList[i] has the same region names; just for simplicity in this demo.
+      var dataSource = dataSourceList[0]!;
+      matrix.body!.data!.push({
+        value: dataSource.data[dataRowIdx]![dataColIdx]! as string,
+        coord: [dataColIdx, dataRowIdx],
+      });
+    }
+    function addCellMiniBar(
+      dataSourceList: { name: string; data: (string | number)[][] }[],
+      dataColIdx: number,
+      dataRowIdx: number,
+      dataExtentOnCol?: any[]
+    ) {
+      var id = 'mini-bar-' + dataColIdx + '-' + dataRowIdx;
+      grid.push({ id: id, coordinateSystem: 'matrix', coord: [dataColIdx, dataRowIdx], top: '15%', bottom: '15%' });
+      xAxis.push({
+        id: id,
+        gridId: id,
+        type: 'value',
+        min: 0,
+        max: dataExtentOnCol ? dataExtentOnCol[1] : undefined,
+        scale: false,
+        axisLine: { show: false },
+        axisTick: { show: false },
+        splitLine: { show: false },
+        axisLabel: { show: false },
+      });
+      yAxis.push({
+        id: id,
+        gridId: id,
+        type: 'category',
+        boundaryGap: false,
+        inverse: true,
+        axisLine: { show: false },
+        axisTick: { show: false },
+        splitLine: { show: false },
+        axisLabel: { show: false },
+      });
+      dataSourceList.forEach((dataSource, dataSourceIdx) => {
+        series.push({
+          type: 'bar',
+          // `name` will be collected to legend.
+          name: dataSource.name,
+          xAxisId: id,
+          yAxisId: id,
+          label: { show: true, position: 'insideLeft' },
+          barMinHeight: 2,
+          barGap: '40%',
+          barWidth: '40%',
+          itemStyle: { color: _colorList[dataSourceIdx % _colorList.length]! },
+          encode: { label: 0 },
+          // Make sure 2021 and 2020 have the same Y value (we use '' here) for better bar series layout.
+          data: [[dataSource.data[dataRowIdx]![dataColIdx], '']],
+        });
+      });
+    }
+    function addCellMiniGeo(
+      dataSourceList: { name: string; data: (string | number)[][] }[],
+      dataColIdx: number,
+      dataRowIdx: number
+    ) {
+      var id = 'mini-geo-' + dataRowIdx;
+      var regionName = dataSourceList[0]!.data[dataRowIdx]![_regionColIdx];
+      geo.push({
+        id: id,
+        map: 'target_map',
+        animation: false,
+        aspectScale: Math.cos((47 * Math.PI) / 180),
+        coordinateSystem: 'matrix',
+        coord: [dataColIdx, dataRowIdx],
+        roam: false,
+        selectedMode: false,
+        tooltip: { show: false },
+        regions: [{ name: regionName as string, selected: true, select: { itemStyle: { color: '#0a41e6' } } }],
+        select: { label: { show: false } },
+      });
+    }
+    return (
+      <BarChart style={{ width: 600, height: 400 }} grid={grid} xAxis={xAxis} yAxis={yAxis} series={series}>
+        <Legend legend={{}} />
+        <Tooltip tooltip={{}} />
+        <Matrix matrix={matrix} />
+        <Geo geo={isGeoLoaded ? geo : []} />
       </BarChart>
     );
   },
