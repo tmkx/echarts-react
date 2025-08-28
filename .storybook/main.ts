@@ -25,6 +25,11 @@ const config: StorybookConfig = {
               '@fanciers/echarts-react': path.resolve(__dirname, '../src'),
             },
           },
+          module: {
+            rules: [
+              { test: /\.md$/, use: '@storybook/addon-docs/mdx-loader' }, //
+            ],
+          },
         },
       },
     });
