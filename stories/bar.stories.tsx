@@ -21,14 +21,7 @@ import {
 } from '@fanciers/echarts-react';
 import type { Meta, StoryObj } from '@storybook/react';
 import type { AxisBreakChangedEvent, BarSeriesOption, GeoComponentOption, MatrixComponentOption } from 'echarts';
-import type {
-  GeoOption,
-  GridOption,
-  MatrixOption,
-  TitleOption,
-  XAXisOption,
-  YAXisOption,
-} from 'echarts/types/dist/shared';
+import type { GridOption, TitleOption, XAXisOption, YAXisOption } from 'echarts/types/dist/shared';
 import type { BarSeriesLabelOption } from 'echarts/types/src/chart/bar/BarSeries.js';
 import type { MatrixDimensionCellLooseOption } from 'echarts/types/src/coord/matrix/MatrixModel.js';
 import type { AxisBreakOption, ECActionEvent, OptionDataValue } from 'echarts/types/src/util/types.js';
