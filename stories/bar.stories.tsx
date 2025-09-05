@@ -25,7 +25,7 @@ import type { GridOption, TitleOption, XAXisOption, YAXisOption } from 'echarts/
 import type { BarSeriesLabelOption } from 'echarts/types/src/chart/bar/BarSeries.js';
 import type { MatrixDimensionCellLooseOption } from 'echarts/types/src/coord/matrix/MatrixModel.js';
 import type { AxisBreakOption, ECActionEvent, OptionDataValue } from 'echarts/types/src/util/types.js';
-import React, { useState } from 'react';
+import * as React from 'react';
 import useSWR from 'swr';
 
 const meta = {
@@ -2690,7 +2690,7 @@ export const MatrixMiniBarGeo: Story = {
   name: 'Mini Bars and Geo in Matrix',
   render() {
     const { data: geoJSON } = useSWR('https://echarts.apache.org/examples/data/asset/geo/ch.geo.json');
-    const [isGeoLoaded, setIsGeoLoaded] = useState(false);
+    const [isGeoLoaded, setIsGeoLoaded] = React.useState(false);
     React.useEffect(() => {
       if (!geoJSON) return;
       echarts.registerMap('target_map', geoJSON);
