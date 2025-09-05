@@ -1,6 +1,6 @@
 {
   "name": "@fanciers/echarts-react",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "ECharts <3 React",
   "author": "Tmk <i@tmk.im>",
   "keywords": [
@@ -36,7 +36,7 @@
     "@rsbuild/plugin-react": "^1.4.0",
     "@storybook/addon-docs": "^9.1.4",
     "@storybook/react": "^9.1.4",
-    "@types/node": "^24.3.0",
+    "@types/node": "^24.3.1",
     "@types/react": "^19.1.12",
     "@types/react-dom": "^19.1.9",
     "echarts": "^6.0.0",

@@ -1,8 +1,11 @@
 import {
+  Calendar,
   Dataset,
+  Geo,
   Legend,
   LineChart,
   PieChart,
+  ScatterChart,
   Title,
   Toolbox,
   Tooltip,
@@ -10,7 +13,9 @@ import {
   echarts,
 } from '@fanciers/echarts-react';
 import type { Meta, StoryObj } from '@storybook/react';
+import type { PieSeriesOption } from 'echarts/charts';
 import React from 'react';
+import useSWR from 'swr';
 
 const meta = {
   title: 'Pie',
@@ -687,6 +692,144 @@ export const DatasetDefault: Story = {
               ['Cheese Cocoa', 24.1, 67.2, 79.5, 86.4, 65.2, 82.5],
               ['Walnut Brownie', 55.2, 67.1, 69.2, 72.4, 53.9, 39.1],
             ],
+          }}
+        />
+      </PieChart>
+    );
+  },
+};
+
+export const MapIcelandPie: Story = {
+  name: 'Pie Charts on GEO Map',
+  render() {
+    const { data: geoJSON } = useSWR('https://echarts.apache.org/examples/data/asset/geo/iceland.geo.json');
+    const [isGeoLoaded, setIsGeoLoaded] = React.useState(false);
+    React.useEffect(() => {
+      if (!geoJSON) return;
+      echarts.registerMap('iceland', geoJSON);
+      setIsGeoLoaded(true);
+    }, [geoJSON]);
+
+    function randomPieSeries(center: [number, number] | string, radius: number): PieSeriesOption {
+      const data = ['A', 'B', 'C', 'D'].map((t) => {
+        return { value: Math.round(Math.random() * 100), name: 'Category ' + t };
+      });
+      return {
+        type: 'pie',
+        coordinateSystem: 'geo',
+        tooltip: { formatter: '{b}: {c} ({d}%)' },
+        label: { show: false },
+        labelLine: { show: false },
+        animationDuration: 0,
+        radius,
+        center,
+        data,
+      };
+    }
+
+    return (
+      <PieChart
+        style={{ width: 480, height: 300 }}
+        series={[
+          randomPieSeries([-19.007740346534653, 64.1780281585128], 45),
+          randomPieSeries([-17.204666089108912, 65.44804833928391], 25),
+          randomPieSeries([-15.264995297029705, 64.8592208009264], 30),
+          randomPieSeries(
+            // it's also supported to use geo region name as center since v5.4.1
+            +echarts.version.split('.').slice(0, 3).join('') > 540
+              ? 'Vestfirðir'
+              : // or you can only use the LngLat array
+                [-13, 66],
+            30
+          ),
+        ]}
+      >
+        <Geo
+          geo={
+            isGeoLoaded
+              ? {
+                  map: 'iceland',
+                  roam: true,
+                  aspectScale: Math.cos((65 * Math.PI) / 180),
+                  // nameProperty: 'name_en', // If using en name.
+                  itemStyle: { areaColor: '#e7e8ea' },
+                  emphasis: { label: { show: false } },
+                }
+              : []
+          }
+        />
+        <Tooltip tooltip={{}} />
+        <Legend legend={{}} />
+      </PieChart>
+    );
+  },
+};
+
+export const CalendarPie: Story = {
+  name: 'Calendar Pie',
+  render() {
+    const cellSize: [number, number] = [80, 80];
+    const pieRadius = 30;
+    function getVirtualData() {
+      const date = +echarts.time.parse('2017-02-01');
+      const end = +echarts.time.parse('2017-03-01');
+      const dayTime = 3600 * 24 * 1000;
+      const data = [];
+      for (let time = date; time < end; time += dayTime) {
+        data.push([echarts.time.format(time, '{yyyy}-{MM}-{dd}', false), Math.floor(Math.random() * 10000)]);
+      }
+      return data;
+    }
+    const scatterData = getVirtualData();
+    const pieSeries = scatterData.map(
+      (item, index): PieSeriesOption => ({
+        type: 'pie',
+        id: `pie-${index}`,
+        center: item[0]!,
+        radius: pieRadius,
+        coordinateSystem: 'calendar',
+        label: { formatter: '{c}', position: 'inside' },
+        data: [
+          { name: 'Work', value: Math.round(Math.random() * 24) },
+          { name: 'Entertainment', value: Math.round(Math.random() * 24) },
+          { name: 'Sleep', value: Math.round(Math.random() * 24) },
+        ],
+      })
+    );
+
+    return (
+      <PieChart
+        compose={[ScatterChart]}
+        style={{ width: 600, height: 500 }}
+        series={[
+          {
+            id: 'label',
+            type: 'scatter',
+            coordinateSystem: 'calendar',
+            symbolSize: 0,
+            label: {
+              show: true,
+              formatter: (params) => echarts.time.format((params.value as [string, number])[0], '{dd}', false),
+              offset: [-cellSize[0] / 2 + 10, -cellSize[1] / 2 + 10],
+              fontSize: 14,
+            },
+            data: scatterData,
+          },
+          ...pieSeries,
+        ]}
+      >
+        <Tooltip tooltip={{}} />
+        <Legend legend={{ data: ['Work', 'Entertainment', 'Sleep'], bottom: 20 }} />
+        <Calendar
+          calendar={{
+            top: 'middle',
+            left: 'center',
+            orient: 'vertical',
+            cellSize: cellSize,
+            yearLabel: { show: false, fontSize: 30 },
+            dayLabel: { margin: 20, firstDay: 1, nameMap: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] },
+            monthLabel: { show: false },
+            range: ['2017-02'],
           }}
         />
       </PieChart>

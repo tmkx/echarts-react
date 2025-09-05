@@ -1,5 +1,6 @@
 import type {
   BrushComponentOption,
+  CalendarComponentOption,
   ComposeOption,
   DatasetComponentOption,
   DataZoomComponentOption,
@@ -19,6 +20,7 @@ import type {
 } from 'echarts';
 import {
   BrushComponent,
+  CalendarComponent,
   DatasetComponent,
   DataZoomComponent,
   GeoComponent,
@@ -57,6 +59,8 @@ function defineComponent<T extends ComponentOption>(ext: EChartExt) {
 }
 
 export const Brush = /*#__PURE__*/ defineComponent<BrushComponentOption>([BrushComponent]);
+
+export const Calendar = /*#__PURE__*/ defineComponent<CalendarComponentOption>([CalendarComponent]);
 
 export const Dataset = /*#__PURE__*/ defineComponent<DatasetComponentOption>([DatasetComponent, TransformComponent]);
 

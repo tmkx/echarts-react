@@ -1,9 +1,10 @@
 import React from 'react';
-import type { BarSeriesOption, ComposeOption, GridComponentOption } from 'echarts';
+import type { BarSeriesOption, ComposeOption, GridComponentOption, ScatterSeriesOption } from 'echarts';
 import {
   BarChart as EChartBarChart,
   LineChart as EChartLineChart,
   PieChart as EChartPieChart,
+  ScatterChart as EChartScatterChart,
   type LineSeriesOption,
   type PieSeriesOption,
 } from 'echarts/charts';
@@ -104,3 +105,5 @@ export const LineChart = /*#__PURE__*/ defineChart<LineSeriesOption | GridCompon
 ]);
 
 export const PieChart = /*#__PURE__*/ defineChart<PieSeriesOption>([EChartPieChart]);
+
+export const ScatterChart = /*#__PURE__*/ defineChart<ScatterSeriesOption>([EChartScatterChart]);
