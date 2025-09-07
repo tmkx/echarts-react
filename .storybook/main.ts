@@ -1,7 +1,6 @@
-import type { StorybookConfig } from 'storybook-react-rsbuild';
 import path from 'node:path';
-import { mergeRsbuildConfig } from '@rsbuild/core';
-import { pluginReact } from '@rsbuild/plugin-react';
+import type { StorybookConfig } from '@storybook/react-vite';
+import { InlineConfig, mergeConfig } from 'vite';
 
 const config: StorybookConfig = {
   stories: [
@@ -11,28 +10,23 @@ const config: StorybookConfig = {
   addons: [
     '@storybook/addon-docs', //
   ],
-  framework: 'storybook-react-rsbuild',
-  rsbuildFinal: (config) => {
-    return mergeRsbuildConfig(config, {
-      plugins: [pluginReact()],
-      output: {
-        assetPrefix: process.env.ASSET_PREFIX,
-      },
-      tools: {
-        rspack: {
-          resolve: {
-            alias: {
-              '@fanciers/echarts-react': path.resolve(__dirname, '../src'),
-            },
-          },
-          module: {
-            rules: [
-              { test: /\.md$/, use: '@storybook/addon-docs/mdx-loader' }, //
-            ],
+  framework: '@storybook/react-vite',
+  viteFinal: (config) => {
+    const README_PATH = path.resolve(__dirname, '../stories/README.mdx');
+
+    return mergeConfig(config, {
+      base: process.env.ASSET_PREFIX,
+      plugins: [
+        {
+          name: 'README-alias',
+          enforce: 'pre',
+          async load(id) {
+            if (id !== README_PATH) return;
+            return await this.fs.readFile(path.resolve(__dirname, '../README.md'), { encoding: 'utf8' });
           },
         },
-      },
-    });
+      ],
+    } satisfies InlineConfig);
   },
 };
 
