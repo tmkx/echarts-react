@@ -1,5 +1,5 @@
 export { CanvasRenderer, SVGRenderer } from 'echarts/renderers';
-export { BarChart, LineChart, PieChart, ScatterChart } from './charts.js';
+export { BarChart, EffectScatterChart, GraphChart, HeatmapChart, LineChart, PieChart, ScatterChart } from './charts.js';
 export {
   Brush,
   Calendar,
@@ -13,6 +13,7 @@ export {
   MarkPoint,
   Matrix,
   Polar,
+  SingleAxis,
   Timeline,
   Title,
   Toolbox,

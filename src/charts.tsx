@@ -1,7 +1,18 @@
 import React from 'react';
-import type { BarSeriesOption, ComposeOption, GridComponentOption, ScatterSeriesOption } from 'echarts';
+import type {
+  BarSeriesOption,
+  ComposeOption,
+  EffectScatterSeriesOption,
+  GraphSeriesOption,
+  GridComponentOption,
+  HeatmapSeriesOption,
+  ScatterSeriesOption,
+} from 'echarts';
 import {
   BarChart as EChartBarChart,
+  EffectScatterChart as EChartEffectScatterChart,
+  GraphChart as EChartGraphChart,
+  HeatmapChart as EChartHeatmapChart,
   LineChart as EChartLineChart,
   PieChart as EChartPieChart,
   ScatterChart as EChartScatterChart,
@@ -99,6 +110,15 @@ export const BarChart = /*#__PURE__*/ defineChart<BarSeriesOption | GridComponen
   GridComponent,
 ]);
 
+export const EffectScatterChart = /*#__PURE__*/ defineChart<EffectScatterSeriesOption | GridComponentOption>([
+  EChartEffectScatterChart,
+  GridComponent,
+]);
+
+export const GraphChart = /*#__PURE__*/ defineChart<GraphSeriesOption>([EChartGraphChart]);
+
+export const HeatmapChart = /*#__PURE__*/ defineChart<HeatmapSeriesOption>([EChartHeatmapChart]);
+
 export const LineChart = /*#__PURE__*/ defineChart<LineSeriesOption | GridComponentOption>([
   EChartLineChart,
   GridComponent,
@@ -106,4 +126,7 @@ export const LineChart = /*#__PURE__*/ defineChart<LineSeriesOption | GridCompon
 
 export const PieChart = /*#__PURE__*/ defineChart<PieSeriesOption>([EChartPieChart]);
 
-export const ScatterChart = /*#__PURE__*/ defineChart<ScatterSeriesOption>([EChartScatterChart]);
+export const ScatterChart = /*#__PURE__*/ defineChart<ScatterSeriesOption | GridComponentOption>([
+  EChartScatterChart,
+  GridComponent,
+]);

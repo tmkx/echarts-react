@@ -16,7 +16,7 @@ const preview: Preview = {
     },
     options: {
       storySort: {
-        order: ['README', 'Line', 'Bar', 'Pie'],
+        order: ['README', 'Line', 'Bar', 'Pie', 'Scatter'],
       },
     },
   } satisfies (CoreTypes & DocsTypes)['parameters'],
