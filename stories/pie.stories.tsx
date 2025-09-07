@@ -13,7 +13,7 @@ import {
   echarts,
 } from '@fanciers/echarts-react';
 import type { Meta, StoryObj } from '@storybook/react';
-import type { PieSeriesOption } from 'echarts/charts';
+import type { PieSeriesOption } from 'echarts';
 import React from 'react';
 import useSWR from 'swr';
 
@@ -449,7 +449,7 @@ export const PieLabelLineAdjust: Story = {
       <PieChart
         ref={chartRef}
         style={{ width: 480, height: 300 }}
-        series={datas.map(function (data, idx) {
+        series={datas.map(function (data, idx): PieSeriesOption {
           var top = idx * 33.3;
           return {
             type: 'pie',

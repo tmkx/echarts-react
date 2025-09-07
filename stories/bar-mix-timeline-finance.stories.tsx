@@ -1,6 +1,6 @@
 import { BarChart, Legend, PieChart, Timeline, Title, Tooltip } from '@fanciers/echarts-react';
 import type { Meta, StoryObj } from '@storybook/react';
-import type { TimelineDataItemOption } from 'echarts/types/src/component/timeline/TimelineModel.js';
+import type { TimelineComponentOption } from 'echarts';
 
 const meta = {
   title: 'Bar',
@@ -117,6 +117,7 @@ dataMap.dataFinancial = dataFormatter({
 export const MixTimelineFinance: Story = {
   name: 'Finance Indices 2002',
   render() {
+    type TimelineDataItemOption = NonNullable<TimelineComponentOption['data']>[number];
     return (
       <BarChart
         style={{ width: 480, height: 300 }}
