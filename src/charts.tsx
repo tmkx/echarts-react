@@ -37,7 +37,7 @@ function assignForwardedRef<T>(ref: React.ForwardedRef<T>, value: T | null) {
   else ref.current = value;
 }
 
-interface ChartBaseProps<T extends readonly ChartComponentType<any>[]> {
+interface ChartBaseProps<T extends readonly ChartComponentType[]> {
   className?: string;
   style?: React.CSSProperties;
   containerProps?: React.HTMLAttributes<HTMLDivElement>;
@@ -46,16 +46,19 @@ interface ChartBaseProps<T extends readonly ChartComponentType<any>[]> {
   children?: React.ReactNode;
 }
 
-type InferChartComponentOption<
-  T extends readonly ChartComponentType<any>[],
-  U = T[number]
-> = U extends ChartComponentType<infer P> ? P : never;
+type ResolveComposeOption<T extends ComponentOption | ChartComponentType> = T extends ComponentOption
+  ? T
+  : T extends ChartComponentType<infer P>
+  ? P
+  : never;
 
-interface ChartComponentType<T extends ComponentOption> {
-  <U extends readonly ChartComponentType<any>[] = []>(
+interface ChartComponentType<in T extends ComponentOption = any> {
+  <U extends readonly ChartComponentType[] = []>(
     props: ChartBaseProps<U> &
       echarts.EChartsCoreOption &
-      Simplify<ComposeOption<T | InferChartComponentOption<U>>> & { ref?: React.Ref<echarts.ECharts> }
+      Simplify<ComposeOption<ResolveComposeOption<T | U[number]>>> & {
+        ref?: React.Ref<echarts.ECharts>;
+      }
   ): React.JSX.Element;
 
   ext: EChartExt;

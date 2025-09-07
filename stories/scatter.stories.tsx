@@ -1037,7 +1037,7 @@ export const CalendarCharts: Story = {
 
     return (
       <ScatterChart
-        compose={[EffectScatterChart, GraphChart, HeatmapChart] as const}
+        compose={[EffectScatterChart, GraphChart, HeatmapChart]}
         style={{ width: 800, height: 700 }}
         series={[
           {
