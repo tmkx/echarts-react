@@ -18,7 +18,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      ASSET_PREFIX: /echarts-react
+      ASSET_PREFIX: /echarts-react/
     steps:
       - name: Checkout
         uses: actions/checkout@v4
