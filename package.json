@@ -28,6 +28,7 @@
   },
   "scripts": {
     "dev": "storybook dev",
+    "test": "vitest",
     "prepack": "tsdown",
     "lint": "tsc --noEmit"
   },
@@ -46,7 +47,8 @@
     "storybook-react-rsbuild": "^2.1.0",
     "swr": "^2.3.6",
     "tsdown": "^0.14.2",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
   },
   "peerDependencies": {
     "echarts": "^6.0.0",

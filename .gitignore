@@ -5,6 +5,7 @@ node_modules
 .idea/
 .pnpm-store/
 
+coverage/
 dist/
 storybook-static/
 fanciers-echarts-react-*.tgz

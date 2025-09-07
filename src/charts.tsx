@@ -6,6 +6,8 @@ import type {
   GraphSeriesOption,
   GridComponentOption,
   HeatmapSeriesOption,
+  LineSeriesOption,
+  PieSeriesOption,
   ScatterSeriesOption,
 } from 'echarts';
 import {
@@ -16,8 +18,6 @@ import {
   LineChart as EChartLineChart,
   PieChart as EChartPieChart,
   ScatterChart as EChartScatterChart,
-  type LineSeriesOption,
-  type PieSeriesOption,
 } from 'echarts/charts';
 import { GridComponent } from 'echarts/components';
 import type { ComponentOption } from 'echarts/types/src/util/types.js';

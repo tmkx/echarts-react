@@ -20,8 +20,16 @@ import {
   echarts,
 } from '@fanciers/echarts-react';
 import type { Meta, StoryObj } from '@storybook/react';
-import type { AxisBreakChangedEvent, BarSeriesOption, GeoComponentOption, MatrixComponentOption } from 'echarts';
-import type { GridOption, TitleOption, XAXisOption, YAXisOption } from 'echarts/types/dist/shared';
+import type {
+  AxisBreakChangedEvent,
+  BarSeriesOption,
+  GeoComponentOption,
+  GridComponentOption,
+  MatrixComponentOption,
+  TitleComponentOption,
+  XAXisComponentOption,
+  YAXisComponentOption,
+} from 'echarts';
 import type { BarSeriesLabelOption } from 'echarts/types/src/chart/bar/BarSeries.js';
 import type { MatrixDimensionCellLooseOption } from 'echarts/types/src/coord/matrix/MatrixModel.js';
 import type { AxisBreakOption, ECActionEvent, OptionDataValue } from 'echarts/types/src/util/types.js';
@@ -998,7 +1006,7 @@ export const BarBrush: Story = {
       },
     };
 
-    const [title, setTitle] = React.useState<TitleOption>({});
+    const [title, setTitle] = React.useState<TitleComponentOption>({});
     const chartRef = React.useRef<echarts.ECharts>(null);
 
     React.useEffect(() => {
@@ -1459,7 +1467,7 @@ export const BarDrilldown: Story = {
       },
     ];
 
-    const defaultXAxis: XAXisOption = { data: ['Animals', 'Fruits', 'Cars'] };
+    const defaultXAxis: XAXisComponentOption = { data: ['Animals', 'Fruits', 'Cars'] };
     const defaultSeries: BarSeriesOption = {
       type: 'bar',
       id: 'sales',
@@ -1470,7 +1478,7 @@ export const BarDrilldown: Story = {
       ],
       universalTransition: { enabled: true, divideShape: 'clone' },
     };
-    const [xAxis, setXAxis] = React.useState<XAXisOption>(defaultXAxis);
+    const [xAxis, setXAxis] = React.useState<XAXisComponentOption>(defaultXAxis);
     const [series, setSeries] = React.useState<BarSeriesOption>(defaultSeries);
     const [graphic, setGraphic] = React.useState<GraphicComponentLooseOption[]>([]);
 
@@ -2719,9 +2727,9 @@ export const MatrixMiniBarGeo: Story = {
     ];
     // prettier-ignore
     var _colorList = ['#ffd10a', '#0ca8df', '#b6d634', '#3fbe95', '#5070dd', '#ff994d', '#505372', '#fb628b', '#785db0'];
-    const grid: GridOption[] = [];
-    const xAxis: XAXisOption[] = [];
-    const yAxis: YAXisOption[] = [];
+    const grid: GridComponentOption[] = [];
+    const xAxis: XAXisComponentOption[] = [];
+    const yAxis: YAXisComponentOption[] = [];
     const series: BarSeriesOption[] = [];
     const matrix: MatrixComponentOption = {
       x: {

@@ -18,14 +18,17 @@ import {
   Tooltip,
   VisualMap,
 } from '@fanciers/echarts-react';
-import type { LineSeriesOption } from 'echarts/charts';
-import type { DatasetOption, GridOption, TitleOption, XAXisOption, YAXisOption } from 'echarts/types/dist/shared';
+import type {
+  DatasetComponentOption,
+  GridComponentOption,
+  LineSeriesOption,
+  MarkLineComponentOption,
+  TitleComponentOption,
+  XAXisComponentOption,
+  YAXisComponentOption,
+} from 'echarts';
 import React from 'react';
 import useSWR from 'swr';
-import type {
-  MarkLine1DDataItemOption,
-  MarkLine2DDataItemOption,
-} from 'echarts/types/src/component/marker/MarkLineModel.js';
 import type { LineLabelOption } from 'echarts/types/src/util/types.js';
 
 const meta = {
@@ -1161,7 +1164,7 @@ export const LineRace: Story = {
     const { data } = useSWR('https://echarts.apache.org/examples/data/asset/data/life-expectancy-table.json');
 
     const countries = ['Finland', 'France', 'Germany', 'Iceland', 'Norway', 'Poland', 'Russia', 'United Kingdom'];
-    const datasetWithFilters: DatasetOption[] = [];
+    const datasetWithFilters: DatasetComponentOption[] = [];
     const seriesList: LineSeriesOption[] = [];
     echarts.util.each(countries, function (country) {
       var datasetId = 'dataset_' + country;
@@ -1217,7 +1220,7 @@ export const LineRace: Story = {
 export const LineMarkline: Story = {
   name: 'Line with Marklines',
   render() {
-    const markLine: (MarkLine1DDataItemOption | MarkLine2DDataItemOption)[] = [];
+    const markLine: NonNullable<MarkLineComponentOption['data']> = [];
     const positions: NonNullable<LineLabelOption['position']>[] = [
       'start',
       'middle',
@@ -1531,11 +1534,11 @@ export const LineEasing: Story = {
     };
 
     const N_POINT = 30;
-    const grids: GridOption[] = [];
-    const xAxes: XAXisOption[] = [];
-    const yAxes: YAXisOption[] = [];
+    const grids: GridComponentOption[] = [];
+    const xAxes: XAXisComponentOption[] = [];
+    const yAxes: YAXisComponentOption[] = [];
     const series: LineSeriesOption[] = [];
-    const titles: TitleOption[] = [];
+    const titles: TitleComponentOption[] = [];
     let count = 0;
     Object.keys(easingFuncs).forEach(function (easingName) {
       var easingFunc = easingFuncs[easingName as keyof typeof easingFuncs];
@@ -2422,9 +2425,9 @@ export const MatrixSparkline: Story = {
       return cellData;
     }
 
-    const grid: GridOption[] = [];
-    const xAxis: XAXisOption[] = [];
-    const yAxis: YAXisOption[] = [];
+    const grid: GridComponentOption[] = [];
+    const xAxis: XAXisComponentOption[] = [];
+    const yAxis: YAXisComponentOption[] = [];
     const series: LineSeriesOption[] = [];
 
     eachMatrixCell((xval, yval, xidx, yidx) => {
