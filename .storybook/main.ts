@@ -16,7 +16,7 @@ const config: StorybookConfig = {
       config,
       defineConfig({
         base: process.env.ASSET_PREFIX,
-        plugins: [readmeAliasPlugin()],
+        plugins: [readmeAliasPlugin(), fixStorybookMockerEntryPlugin()],
       })
     ),
 };
@@ -29,6 +29,18 @@ function readmeAliasPlugin(): Plugin {
     async load(id) {
       if (id !== README_PATH) return;
       return await this.fs.readFile(path.resolve(__dirname, '../README.md'), { encoding: 'utf8' });
+    },
+  };
+}
+
+function fixStorybookMockerEntryPlugin(): Plugin {
+  return {
+    name: 'fix-storybook-mocker-entry',
+    enforce: 'post',
+    transformIndexHtml(html) {
+      // https://github.com/storybookjs/storybook/blob/2657cc33826d1abf76334f94fef4b82b10f1e1c0/code/core/src/core-server/presets/vitePlugins/vite-inject-mocker/plugin.ts#L11
+      const entryPath = '/vite-inject-mocker-entry.js';
+      return html.replace(`"${entryPath}"`, `".${entryPath}"`);
     },
   };
 }
