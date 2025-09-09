@@ -46,7 +46,7 @@ interface ChartBaseProps<T extends readonly ChartComponentType[]> {
   children?: React.ReactNode;
 }
 
-type ResolveComposeOption<T extends ComponentOption | ChartComponentType> = T extends ComponentOption
+type ResolveComponentOption<T extends ComponentOption | ChartComponentType> = T extends ComponentOption
   ? T
   : T extends ChartComponentType<infer P>
   ? P
@@ -56,7 +56,7 @@ interface ChartComponentType<in T extends ComponentOption = any> {
   <U extends readonly ChartComponentType[] = []>(
     props: ChartBaseProps<U> &
       echarts.EChartsCoreOption &
-      Simplify<ComposeOption<ResolveComposeOption<T | U[number]>>> & {
+      Simplify<ComposeOption<ResolveComponentOption<T | U[number]>>> & {
         ref?: React.Ref<echarts.ECharts>;
       }
   ): React.JSX.Element;

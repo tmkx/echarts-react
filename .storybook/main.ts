@@ -16,19 +16,22 @@ const config: StorybookConfig = {
       config,
       defineConfig({
         base: process.env.ASSET_PREFIX,
-        plugins: [readmeAliasPlugin(), fixStorybookMockerEntryPlugin()],
+        plugins: [
+          readmeAliasPlugin(), //
+          fixStorybookMockerEntryPlugin(),
+        ],
       })
     ),
 };
 
 function readmeAliasPlugin(): Plugin {
-  const README_PATH = path.resolve(__dirname, '../stories/README.mdx');
+  const README_PATH = path.resolve(import.meta.dirname, '../stories/README.mdx');
   return {
     name: 'readme-alias',
     enforce: 'pre',
     async load(id) {
       if (id !== README_PATH) return;
-      return await this.fs.readFile(path.resolve(__dirname, '../README.md'), { encoding: 'utf8' });
+      return await this.fs.readFile(path.resolve(import.meta.dirname, '../README.md'), { encoding: 'utf8' });
     },
   };
 }
