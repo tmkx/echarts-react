@@ -18,8 +18,8 @@
   ],
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
     }
   },
   "typings": "./dist/index.d.ts",
@@ -33,26 +33,26 @@
     "lint": "tsc --noEmit"
   },
   "devDependencies": {
-    "@storybook/addon-docs": "10.0.0-beta.2",
-    "@storybook/react": "10.0.0-beta.2",
-    "@storybook/react-vite": "10.0.0-beta.2",
-    "@types/node": "^24.3.1",
-    "@types/react": "^19.1.12",
-    "@types/react-dom": "^19.1.9",
+    "@storybook/addon-docs": "10.1.11",
+    "@storybook/react": "10.1.11",
+    "@storybook/react-vite": "10.1.11",
+    "@types/node": "^25.0.9",
+    "@types/react": "^19.2.8",
+    "@types/react-dom": "^19.2.3",
     "echarts": "^6.0.0",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
-    "storybook": "10.0.0-beta.2",
-    "swr": "^2.3.6",
-    "tsdown": "^0.15.0",
-    "typescript": "^5.9.2",
-    "vite": "^7.1.5",
-    "vitest": "^3.2.4"
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "storybook": "10.1.11",
+    "swr": "^2.3.8",
+    "tsdown": "^0.19.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1",
+    "vitest": "^4.0.17"
   },
   "peerDependencies": {
     "echarts": "^6.0.0",
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
   },
-  "packageManager": "pnpm@10.15.1"
+  "packageManager": "pnpm@10.28.0"
 }
