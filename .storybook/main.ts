@@ -21,6 +21,15 @@ const config: StorybookConfig = {
       config,
       defineConfig({
         base: process.env.ASSET_PREFIX,
+        build: {
+          rolldownOptions: {
+            output: {
+              // This fixes the production output issue for Storybook, which displays the error "__STORYBOOK_MODULE_CLIENT_LOGGER__ is not defined"
+              // https://github.com/vitejs/rolldown-vite/issues/562#issuecomment-3663544321
+              strictExecutionOrder: true,
+            },
+          },
+        },
         plugins: [
           readmeAliasPlugin(), //
         ],
