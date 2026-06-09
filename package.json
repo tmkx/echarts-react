@@ -1,6 +1,6 @@
 {
   "name": "@fanciers/echarts-react",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "ECharts <3 React",
   "author": "Tmk <i@tmk.im>",
   "keywords": [
@@ -24,6 +24,7 @@
   },
   "main": "./dist/index.mjs",
   "typings": "./dist/index.d.mts",
+  "homepage": "https://tmkx.github.io/echarts-react",
   "repository": {
     "url": "https://github.com/tmkx/echarts-react.git"
   },
@@ -33,33 +34,28 @@
     "prepack": "tsdown",
     "lint": "tsc --noEmit"
   },
+  "dependencies": {
+    "echarts": "^6.1.0"
+  },
   "devDependencies": {
-    "@storybook/addon-docs": "10.2.10",
-    "@storybook/react": "10.2.10",
-    "@storybook/react-vite": "10.2.10",
-    "@types/node": "^25.3.0",
-    "@types/react": "^19.2.14",
+    "@storybook/addon-docs": "10.4.3",
+    "@storybook/react": "10.4.3",
+    "@storybook/react-vite": "10.4.3",
+    "@types/node": "^25.9.2",
+    "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
-    "echarts": "^6.0.0",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
-    "storybook": "10.2.10",
-    "swr": "^2.4.0",
-    "tsdown": "^0.20.3",
-    "typescript": "^5.9.3",
-    "vite": "8.0.0-beta.15",
-    "vitest": "^4.0.18"
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "storybook": "10.4.3",
+    "swr": "^2.4.1",
+    "tsdown": "^0.22.2",
+    "typescript": "^6.0.3",
+    "vite": "8.0.16",
+    "vitest": "^4.1.8"
   },
   "peerDependencies": {
-    "echarts": "^6.0.0",
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
   },
-  "packageManager": "pnpm@10.30.1",
-  "pnpm": {
-    "overrides": {
-      "vite": "8.0.0-beta.15",
-      "rolldown": "1.0.0-rc.5"
-    }
-  }
+  "packageManager": "pnpm@11.5.2"
 }

@@ -2411,6 +2411,7 @@ export const BarBreaksBrush: Story = {
           style: { stroke: 'none', fill: '#ccc' },
           ignore: true,
         });
+        // @ts-expect-error
         myChart.getZr().add(_brushingEl);
       };
       const zrMousemoveHandler = (params: echarts.ElementEvent) => {
@@ -2427,6 +2428,7 @@ export const BarBreaksBrush: Story = {
         var currPoint = [params.offsetX, params.offsetY];
         var pixelSpan = Math.abs(currPoint[1]! - initY);
         if (pixelSpan > 2) updateAxisBreak(myChart, [initX, initY], currPoint);
+        // @ts-expect-error
         myChart.getZr().remove(_brushingEl);
         _brushingEl = null;
       };

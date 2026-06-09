@@ -2479,9 +2479,7 @@ export const MatrixSparkline: Story = {
         <Tooltip tooltip={{ trigger: 'axis' }} />
         <DataZoom
           dataZoom={[
-            // @ts-expect-error xAxisIndex: 'all'
             { type: 'slider', xAxisIndex: 'all', left: '10%', right: '10%', bottom: 30, height: 30, throttle: 120 },
-            // @ts-expect-error xAxisIndex: 'all'
             { type: 'inside', xAxisIndex: 'all', throttle: 120 },
           ]}
         />
