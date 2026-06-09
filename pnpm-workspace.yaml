@@ -1,0 +1,12 @@
+allowBuilds:
+  esbuild: false
+minimumReleaseAgeExclude:
+  - '@storybook/addon-docs@10.4.3'
+  - '@storybook/builder-vite@10.4.3'
+  - '@storybook/csf-plugin@10.4.3'
+  - '@storybook/react-dom-shim@10.4.3'
+  - '@storybook/react-vite@10.4.3'
+  - '@storybook/react@10.4.3'
+  - storybook@10.4.3
+overrides:
+  rolldown: 1.1.0
