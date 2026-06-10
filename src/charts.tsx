@@ -9,6 +9,7 @@ import type {
   LineSeriesOption,
   PieSeriesOption,
   ScatterSeriesOption,
+  SunburstSeriesOption,
 } from 'echarts';
 import {
   BarChart as EChartBarChart,
@@ -18,6 +19,7 @@ import {
   LineChart as EChartLineChart,
   PieChart as EChartPieChart,
   ScatterChart as EChartScatterChart,
+  SunburstChart as EChartSunburstChart,
 } from 'echarts/charts';
 import { GridComponent } from 'echarts/components';
 import type { ComponentOption } from 'echarts/types/src/util/types.js';
@@ -49,8 +51,8 @@ interface ChartBaseProps<T extends readonly ChartComponentType[]> {
 type ResolveComponentOption<T extends ComponentOption | ChartComponentType> = T extends ComponentOption
   ? T
   : T extends ChartComponentType<infer P>
-  ? P
-  : never;
+    ? P
+    : never;
 
 interface ChartComponentType<in T extends ComponentOption = any> {
   <U extends readonly ChartComponentType[] = []>(
@@ -133,3 +135,5 @@ export const ScatterChart = /*#__PURE__*/ defineChart<ScatterSeriesOption | Grid
   EChartScatterChart,
   GridComponent,
 ]);
+
+export const SunburstChart = /*#__PURE__*/ defineChart<SunburstSeriesOption>([EChartSunburstChart]);
