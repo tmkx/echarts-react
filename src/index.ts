@@ -6,6 +6,7 @@ export {
   HeatmapChart,
   LineChart,
   PieChart,
+  SankeyChart,
   ScatterChart,
   SunburstChart,
 } from './charts.js';
