@@ -8,6 +8,7 @@ import type {
   HeatmapSeriesOption,
   LineSeriesOption,
   PieSeriesOption,
+  SankeySeriesOption,
   ScatterSeriesOption,
   SunburstSeriesOption,
 } from 'echarts';
@@ -19,6 +20,7 @@ import {
   LineChart as EChartLineChart,
   PieChart as EChartPieChart,
   ScatterChart as EChartScatterChart,
+  SankeyChart as EChartSankeyChart,
   SunburstChart as EChartSunburstChart,
 } from 'echarts/charts';
 import { GridComponent } from 'echarts/components';
@@ -136,4 +138,7 @@ export const ScatterChart = /*#__PURE__*/ defineChart<ScatterSeriesOption | Grid
   GridComponent,
 ]);
 
+export const SankeyChart = /*#__PURE__*/ defineChart<SankeySeriesOption>([EChartSankeyChart]);
+
 export const SunburstChart = /*#__PURE__*/ defineChart<SunburstSeriesOption>([EChartSunburstChart]);
+
