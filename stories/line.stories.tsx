@@ -1,4 +1,3 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import {
   AxisBreak,
   Dataset,
@@ -18,6 +17,7 @@ import {
   Tooltip,
   VisualMap,
 } from '@fanciers/echarts-react';
+import type { Meta, StoryObj } from '@storybook/react';
 import type {
   DatasetComponentOption,
   GridComponentOption,
@@ -27,9 +27,9 @@ import type {
   XAXisComponentOption,
   YAXisComponentOption,
 } from 'echarts';
+import type { LineLabelOption } from 'echarts/types/src/util/types.js';
 import React from 'react';
 import useSWR from 'swr';
-import type { LineLabelOption } from 'echarts/types/src/util/types.js';
 
 const meta = {
   title: 'Line',

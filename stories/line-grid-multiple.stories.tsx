@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { DataZoom, Legend, LineChart, Title, Toolbox, Tooltip } from '@fanciers/echarts-react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   title: 'Line',

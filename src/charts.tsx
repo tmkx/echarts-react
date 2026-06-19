@@ -1,4 +1,3 @@
-import React from 'react';
 import type {
   BarSeriesOption,
   ComposeOption,
@@ -25,6 +24,8 @@ import {
 } from 'echarts/charts';
 import { GridComponent } from 'echarts/components';
 import type { ComponentOption } from 'echarts/types/src/util/types.js';
+import React from 'react';
+
 import {
   ChartContext,
   defaultSetOptionOpt,
@@ -141,4 +142,3 @@ export const ScatterChart = /*#__PURE__*/ defineChart<ScatterSeriesOption | Grid
 export const SankeyChart = /*#__PURE__*/ defineChart<SankeySeriesOption>([EChartSankeyChart]);
 
 export const SunburstChart = /*#__PURE__*/ defineChart<SunburstSeriesOption>([EChartSunburstChart]);
-

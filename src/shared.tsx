@@ -1,6 +1,6 @@
-import React from 'react';
 import * as echarts from 'echarts/core';
 import type { SetOptionOpts } from 'echarts/core';
+import React from 'react';
 
 export { echarts };
 
