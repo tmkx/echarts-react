@@ -42,6 +42,7 @@ import {
 } from 'echarts/components';
 import type { ComponentOption } from 'echarts/types/src/util/types.js';
 import React from 'react';
+
 import { useChartContext, useRegister, type EChartExt } from './shared.js';
 
 function defineComponent<T extends ComponentOption>(ext: EChartExt) {

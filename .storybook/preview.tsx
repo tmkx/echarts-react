@@ -1,9 +1,9 @@
-import type { Preview } from '@storybook/react';
 import type { DocsTypes } from '@storybook/addon-docs';
-import type { CoreTypes } from 'storybook/internal/csf';
-import { themes } from 'storybook/theming';
+import type { Preview } from '@storybook/react';
 import * as echarts from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
+import type { CoreTypes } from 'storybook/internal/csf';
+import { themes } from 'storybook/theming';
 import { SWRConfig } from 'swr';
 
 echarts.use(CanvasRenderer);
