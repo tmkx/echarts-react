@@ -1,0 +1,20 @@
+.oxfmtrc.json
+  h_f1b7fa0b15b7f5 1-8
+package.json
+  h_f1b7fa0b15b7f5 6-7,12,14-17,21-24,33,42-44,48,51,53,55,62
+stories/sankey.stories.tsx
+  h_f1b7fa0b15b7f5 1-3,6,14,20-22,24-29,38,46-49,51-56,58-60,64,69-366,373,375-376,383-385,388,392-400,402,410-412,415,419-420
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "794bc830dd5c270694d985256332d279cf6d9078",
+  "prompts": {},
+  "humans": {
+    "h_f1b7fa0b15b7f5": {
+      "author": "Tmk <i@tmk.im>"
+    }
+  },
+  "attestation_metadata": {},
+  "remote_transcripts": {}
+}
