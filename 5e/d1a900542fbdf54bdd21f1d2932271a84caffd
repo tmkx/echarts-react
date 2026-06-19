@@ -1,0 +1,31 @@
+src/index.ts
+  h_f1b7fa0b15b7f5 15
+src/charts.tsx
+  s_c25b67dfa21901::t_1c730f41db55c7 31
+  h_f1b7fa0b15b7f5 16,160
+stories/theme-river.stories.tsx
+  h_f1b7fa0b15b7f5 1-247
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "5ed1a900542fbdf54bdd21f1d2932271a84caffd",
+  "prompts": {},
+  "humans": {
+    "h_f1b7fa0b15b7f5": {
+      "author": "Tmk <i@tmk.im>"
+    }
+  },
+  "sessions": {
+    "s_c25b67dfa21901": {
+      "agent_id": {
+        "tool": "trae-cue",
+        "id": "ai_tab-icr-8e68d212-d351-4b25-b30f-87b05c52076c",
+        "model": "default"
+      },
+      "human_author": "Tmk <i@tmk.im>"
+    }
+  },
+  "attestation_metadata": {},
+  "remote_transcripts": {}
+}
