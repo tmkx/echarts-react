@@ -12,6 +12,7 @@ export {
   SankeyChart,
   ScatterChart,
   SunburstChart,
+  ThemeRiverChart,
 } from './charts.js';
 export {
   Brush,

@@ -9,3 +9,4 @@ coverage/
 dist/
 storybook-static/
 fanciers-echarts-react-*.tgz
+debug-storybook.log
