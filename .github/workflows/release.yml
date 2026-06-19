@@ -12,13 +12,13 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - uses: pnpm/action-setup@v3
+      - uses: pnpm/action-setup@v6
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: 24.x
           cache: pnpm
@@ -29,5 +29,4 @@ jobs:
 
       - name: Release
         run: |
-          npm install -g npm@latest # Ensure npm 11.5.1 or later is installed
           pnpm publish
