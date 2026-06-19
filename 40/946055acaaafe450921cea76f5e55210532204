@@ -1,0 +1,32 @@
+README.md
+  h_f1b7fa0b15b7f5 3
+src/charts.tsx
+  s_000d453680a34b::t_72f9f60cc36baf 19
+src/index.ts
+  h_f1b7fa0b15b7f5 4
+tsconfig.json
+  h_f1b7fa0b15b7f5 11
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "40946055acaaafe450921cea76f5e55210532204",
+  "prompts": {},
+  "humans": {
+    "h_f1b7fa0b15b7f5": {
+      "author": "Tmk <i@tmk.im>"
+    }
+  },
+  "sessions": {
+    "s_000d453680a34b": {
+      "agent_id": {
+        "tool": "trae-cue",
+        "id": "ai_tab-icr-e78ad119-e59d-402c-a315-25ebbd8ad69e",
+        "model": "default"
+      },
+      "human_author": "Tmk <i@tmk.im>"
+    }
+  },
+  "attestation_metadata": {},
+  "remote_transcripts": {}
+}
