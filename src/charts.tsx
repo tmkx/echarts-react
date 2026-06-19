@@ -2,6 +2,7 @@ import type {
   BarSeriesOption,
   ComposeOption,
   EffectScatterSeriesOption,
+  FunnelSeriesOption,
   GraphSeriesOption,
   GridComponentOption,
   HeatmapSeriesOption,
@@ -15,6 +16,7 @@ import type {
 import {
   BarChart as EChartBarChart,
   EffectScatterChart as EChartEffectScatterChart,
+  FunnelChart as EChartFunnelChart,
   GraphChart as EChartGraphChart,
   HeatmapChart as EChartHeatmapChart,
   LineChart as EChartLineChart,
@@ -124,6 +126,8 @@ export const EffectScatterChart = /*#__PURE__*/ defineChart<EffectScatterSeriesO
   EChartEffectScatterChart,
   GridComponent,
 ]);
+
+export const FunnelChart = /*#__PURE__*/ defineChart<FunnelSeriesOption>([EChartFunnelChart]);
 
 export const GraphChart = /*#__PURE__*/ defineChart<GraphSeriesOption>([EChartGraphChart]);
 
