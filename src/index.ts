@@ -2,6 +2,7 @@ export { CanvasRenderer, SVGRenderer } from 'echarts/renderers';
 export {
   BarChart,
   EffectScatterChart,
+  FunnelChart,
   GraphChart,
   HeatmapChart,
   LineChart,
