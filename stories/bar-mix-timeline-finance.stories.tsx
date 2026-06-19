@@ -120,7 +120,7 @@ export const MixTimelineFinance: Story = {
     type TimelineDataItemOption = NonNullable<TimelineComponentOption['data']>[number];
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         compose={[PieChart]}
         baseOption={{
           title: { subtext: '数据来自国家统计局' },

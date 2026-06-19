@@ -12,6 +12,7 @@ import type {
   MarkPointComponentOption,
   MatrixComponentOption,
   PolarComponentOption,
+  RadarComponentOption,
   SingleAxisComponentOption,
   TimelineComponentOption,
   TitleComponentOption,
@@ -32,6 +33,7 @@ import {
   MarkPointComponent,
   MatrixComponent,
   PolarComponent,
+  RadarComponent,
   SingleAxisComponent,
   TimelineComponent,
   TitleComponent,
@@ -84,6 +86,8 @@ export const MarkPoint = /*#__PURE__*/ defineComponent<MarkPointComponentOption>
 export const Matrix = /*#__PURE__*/ defineComponent<MatrixComponentOption>(MatrixComponent);
 
 export const Polar = /*#__PURE__*/ defineComponent<PolarComponentOption>(PolarComponent);
+
+export const Radar = /*#__PURE__*/ defineComponent<RadarComponentOption>(RadarComponent);
 
 export const SingleAxis = /*#__PURE__*/ defineComponent<SingleAxisComponentOption>(SingleAxisComponent);
 

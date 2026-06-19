@@ -36,7 +36,7 @@ export const ScatterSimple: Story = {
   render() {
     return (
       <ScatterChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{}}
         yAxis={{}}
         series={[
@@ -81,7 +81,7 @@ export const ScatterAnscombeQuartet: Story = {
 
     return (
       <ScatterChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         grid={[
           { left: '7%', top: '7%', width: '38%', height: '38%' },
           { right: '7%', top: '7%', width: '38%', height: '38%' },
@@ -121,7 +121,7 @@ export const ScatterEffect: Story = {
     return (
       <ScatterChart
         compose={[EffectScatterChart]}
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{ scale: true }}
         yAxis={{ scale: true }}
         series={[
@@ -241,7 +241,7 @@ export const ScatterPunchCard: Story = {
 
     return (
       <ScatterChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         grid={{ left: 2, bottom: 10, right: 10, containLabel: true }}
         xAxis={{
           type: 'category',
@@ -694,7 +694,7 @@ export const BubbleGradient: Story = {
 
     return (
       <ScatterChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         backgroundColor={
           new echarts.graphic.RadialGradient(0.3, 0.3, 0.8, [
             { offset: 0, color: '#f7f8fa' },
@@ -974,7 +974,7 @@ export const ScatterPolarPunchCard: Story = {
 
     return (
       <ScatterChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         series={[
           {
             name: 'Punch Card',

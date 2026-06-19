@@ -15,7 +15,7 @@ export const SunburstSimple: Story = {
   render() {
     return (
       <SunburstChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         series={[
           {
             type: 'sunburst',
@@ -69,7 +69,7 @@ export const SunburstBorderRadius: Story = {
   render() {
     return (
       <SunburstChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         series={[
           {
             type: 'sunburst',
@@ -124,7 +124,7 @@ export const SunburstLabelRotate: Story = {
   render() {
     return (
       <SunburstChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         series={[
           {
             type: 'sunburst',
@@ -249,7 +249,7 @@ export const SunburstMonochrome: Story = {
     ];
     return (
       <SunburstChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         series={[
           {
             radius: ['15%', '80%'],
@@ -320,7 +320,7 @@ export const SunburstVisualMap: Story = {
     ];
     return (
       <SunburstChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         series={{
           type: 'sunburst',
           data: data,

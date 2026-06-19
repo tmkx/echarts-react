@@ -34,7 +34,7 @@ jobs:
           pnpm i --frozen-lockfile
 
       - name: Lint
-        run: pnpm lint
+        run: pnpm lint && pnpm fmt:check
 
       - name: Test
         run: pnpm test
