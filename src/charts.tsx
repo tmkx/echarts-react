@@ -13,6 +13,7 @@ import type {
   SankeySeriesOption,
   ScatterSeriesOption,
   SunburstSeriesOption,
+  ThemeRiverSeriesOption,
 } from 'echarts';
 import {
   BarChart as EChartBarChart,
@@ -27,6 +28,7 @@ import {
   ScatterChart as EChartScatterChart,
   SankeyChart as EChartSankeyChart,
   SunburstChart as EChartSunburstChart,
+  ThemeRiverChart as EChartThemeRiverChart,
 } from 'echarts/charts';
 import { GridComponent } from 'echarts/components';
 import type { ComponentOption } from 'echarts/types/src/util/types.js';
@@ -154,3 +156,5 @@ export const ScatterChart = /*#__PURE__*/ defineChart<ScatterSeriesOption | Grid
 export const SankeyChart = /*#__PURE__*/ defineChart<SankeySeriesOption>([EChartSankeyChart]);
 
 export const SunburstChart = /*#__PURE__*/ defineChart<SunburstSeriesOption>([EChartSunburstChart]);
+
+export const ThemeRiverChart = /*#__PURE__*/ defineChart<ThemeRiverSeriesOption>([EChartThemeRiverChart]);
