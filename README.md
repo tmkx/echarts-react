@@ -1,6 +1,6 @@
 # @fanciers/echarts-react
 
-> Using ECharts in React the Idiomatic Way, with Treeshaking Support! 🍃
+> Using ECharts in React the Idiomatic Way, with Tree-Shaking Support! 🍃
 
 ```shell
 npm install @fanciers/echarts-react

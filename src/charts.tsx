@@ -1,5 +1,6 @@
 import type {
   BarSeriesOption,
+  ChordSeriesOption,
   ComposeOption,
   EffectScatterSeriesOption,
   FunnelSeriesOption,
@@ -15,6 +16,7 @@ import type {
 } from 'echarts';
 import {
   BarChart as EChartBarChart,
+  ChordChart as EChartChordChart,
   EffectScatterChart as EChartEffectScatterChart,
   FunnelChart as EChartFunnelChart,
   GraphChart as EChartGraphChart,
@@ -121,6 +123,8 @@ export const BarChart = /*#__PURE__*/ defineChart<BarSeriesOption | GridComponen
   EChartBarChart,
   GridComponent,
 ]);
+
+export const ChordChart = /*#__PURE__*/ defineChart<ChordSeriesOption>([EChartChordChart]);
 
 export const EffectScatterChart = /*#__PURE__*/ defineChart<EffectScatterSeriesOption | GridComponentOption>([
   EChartEffectScatterChart,
