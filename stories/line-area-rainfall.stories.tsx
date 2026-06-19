@@ -14,7 +14,7 @@ export const AreaRainfall: Story = {
   render() {
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={[
           {
             type: 'category',

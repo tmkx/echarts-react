@@ -49,7 +49,7 @@ export const BarSimple: Story = {
   render() {
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{
           type: 'category',
           data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
@@ -71,7 +71,7 @@ export const BarTickAlign: Story = {
   render() {
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         grid={{ left: '3%', right: '4%', bottom: '3%', containLabel: true }}
         xAxis={[
           {
@@ -94,7 +94,7 @@ export const BarBackground: Story = {
   render() {
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{ type: 'category', data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] }}
         yAxis={{ type: 'value' }}
         series={[
@@ -115,7 +115,7 @@ export const BarDataColor: Story = {
   render() {
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{
           type: 'category',
           data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
@@ -137,7 +137,7 @@ export const BarWaterfall: Story = {
   render() {
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         grid={{ left: '3%', right: '4%', bottom: '3%', containLabel: true }}
         xAxis={{
           type: 'category',
@@ -187,7 +187,7 @@ export const BarNegative2: Story = {
 
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         grid={{ top: 80, bottom: 30 }}
         xAxis={{ type: 'value', position: 'top', splitLine: { lineStyle: { type: 'dashed' } } }}
         yAxis={{
@@ -231,7 +231,7 @@ export const BarPolarLabelRadial: Story = {
   render() {
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         series={{
           type: 'bar',
           data: [2, 1.2, 2.4, 3.6],
@@ -257,7 +257,7 @@ export const BarPolarLabelTangential: Story = {
   render() {
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         series={{
           type: 'bar',
           data: [2, 1.2, 2.4, 3.6],
@@ -282,7 +282,7 @@ export const BarYCategory: Story = {
   render() {
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{ type: 'value', boundaryGap: [0, 0.01] }}
         yAxis={{ type: 'category', data: ['Brazil', 'Indonesia', 'USA', 'India', 'China', 'World'] }}
         series={[
@@ -303,7 +303,7 @@ export const PolarEndAngle: Story = {
   render() {
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         series={[
           { type: 'bar', polarIndex: 0, data: [1, 2, 3], coordinateSystem: 'polar' },
           { type: 'bar', polarIndex: 1, data: [1, 2, 3], coordinateSystem: 'polar' },
@@ -387,7 +387,7 @@ export const BarBreaksSimple: Story = {
     return (
       <BarChart
         ref={chartRef}
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         grid={{ top: 120 }}
         xAxis={[{ type: 'category', data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] }]}
         yAxis={[{ type: 'value', breaks: currentAxisBreaks, breakArea: { itemStyle: { opacity: 1 }, zigzagZ: 200 } }]}
@@ -467,7 +467,7 @@ export const BarGradient: Story = {
     return (
       <BarChart
         ref={chartRef}
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{
           data: dataAxis,
           axisLabel: { inside: true, color: '#fff' },
@@ -562,7 +562,7 @@ export const BarLabelRotation: StoryObj<typeof barLabelRotationMeta> = {
 
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         compose={[LineChart]}
         xAxis={[{ type: 'category', axisTick: { show: false }, data: ['2012', '2013', '2014', '2015', '2016'] }]}
         yAxis={[{ type: 'value' }]}
@@ -625,7 +625,7 @@ export const BarStack: Story = {
   render() {
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={[{ type: 'category', data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] }]}
         yAxis={[{ type: 'value' }]}
         series={[
@@ -742,7 +742,7 @@ export const BarStackBorderRadius: Story = {
 
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{ type: 'category', data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] }}
         yAxis={{ type: 'value' }}
         series={series}
@@ -782,7 +782,7 @@ export const BarStackNormalization: Story = {
 
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         yAxis={{ type: 'value' }}
         xAxis={{ type: 'category', data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] }}
         series={series}
@@ -871,7 +871,7 @@ export const BarWaterfall2: Story = {
   render() {
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         grid={{ left: '3%', right: '4%', bottom: '3%', containLabel: true }}
         xAxis={{ type: 'category', data: Array.from({ length: 12 }, (_, i) => `Nov ${i + 1}`) }}
         yAxis={{ type: 'value' }}
@@ -926,7 +926,7 @@ export const BarYCategoryStack: Story = {
   render() {
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{ type: 'value' }}
         yAxis={{ type: 'category', data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] }}
         series={[
@@ -1037,7 +1037,7 @@ export const BarBrush: Story = {
     return (
       <BarChart
         ref={chartRef}
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{
           data: xAxisData,
           name: 'X Axis',
@@ -1075,7 +1075,7 @@ export const BarNegative: Story = {
   render() {
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={[{ type: 'value' }]}
         yAxis={[
           { type: 'category', axisTick: { show: false }, data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] },
@@ -1118,7 +1118,7 @@ export const Bar1: Story = {
   render() {
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={[
           {
             type: 'category',
@@ -1180,7 +1180,7 @@ export const MixLineBar: Story = {
   render() {
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         compose={[LineChart]}
         xAxis={[
           {
@@ -1255,7 +1255,7 @@ export const MixZoomOnValue: Story = {
 
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         grid={{ top: '12%', left: '1%', right: '10%', containLabel: true }}
         xAxis={[{ type: 'category', data: data?.names || [] }]}
         yAxis={[
@@ -1310,7 +1310,7 @@ export const MultipleYAxis: Story = {
     const colors = ['#5070dd', '#b6d634', '#505372'];
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         compose={[LineChart]}
         color={colors}
         grid={{ right: '20%' }}
@@ -1399,7 +1399,7 @@ export const BarAnimationDelay: Story = {
 
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{ data: xAxisData, splitLine: { show: false } }}
         yAxis={{}}
         series={[
@@ -1520,7 +1520,7 @@ export const BarDrilldown: Story = {
     return (
       <BarChart
         ref={chartRef}
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={xAxis}
         yAxis={{}}
         animationDurationUpdate={500}
@@ -1558,7 +1558,7 @@ export const BarLarge: Story = {
 
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         grid={{ bottom: 90 }}
         xAxis={{
           data: data.categoryData,
@@ -1599,7 +1599,7 @@ export const BarRace: Story = {
 
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{ max: 'dataMax' }}
         yAxis={{
           type: 'category',
@@ -1711,7 +1711,7 @@ export const BarMultiDrilldown: Story = {
     return (
       <BarChart
         ref={chartRef}
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{ type: 'category' }}
         yAxis={{ minInterval: 1 }}
         series={{
@@ -1797,7 +1797,7 @@ export const BarRaceCountry: Story = {
 
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         grid={{ top: 10, bottom: 30, left: 150, right: 80 }}
         xAxis={{ max: 'dataMax', axisLabel: { formatter: (n: number) => Math.round(n).toString() } }}
         yAxis={{
@@ -1850,7 +1850,7 @@ export const BarRichText: Story = {
     const seriesLabel: BarSeriesLabelOption = { show: true };
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         grid={{ left: 100 }}
         xAxis={{ type: 'value', name: 'Days', axisLabel: { formatter: '{value}' } }}
         yAxis={{ type: 'category', inverse: true, data: ['Sunny', 'Cloudy', 'Showers'], axisLabel: { margin: 20 } }}
@@ -1978,7 +1978,7 @@ export const DynamicData: Story = {
 
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         compose={[LineChart]}
         xAxis={[
           { type: 'category', boundaryGap: true, data: categories },
@@ -2047,7 +2047,7 @@ export const Watermark: Story = {
 
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         compose={[PieChart]}
         backgroundColor={{ type: 'pattern', image: canvas, repeat: 'repeat' }}
         grid={[
@@ -2172,7 +2172,7 @@ export const BarPolarRealEstate: Story = {
     const barHeight = 50;
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         grid={{ top: 100 }}
         series={[
           {
@@ -2246,7 +2246,7 @@ export const BarPolarStack: Story = {
   render() {
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         series={[
           {
             type: 'bar',
@@ -2286,7 +2286,7 @@ export const BarPolarStackRadial: Story = {
   render() {
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         series={[
           {
             type: 'bar',
@@ -2330,7 +2330,7 @@ export const PolarRoundCap: Story = {
   render() {
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         series={[
           {
             type: 'bar',
@@ -2468,7 +2468,7 @@ export const BarBreaksBrush: Story = {
     return (
       <BarChart
         ref={chartRef}
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         grid={{ top: GRID_TOP, bottom: GRID_BOTTOM }}
         xAxis={[{ type: 'category', data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] }]}
         yAxis={[
@@ -2527,7 +2527,7 @@ export const DataTransformSortBar: Story = {
   render() {
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{ type: 'category', axisLabel: { interval: 0, rotate: 30 } }}
         yAxis={{}}
         series={{ type: 'bar', encode: { x: 'name', y: 'score' }, datasetIndex: 1 }}
@@ -2561,7 +2561,7 @@ export const DatasetEncode0: Story = {
   render() {
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         grid={{ containLabel: true }}
         xAxis={{ name: 'amout' }}
         yAxis={{ type: 'category' }}
@@ -2604,7 +2604,7 @@ export const DatasetSeriesLayoutBy: Story = {
   render() {
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         grid={[{ bottom: '55%' }, { top: '55%' }]}
         xAxis={[
           { type: 'category', gridIndex: 0 },
@@ -2645,7 +2645,7 @@ export const DatasetSimple0: Story = {
   render() {
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{ type: 'category' }}
         yAxis={{}}
         series={[{ type: 'bar' }, { type: 'bar' }, { type: 'bar' }]}
@@ -2673,7 +2673,7 @@ export const DatasetSimple1: Story = {
   render() {
     return (
       <BarChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{ type: 'category' }}
         yAxis={{}}
         series={[{ type: 'bar' }, { type: 'bar' }, { type: 'bar' }]}

@@ -15,7 +15,7 @@ export const SankeySimple: Story = {
   render() {
     return (
       <SankeyChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         series={{
           type: 'sankey',
           emphasis: { focus: 'adjacency' },
@@ -39,7 +39,7 @@ export const SankeyVertical: Story = {
   render() {
     return (
       <SankeyChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         animation={false}
         series={[
           {

@@ -44,7 +44,7 @@ export const LineSimple: Story = {
   render() {
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{ type: 'category', data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] }}
         yAxis={{ type: 'value' }}
         series={[
@@ -63,7 +63,7 @@ export const LineSmooth: Story = {
   render() {
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{ type: 'category', data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] }}
         yAxis={{ type: 'value' }}
         series={[
@@ -83,7 +83,7 @@ export const AreaBasic: Story = {
   render() {
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{ type: 'category', boundaryGap: false, data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] }}
         yAxis={{ type: 'value' }}
         series={[
@@ -103,7 +103,7 @@ export const LineStack: Story = {
   render() {
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{ type: 'category', boundaryGap: false, data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] }}
         yAxis={{ type: 'value' }}
         series={[
@@ -154,7 +154,7 @@ export const AreaStack: Story = {
   render() {
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{ type: 'category', boundaryGap: false, data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] }}
         yAxis={{ type: 'value' }}
         series={[
@@ -238,7 +238,7 @@ export const AreaStackGradient: Story = {
   render() {
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         color={['#80FFA5', '#00DDFF', '#37A2FF', '#FF0087', '#FFBF00']}
         xAxis={{ type: 'category', boundaryGap: false, data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] }}
         yAxis={{ type: 'value' }}
@@ -450,7 +450,7 @@ export const BumpChart: Story = {
 
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         color={['#80FFA5', '#00DDFF', '#37A2FF', '#FF0087', '#FFBF00']}
         xAxis={{
           type: 'category',
@@ -484,7 +484,7 @@ export const LineMarker: Story = {
   render() {
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{
           type: 'category',
           boundaryGap: false,
@@ -560,7 +560,7 @@ export const AreaPieces: Story = {
   render() {
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{ type: 'category', boundaryGap: false }}
         yAxis={{ type: 'value', boundaryGap: [0, '30%'] }}
         series={[
@@ -613,7 +613,7 @@ export const DataTransformFilter: Story = {
 
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{ type: 'category', nameLocation: 'middle' }}
         yAxis={{ name: 'Income' }}
         series={[
@@ -692,7 +692,7 @@ export const LineGradient: Story = {
     const valueList = data.map((item) => item[1]);
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={[{ data: dateList }, { data: dateList, gridIndex: 1 }]}
         yAxis={[{}, { gridIndex: 1 }]}
         grid={[{ bottom: '60%' }, { top: '60%' }]}
@@ -724,7 +724,7 @@ export const LineSections: Story = {
   render() {
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{
           type: 'category',
           boundaryGap: false,
@@ -791,7 +791,7 @@ export const AreaSimple: Story = {
     }
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{ type: 'category', boundaryGap: false, data: date }}
         yAxis={{ type: 'value', boundaryGap: [0, '100%'] }}
         series={[
@@ -839,7 +839,7 @@ export const ConfidenceBand: Story = {
 
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{
           type: 'category',
           data: data?.map((item) => item.date) || [],
@@ -920,7 +920,7 @@ export const LineAQI: Story = {
 
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         grid={{ left: '5%', right: '15%', bottom: '10%' }}
         xAxis={{ data: data?.map((item) => item[0]) || [] }}
         yAxis={{}}
@@ -966,7 +966,7 @@ export const MultipleXAxis: Story = {
     const colors = ['#5470C6', '#EE6666'];
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         color={colors}
         xAxis={[
           {
@@ -1040,7 +1040,7 @@ export const AreaTimeAxis: Story = {
 
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{ type: 'time', boundaryGap: [0, 0] }}
         yAxis={{ type: 'value', boundaryGap: [0, '100%'] }}
         series={[{ name: 'Fake Data', type: 'line', smooth: true, symbol: 'none', areaStyle: {}, data: data }]}
@@ -1094,7 +1094,7 @@ export const DynamicData2: Story = {
 
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{ type: 'time', splitLine: { show: false } }}
         yAxis={{ type: 'value', boundaryGap: [0, '100%'], splitLine: { show: false } }}
         series={{ name: 'Fake Data', type: 'line', showSymbol: false, data: data }}
@@ -1140,7 +1140,7 @@ export const LineFunction: Story = {
 
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         animation={false}
         xAxis={{ name: 'x', minorTick: { show: true }, minorSplitLine: { show: true } }}
         yAxis={{ name: 'y', min: -100, max: 100, minorTick: { show: true }, minorSplitLine: { show: true } }}
@@ -1202,7 +1202,7 @@ export const LineRace: Story = {
 
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         animationDuration={10000}
         xAxis={{ type: 'category', nameLocation: 'middle' }}
         yAxis={{ name: 'Income' }}
@@ -1252,7 +1252,7 @@ export const LineMarkline: Story = {
 
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         animation={false}
         textStyle={{ fontSize: 14 }}
         xAxis={{ data: ['A', 'B', 'C', 'D', 'E'], boundaryGap: true, splitArea: { show: true } }}
@@ -1280,7 +1280,7 @@ export const LineStyle: Story = {
   render() {
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{ type: 'category', data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] }}
         yAxis={{ type: 'value' }}
         series={[
@@ -1303,7 +1303,7 @@ export const LineInCartesianCoordinateSystem: Story = {
   render() {
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{}}
         yAxis={{}}
         series={[
@@ -1326,7 +1326,7 @@ export const LineLog: Story = {
   render() {
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{
           type: 'category',
           name: 'x',
@@ -1358,7 +1358,7 @@ export const LineStep: Story = {
   render() {
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{ type: 'category', data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] }}
         yAxis={{ type: 'value' }}
         grid={{ left: '3%', right: '4%', bottom: '3%', containLabel: true }}
@@ -1575,7 +1575,7 @@ export const LineEasing: Story = {
     });
 
     return (
-      <LineChart style={{ width: 480, height: 300 }} xAxis={xAxes} yAxis={yAxes} grid={grids} series={series}>
+      <LineChart style={{ width: 720, height: 500 }} xAxis={xAxes} yAxis={yAxes} grid={grids} series={series}>
         <Title title={[...titles, { text: 'Different Easing Functions', top: 'bottom', left: 'center' }]} />
       </LineChart>
     );
@@ -1745,7 +1745,7 @@ export const LineFisheyeLens: Story = {
     return (
       <LineChart
         ref={chartRef}
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={[{ splitLine: { show: false }, breakArea: _breakAreaStyle }]}
         yAxis={[{ axisTick: { show: true }, breakArea: _breakAreaStyle }]}
         grid={{ top: GRID_TOP, bottom: GRID_BOTTOM, left: GRID_LEFT, right: GRID_RIGHT }}
@@ -1783,7 +1783,7 @@ export const LineYCategory: Story = {
   render() {
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{ type: 'value', axisLabel: { formatter: '{value} °C' } }}
         yAxis={{
           type: 'category',
@@ -1817,7 +1817,7 @@ export const LineGraphic: Story = {
   render() {
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{ type: 'value', axisLabel: { formatter: '{value} °C' } }}
         yAxis={{
           type: 'category',
@@ -1941,7 +1941,7 @@ export const LinePen: Story = {
     return (
       <LineChart
         ref={chartRef}
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{ min: -60, max: 20, type: 'value', axisLine: { onZero: false } }}
         yAxis={{ min: 0, max: 40, type: 'value', axisLine: { onZero: false } }}
         grid={{ left: '3%', right: '4%', bottom: '3%', containLabel: true }}
@@ -1974,7 +1974,7 @@ export const LinePolar: Story = {
 
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         series={[{ coordinateSystem: 'polar', name: 'line', type: 'line', data }]}
       >
         <Title title={{ text: 'Two Value-Axes in Polar' }} />
@@ -1998,7 +1998,7 @@ export const LinePolar2: Story = {
 
     return (
       <LineChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         animationDuration={2000}
         series={[{ coordinateSystem: 'polar', name: 'line', type: 'line', showSymbol: false, data }]}
       >

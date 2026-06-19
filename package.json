@@ -1,6 +1,6 @@
 {
   "name": "@fanciers/echarts-react",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "ECharts <3 React",
   "keywords": [
     "chart",
@@ -31,6 +31,7 @@
   "scripts": {
     "dev": "storybook dev",
     "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check",
     "test": "vitest",
     "prepack": "tsdown",
     "lint": "tsc --noEmit"

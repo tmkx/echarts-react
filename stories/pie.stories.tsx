@@ -30,7 +30,7 @@ export const PieSimple: Story = {
   render() {
     return (
       <PieChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         series={[
           {
             name: 'Access From',
@@ -66,7 +66,7 @@ export const PieBorderRadius: Story = {
   render() {
     return (
       <PieChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         series={[
           {
             name: 'Access From',
@@ -99,7 +99,7 @@ export const PieDoughnut: Story = {
   render() {
     return (
       <PieChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         series={[
           {
             name: 'Access From',
@@ -131,7 +131,7 @@ export const PieHalfDonut: Story = {
   render() {
     return (
       <PieChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         series={[
           {
             name: 'Access From',
@@ -163,7 +163,7 @@ export const PiePadAngle: Story = {
   render() {
     return (
       <PieChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         series={[
           {
             name: 'Access From',
@@ -199,7 +199,7 @@ export const PieCustom: Story = {
   render() {
     return (
       <PieChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         backgroundColor="#2c343c"
         series={[
           {
@@ -238,7 +238,7 @@ export const PieRoseType: Story = {
   render() {
     return (
       <PieChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         series={[
           {
             name: 'Radius Mode',
@@ -310,7 +310,7 @@ export const PieRoseTypeSimple: Story = {
   render() {
     return (
       <PieChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         series={[
           {
             name: 'Nightingale Chart',
@@ -364,7 +364,7 @@ export const PieAlignTo: Story = {
 
     return (
       <PieChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         series={[
           {
             type: 'pie',
@@ -448,7 +448,7 @@ export const PieLabelLineAdjust: Story = {
     return (
       <PieChart
         ref={chartRef}
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         series={datas.map(function (data, idx): PieSeriesOption {
           var top = idx * 33.3;
           return {
@@ -520,7 +520,7 @@ export const PieLegend: Story = {
 
     return (
       <PieChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         series={[
           {
             name: '姓名',
@@ -547,7 +547,7 @@ export const PieNest: Story = {
   render() {
     return (
       <PieChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         series={[
           {
             name: 'Access From',
@@ -610,7 +610,7 @@ export const DataTransformMultiplePie: Story = {
   render() {
     return (
       <PieChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         media={[
           {
             query: { minAspectRatio: 1 },
@@ -668,7 +668,7 @@ export const DatasetDefault: Story = {
   render() {
     return (
       <PieChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         series={[
           {
             type: 'pie',
@@ -729,7 +729,7 @@ export const MapIcelandPie: Story = {
 
     return (
       <PieChart
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         series={[
           randomPieSeries([-19.007740346534653, 64.1780281585128], 45),
           randomPieSeries([-17.204666089108912, 65.44804833928391], 25),
@@ -861,7 +861,7 @@ export const DatasetLink: Story = {
       <PieChart
         ref={chartRef}
         compose={[LineChart]}
-        style={{ width: 480, height: 300 }}
+        style={{ width: 720, height: 500 }}
         xAxis={{ type: 'category' }}
         yAxis={{ gridIndex: 0 }}
         grid={{ top: '55%' }}
