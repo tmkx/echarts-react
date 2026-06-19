@@ -1,5 +1,6 @@
 export { CanvasRenderer, SVGRenderer } from 'echarts/renderers';
 export {
+  BaseChart,
   BarChart,
   ChordChart,
   EffectScatterChart,
