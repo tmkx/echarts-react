@@ -65,11 +65,13 @@ type ResolveComponentOption<T extends ComponentOption | ChartComponentType> = T 
     ? P
     : never;
 
+type ResolveChartOptionProps<T extends ComponentOption> = [T] extends [never] ? {} : Simplify<ComposeOption<T>>;
+
 interface ChartComponentType<in T extends ComponentOption = any> {
   <U extends readonly ChartComponentType[] = []>(
     props: ChartBaseProps<U> &
       echarts.EChartsCoreOption &
-      Simplify<ComposeOption<ResolveComponentOption<T | U[number]>>> & {
+      ResolveChartOptionProps<ResolveComponentOption<T | U[number]>> & {
         ref?: React.Ref<echarts.ECharts>;
       }
   ): React.JSX.Element;
@@ -120,6 +122,8 @@ function defineChart<T extends ComponentOption>(ext: EChartExt) {
   ChartComponent.ext = ext;
   return ChartComponent;
 }
+
+export const BaseChart = /*#__PURE__*/ defineChart<never>([]);
 
 export const BarChart = /*#__PURE__*/ defineChart<BarSeriesOption | GridComponentOption>([
   EChartBarChart,
