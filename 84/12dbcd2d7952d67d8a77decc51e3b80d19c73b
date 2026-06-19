@@ -1,0 +1,40 @@
+src/index.ts
+  s_6d70a724fea141::t_3f4b65a6112d98 5
+package.json
+  h_f1b7fa0b15b7f5 3
+src/charts.tsx
+  s_c12eb63acf8fde::t_7325c634a7146d 19
+stories/funnel.stories.tsx
+  h_f1b7fa0b15b7f5 1-288
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "8412dbcd2d7952d67d8a77decc51e3b80d19c73b",
+  "prompts": {},
+  "humans": {
+    "h_f1b7fa0b15b7f5": {
+      "author": "Tmk <i@tmk.im>"
+    }
+  },
+  "sessions": {
+    "s_6d70a724fea141": {
+      "agent_id": {
+        "tool": "trae-cue",
+        "id": "ai_tab-icr-42d77ea6-b1b7-4f2c-9814-8757a5e388b3",
+        "model": "default"
+      },
+      "human_author": "Tmk <i@tmk.im>"
+    },
+    "s_c12eb63acf8fde": {
+      "agent_id": {
+        "tool": "trae-cue",
+        "id": "ai_tab-icr-fbfd9752-cbf1-4190-a1e3-8200c793318b",
+        "model": "default"
+      },
+      "human_author": "Tmk <i@tmk.im>"
+    }
+  },
+  "attestation_metadata": {},
+  "remote_transcripts": {}
+}
