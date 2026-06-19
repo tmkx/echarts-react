@@ -1,0 +1,52 @@
+README.md
+  h_f1b7fa0b15b7f5 3
+tsconfig.json
+  h_f1b7fa0b15b7f5 11
+src/index.ts
+  h_f1b7fa0b15b7f5 4
+src/charts.tsx
+  s_000d453680a34b::t_72f9f60cc36baf 19
+stories/chord.stories.tsx
+  h_f1b7fa0b15b7f5 4,126-128,133-146,148-161
+  s_98c4574c102a45::t_11a8194edcac3e 72
+  s_f0ee0fdd77ad2a::t_827b6f5c1d7230 89
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "2dae9b6a7ad89c8169ed3d8b73b45be45ab20c46",
+  "prompts": {},
+  "humans": {
+    "h_f1b7fa0b15b7f5": {
+      "author": "Tmk <i@tmk.im>"
+    }
+  },
+  "sessions": {
+    "s_000d453680a34b": {
+      "agent_id": {
+        "tool": "trae-cue",
+        "id": "ai_tab-icr-e78ad119-e59d-402c-a315-25ebbd8ad69e",
+        "model": "default"
+      },
+      "human_author": "Tmk <i@tmk.im>"
+    },
+    "s_98c4574c102a45": {
+      "agent_id": {
+        "tool": "trae-cue",
+        "id": "ai_tab-icr-b203ac4e-44eb-4ed3-858d-f9ac497e994e",
+        "model": "default"
+      },
+      "human_author": "Tmk <i@tmk.im>"
+    },
+    "s_f0ee0fdd77ad2a": {
+      "agent_id": {
+        "tool": "trae-cue",
+        "id": "ai_tab-icr-0ff1d2a1-28dc-4465-a0f4-77f56f616255",
+        "model": "default"
+      },
+      "human_author": "Tmk <i@tmk.im>"
+    }
+  },
+  "attestation_metadata": {},
+  "remote_transcripts": {}
+}
