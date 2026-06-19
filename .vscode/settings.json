@@ -1,5 +1,5 @@
 {
-  "cSpell.words": ["sankey"],
+  "cSpell.words": ["oxfmt", "sankey"],
   "editor.defaultFormatter": "oxc.oxc-vscode",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "typescript.tsdk": "node_modules/typescript/lib"

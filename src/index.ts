@@ -1,6 +1,7 @@
 export { CanvasRenderer, SVGRenderer } from 'echarts/renderers';
 export {
   BarChart,
+  ChordChart,
   EffectScatterChart,
   FunnelChart,
   GraphChart,
